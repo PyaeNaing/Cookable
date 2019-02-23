@@ -10,7 +10,7 @@ npm install
 ```
 5. A folder called node_modules should show up.
 
-##Testing locally
+## Testing locally
 
 Once you have setup the folders and installed the node.js modules you can now test it.
 
