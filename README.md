@@ -10,7 +10,7 @@ npm install
 ```
 5. A folder called node_modules should show up.
 
-##Testing locally
+## Testing locally
 
 Once you have setup the folders and installed the node.js modules you can now test it.
 
@@ -23,6 +23,6 @@ This will start a localy server. So make sure to give node access permissions to
 
 Open a browser then go to http://localhost:3000/
 
-##Need help?
+## Need help?
 
 Ask in the discord or text someone if you need help setting it up.
