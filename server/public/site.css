@@ -144,4 +144,38 @@ body {
 
 }
 
+  
 
+li {   
+ float: left;   
+ margin-right: 0px;   
+ border-right: 1px solid #aaa;   
+ padding: 0 20px; 
+ 
+}       
+li:last-child {
+ border-right: none; 
+}       
+
+li a {
+ text-decoration: none;   
+ color: darkgray;   
+ font: 80px/1, Helvetica, Verdana, sans-serif;   
+ text-transform: uppercase; 
+}       
+li a:hover {
+ color: black;
+ background-color:white;
+}       
+li.activeitem a {
+ font-weight: bold;   
+ color: black;
+ background-color:white;
+ 
+}
+
+.bgSizeCover {
+background-image: url(https://cdn.discordapp.com/attachments/545104914913951745/549330358852780032/cat.jpg);
+background-size:cover;
+background-position: center;
+}

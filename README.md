@@ -1,12 +1,28 @@
 # csc648-sp19-Team205
 
-# Base Repo for Professor Jose Ortiz-Costa CSC 648-848 Class 
+## How to start
+1. Install Node.js ver. 10 https://nodejs.org/en/.
+2. Clone development branch from github. Make sure to switch to development branch after using "git checkout development" if you haven't already.
+3. In cloned git folder navigate to the server (e.g ./csc648-sp19-team205/server). The folder should have a public folder and index.js
+4. In that directory open a terminal type
+```
+npm install
+```
+5. A folder called node_modules should show up.
 
-## Please do the following steps before completing Milestone 0.
-1. Change the name of the repo from csc648-sp19-Team2NN. All that needs to chanage is the NN to your respective team number. Team numbers whos value is less than 10, please pad with a 0. Ex team 1 is Team201 team 11 is Team211. Please make sure to also remove the username from the repo as well.
+## Testing locally
 
-1. PLEASE REMOVE THE USERNAME FROM THE REPO!!!
+Once you have setup the folders and installed the node.js modules you can now test it.
 
-2. Add ALL members of your team to this repo. For it to count, they must ACCEPT the invite.
+Navigate again to the server folder and in a terminal run:
+```
+node index.js
+```
 
+This will start a localy server. So make sure to give node access permissions to do so if your OS asks for it.
 
+Open a browser then go to http://localhost:3000/
+
+## Need help?
+
+Ask in the discord or text someone if you need help setting it up.
