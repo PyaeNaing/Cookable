@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import AboutPage from './pageLayouts/aboutPage.js';
 import './App.css';
 
 class App extends Component {
@@ -26,12 +27,10 @@ state = {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
+      <div>
+        <header>
+          <AboutPage />
         </header>
-        // Render the newly fetched data inside of this.state.data 
-        <p className="App-intro">{this.state.data}</p>
       </div>
     );
   }
