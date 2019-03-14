@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const styles = {
@@ -28,11 +29,32 @@ class Profile extends Component {
 		super(props);
 		this.state = {
 			name: this.props.name,
-			role: this.props.role
+			role: this.props.role,
+			isLoading: false
 		};
 	}
+
+	componentDidMount() {
+    	this.setState({ isLoading: true });
+  	}
+
+  	componentWillUnmount() {
+    	this.setState({ isLoading: false });
+  	}
 	
 	render() {
+		const {isLoading} = this.state;
+
+		if(isLoading) {
+			return (
+				<paper square={false} elevation={10}>
+					<Card style={styles.card}>
+						<CircularProgress />
+					</Card>
+				</paper>
+			)
+		}
+
 		return (
 			<div>
 				<Paper square={false} elevation={10}>
