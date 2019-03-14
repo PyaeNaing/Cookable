@@ -1,10 +1,15 @@
-const express = require('express')
-const app = express()
-const mysql = require('mysql')
-const path = require('path')
+const express = require("express");
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
+
+
+const mysql = require("mysql");
+const path = require("path");
 const port = process.env.PORT || 4000;
-
-
 //WHEN USING STATIC PAGES
 //app.use(express.static(__dirname + '/public'));
 //Reg listen on 3k
@@ -13,37 +18,62 @@ const port = process.env.PORT || 4000;
 //CONNECT TO REACT
 // console.log that your server is up and running
 
-
-var con = mysql.createConnection({
-  host: 'cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com',
-  user: 'master',
-  password: 'TdWvQM3e75bbsXvyEvbR',
-  database: 'testing',
+var db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "test"
 });
 
-con.connect(function(error){
-  if(!!error) {
-    console.log('Error');
+db.connect(function(error) {
+  if (error) {
+    console.log("Error");
+  } else {
+    console.log("Connected");
   }
-  else{
-    console.log('Connected'); 
-  }
-})
+});
 
-app.get('/', function(req, res){
-    var sql = "INSERT INTO users (name, password) VALUES ('Pyae', '12345')";
-    con.query(sql, function (err, result) {
-      if (err){
-        res.send('Error')
-      }
-      else{res.send("1 record inserted")};
-    })
+//create db
+app.get('/createdb', (req, res)=>{
+  let sql = 'CREATE DATABASE test';
+  db.query(sql, (error, result)=>{
+    if(error){
+      console.log('Error');
+      res.send('Error');
+    }
+    else{
+      console.log(result);
+      res.send('Database Created ...');
+    }
+  })
+});
+
+app.get('/createuserstable', (req, res)=>{
+  let sql = 'CREATE TABLE users(name VARCHAR(255), password VARCHAR(255))';
+  db.query(sql, (error, result)=> {
+    if(error)
+    {
+      res.send(error);
+      console.log('Error');
+    }
+    else{
+      res.send(result)
+      console.log(result);
+    }
+  })
+});
+
+app.post("/create", function(req, res) {
+  var username = req.body.user;
+  var password = req.body.password;
+  console.log("User name = "+username+", password is "+password);
+  res.end('thanks');
+
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // create a GET route
-app.get('/express_backend', (req, res) => {
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
+app.get("/express_backend", (req, res) => {
+  res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
-
