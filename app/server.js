@@ -10,18 +10,11 @@ app.use(cors());
 const mysql = require("mysql");
 const path = require("path");
 const port = process.env.PORT || 4000;
-//WHEN USING STATIC PAGES
-//app.use(express.static(__dirname + '/public'));
-//Reg listen on 3k
-//app.listen(3000, () => console.log('Server running on port 3000'))
-
-//CONNECT TO REACT
-// console.log that your server is up and running
 
 var db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
+  host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
+  user: "master",
+  password: "TdWvQM3e75bbsXvyEvbR",
   database: "test"
 });
 
@@ -63,10 +56,25 @@ app.get('/createuserstable', (req, res)=>{
   })
 });
 
-app.post("/create", function(req, res) {
+app.post("/createUser", function(req, res) {
   var username = req.body.user;
   var password = req.body.password;
-  console.log("User name = "+username+", password is "+password);
+  if(req.body!= null){
+    db.query("INSERT INTO users (name, password) VALUES (?,?)", [username, password], function(error, result){
+      if (error){
+        console.log(error);
+        res.end(error);
+      }
+      else{
+        console.log(result);
+        res.end(result);
+      }
+    });
+  }
+  console.log("Username = "+username+", Password = "+password);
+
+
+
   res.end('thanks');
 
 });

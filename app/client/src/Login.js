@@ -17,7 +17,7 @@ export default class Login extends Component {
   createUser = e => {
     axios({
       method: "POST",
-      url: 'http://localhost:4000/create',
+      url: '/createUser',
       data: {
         user: this.state.email,
         password: this.state.password
@@ -35,9 +35,6 @@ export default class Login extends Component {
     });
   };
 
-  createUser2 = e =>{
-
-  }
 
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
