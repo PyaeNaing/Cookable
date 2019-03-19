@@ -35,6 +35,13 @@ export default class Login extends Component {
     });
   };
 
+  getAdmins = e => 
+  {
+    axios.get("/v1/admins").then(function(res){
+      console.log(res.data);
+    })
+  };
+
 
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
@@ -52,7 +59,15 @@ export default class Login extends Component {
 
   render() {
     return (
+      
       <div className="Login">
+          <Button
+            block
+            bsSize="large"
+            onClick={this.getAdmins}
+          >
+            GetAdmins
+          </Button>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group controlId="email" bsSize="large">
             <Form.Control
@@ -78,6 +93,7 @@ export default class Login extends Component {
           >
             CreateUser
           </Button>
+          
         </Form>
       </div>
     );
