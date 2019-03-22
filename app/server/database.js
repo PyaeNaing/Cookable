@@ -9,7 +9,7 @@ module.exports = {
       host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
       user: "master",
       password: "TdWvQM3e75bbsXvyEvbR",
-      database: "test"
+      database: "cookabledb1"
     });
     return pool;
   }

@@ -9,29 +9,26 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      id: "",
+      first: "",
+      last:"",
+      role:""
     };
   }
 
-  createUser = e => {
-    axios({
-      method: "POST",
-      url: '/createUser',
-      data: {
-        user: this.state.email,
-        password: this.state.password
-      }
+  createAdmin = e => {
+
+    axios.post('/v1/createAdmin', {
+      id: this.state.id,
+        first: this.state.first,
+        last: this.state.last,
+        role: this.state.role
     })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    this.setState({
-      email: "",
-      password: ""
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
     });
   };
 
@@ -69,29 +66,43 @@ export default class Login extends Component {
             GetAdmins
           </Button>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Group controlId="email" bsSize="large">
+          <Form.Group controlId="id" bsSize="large">
             <Form.Control
               autoFocus
               type="text"
-              value={this.state.email}
+              value={this.state.id}
               onChange={this.handleChange}
             />
           </Form.Group>
-          <Form.Group controlId="password" bsSize="large">
+          <Form.Group controlId="first" bsSize="large">
             <Form.Control
-              value={this.state.password}
+              type="text"
+              value={this.state.first}
               onChange={this.handleChange}
-              type="password"
+            />
+          </Form.Group>
+          <Form.Group controlId="last" bsSize="large">
+            <Form.Control
+              autoFocus
+              type="text"
+              value={this.state.last}
+              onChange={this.handleChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="role" bsSize="large">
+            <Form.Control
+              type="text"
+              value={this.state.role}
+              onChange={this.handleChange}
             />
           </Form.Group>
           <Button
             block
             bsSize="large"
-            disabled={!this.validateForm()}
             type="submit"
-            onClick={this.createUser}
+            onClick={this.createAdmin}
           >
-            CreateUser
+            CreateAdmin
           </Button>
           
         </Form>
