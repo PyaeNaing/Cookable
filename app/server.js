@@ -10,7 +10,7 @@ const port = process.env.port || 4000;
 
 //Route
 const v1 = require("./server/routes/v1");
-
+const userController   = require("./server/controllers/user.controller");
 const app = express();
 
 //Set up json parser
@@ -22,11 +22,6 @@ app.use(cors());
 
 //App uses routes version 1
 app.use("/v1", v1);
-
-app.use('/', function(req, res){
-	res.statusCode = 200;//send the appropriate status code
-	res.json({status:"success", message:"Parcel Pending API", data:{}})
-});
 
 /*
 //Conect to DB
@@ -99,8 +94,7 @@ app.post("/createUser", function(req, res) {
   }
   console.log("Username = "+username+", Password = "+password);
 
-  res.end('thanks');
-
+  res.send('thanks');
 });
 */
 
@@ -111,6 +105,11 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 app.get("/express_backend", (req, res) => {
   res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
+
+/*app.use('/', function(req, res){
+	res.statusCode = 200;//send the appropriate status code
+	res.json({status:"success", message:"Parcel Pending API", data:{}})
+});*/
 
 module.exports = app;
 

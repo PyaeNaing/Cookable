@@ -12,5 +12,9 @@ module.exports = {
       database: "test"
     });
     return pool;
+  },
+
+  sayHi : function(){
+    return 'hi';
   }
 };
