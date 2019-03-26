@@ -4,30 +4,26 @@ const db = require("../database");
 const pool = db.getPool();
 let sqlConnection;
 
-pool.getConnection(function(err, connection)
-{
-    if(err) return console.log("Error: " + err);
-    
+pool.getConnection(function (err, connection) {
+    if (err) return console.log("Error: " + err);
+
     //Connect to DB
     sqlConnection = connection;
 })
 
-exports.createUser = function(req, res)
-{
-  console.log("got to here");
-    var username = req.body.user;
-    var password = req.body.password;
-    if(req.body!= null){
-      sqlConnection.query("INSERT INTO test.users (name, password) VALUES (?,?)", [username, password], function(error, result){
-        if (error){
-          console.log(error);
-          res.end(error);
+exports.userCreate = function (req, res) {
+    let username = req.body.username;
+    let password = req.body.password;
+    let email = req.body.email;
+
+    let sqlString = "INSERT INTO cookabledb1.users (username, password, email) VALUES (?,?,?)";
+
+    sqlConnection.query(sqlString, [username, password, email], function (err, result) {
+        if (err) { console.log(err) }
+        else {
+            console.log(result);
+            res.end(result);
         }
-        else{
-          console.log(result);
-          res.send(result);
-        }
-      });
-    }
-    console.log("Username = "+username+", Password = "+password);
+    })
+    res.send("OK");
 }
