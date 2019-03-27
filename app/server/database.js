@@ -1,9 +1,10 @@
 const mysql = require("mysql");
 
 let pool;
+let sqlConnection;
 
 module.exports = {
-  getPool: function () {
+  connectDb : function(){
     if (pool) return pool;
     pool = mysql.createPool({
       host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
@@ -11,10 +12,13 @@ module.exports = {
       password: "TdWvQM3e75bbsXvyEvbR",
       database: "cookabledb1"
     });
-    return pool;
-  },
 
-  sayHi : function(){
-    return 'hi';
-  }
+    pool.getConnection(function (err, connection) {
+      if (err) return console.log("Error: " + err);
+  
+      //Connect to DB
+      sqlConnection = connection;
+  })
+    return sqlConnection;
+  },
 };
