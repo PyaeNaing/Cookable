@@ -2,17 +2,22 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import axios from "axios";
-import './Login.css';
+import '../styles/login.css';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      accountCreationStatus: "",
     };
   }
+
+  handleAccountCreation = e => {
+    this.setState({ accountCreationStatus: e });
+  };
 
   createUser = e => {
     axios({
@@ -25,6 +30,8 @@ export default class Login extends Component {
     })
       .then(res => {
         console.log(res);
+        this.handleAccountCreation(res.data.status);
+        console.log(this.state.accountCreationStatus);
       })
       .catch(e => {
         console.log(e);
@@ -99,3 +106,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default Login;
