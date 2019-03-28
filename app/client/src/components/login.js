@@ -17,6 +17,7 @@ constructor(props) {
   }
 
   createAdmin = e => {
+
     axios.post('/v1/createAdmin', {
       id: this.state.id,
         first: this.state.first,
@@ -37,7 +38,6 @@ constructor(props) {
       console.log(res.data);
     })
   };
-
 
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
@@ -102,8 +102,7 @@ constructor(props) {
             onClick={this.createAdmin}
           >
             CreateAdmin
-          </Button>
-          
+          </Button>    
         </Form>
       </div>
     );
