@@ -8,7 +8,7 @@ exports.adminList = function (req, res) {
     let sqlString = "SELECT * FROM cookabledb1.admin;"
     sqlConnection.query(sqlString, function (err, results, fields) {
         if (err) console.log("DB connection failed: " + err);
-        console.log(results);
+        res.send(results);
     })
 }
 
@@ -23,7 +23,6 @@ exports.adminCreate = function (req, res) {
     sqlConnection.query(sqlString, [id, first, last, role], function (err, result) {
         if (err) { console.log(err) }
         else {
-            console.log(result);
             res.end(result);
         }
     })
