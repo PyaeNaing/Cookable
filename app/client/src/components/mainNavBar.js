@@ -143,15 +143,14 @@ class MainNavBar extends Component {
   handleSearch = event => {
   	axios.get('/v1/searchIngredients', {
   		params: {
-  			s: this.searchInput
+  			s: this.state.searchInput
   		}
-      
     })
     .then(function (response) {
       console.log(response);
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error + "Frontend error");
     });
   };
 
