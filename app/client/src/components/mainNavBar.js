@@ -147,10 +147,15 @@ class MainNavBar extends Component {
   		}
     })
     .then(function (response) {
-      console.log(response);
+      if(response.data.length === 0) {
+      	console.log("No recipes exist for specified ingredient.");
+      }
+      else{
+      	console.log(response);
+      }
     })
     .catch(function (error) {
-      console.log(error + "Frontend error");
+      console.log(error);
     });
   };
 
