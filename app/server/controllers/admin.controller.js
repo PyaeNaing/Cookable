@@ -1,15 +1,8 @@
 const db = require("../database");
 
 // Get db
-const pool = db.getPool();
-let sqlConnection;
+let sqlConnection = db.connectDb();
 
-pool.getConnection(function (err, connection) {
-    if (err) return console.log("Error: " + err);
-
-    //Connect to DB
-    sqlConnection = connection;
-})
 
 exports.adminList = function (req, res) {
     let sqlString = "SELECT * FROM cookabledb1.admin;"

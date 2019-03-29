@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import axios from "axios";
-import './Login.css';
+import '../styles/login.css';
 
-export default class Login extends Component {
-  constructor(props) {
+class Login extends Component {
+constructor(props) {
     super(props);
 
     this.state = {
@@ -38,7 +38,6 @@ export default class Login extends Component {
       console.log(res.data);
     })
   };
-
 
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
@@ -103,10 +102,11 @@ export default class Login extends Component {
             onClick={this.createAdmin}
           >
             CreateAdmin
-          </Button>
-          
+          </Button>    
         </Form>
       </div>
     );
   }
 }
+
+export default Login;

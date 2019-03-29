@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import "./App.css";
-import Login from "./Login";
-import {
-  Switch,
-  BrowserRouter as Router,
-  Route,
-  Redirect
-} from "react-router-dom";
+import "./styles/App.css";
+import Login from "./components/login.js";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import MainPage from './pageLayouts/mainPage.js';
 
 class App extends Component {
   state = {
@@ -37,11 +33,7 @@ class App extends Component {
         <Router>
           <Route path="/login" exact component={Login} />
         </Router>
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        // Render the newly fetched data inside of this.state.data
-        <p className="App-intro">{this.state.data}</p>
+        <MainPage />
       </div>
     );
   }
