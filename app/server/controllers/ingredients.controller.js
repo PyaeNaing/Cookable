@@ -30,7 +30,14 @@ exports.ingredientsSearch = function (req, res) {
         if (err) { console.log(err) }
         else {
             console.log(result);
-            res.send(result);
+            if(result.length == 0)
+            {
+                res.statusMessage = "Nothing found in search";
+                res.status(404).end();
+            }
+            else{
+                res.send(result);
+            }
         }
     })
 }
