@@ -27,17 +27,14 @@ exports.ingredientsSearch = function (req, res) {
     let sqlString = "SELECT * FROM cookabledb2.ingredients WHERE ingredientName LIKE ?";
 
     sqlConnection.query(sqlString, [text], function (err, result) {
-        if (err) { console.log(err) }
-        else {
-            console.log(result);
-            if(result.length == 0)
-            {
-                res.statusMessage = "Nothing found in search";
-                res.status(404).end();
-            }
-            else{
-                res.send(result);
-            }
+        if (err) 
+        { 
+            console.log(err); 
+            res.status(500); 
+        }
+        else 
+        {
+            res.send(result);
         }
     })
 }
