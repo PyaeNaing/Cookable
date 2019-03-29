@@ -13,12 +13,12 @@ module.exports = {
       database: "cookabledb1"
     });
 
-    pool.getConnection(function (err, connection) {
-      if (err) return console.log("Error: " + err);
+    // pool.getConnection(function (err, connection) {
+    //   if (err) return console.log("Error: " + err);
   
-      //Connect to DB
-      sqlConnection = connection;
-  })
-    return sqlConnection;
+    //   //Connect to DB
+    //   sqlConnection = connection;
+  // })
+    // return sqlConnection;
   },
 };
