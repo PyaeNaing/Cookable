@@ -1,7 +1,7 @@
 const db = require("../database");
 
 // Get db
-const pool = db.getPool();
+const pool = db.connectDb();
 let sqlConnection;
 
 pool.getConnection(function (err, connection) {
