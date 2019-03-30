@@ -12,7 +12,6 @@ exports.adminList = function (req, res) {
     })
 }
 
-
 exports.adminCreate = function (req, res) {
     let id = req.body.id;
     let first = req.body.first;
@@ -28,5 +27,4 @@ exports.adminCreate = function (req, res) {
         }
     })
     
-
 }

@@ -1,5 +1,4 @@
 const mysql = require("mysql");
-
 let pool;
 let sqlConnection;
 
@@ -21,4 +20,5 @@ module.exports = {
   })
     return sqlConnection;
   },
+  
 };
