@@ -1,22 +1,16 @@
 const db = require("../database");
 const processor = require('./processor');
+const db1 = require('../config/database1');
+const User = require('../config/User');
 let sqlConnection = db.connectDb();
 
-exports.userCreate = function (req, res) {
-    let username = req.body.username;
-    let password = req.body.password;
-    let email = req.body.email;
-    let sqlString = "INSERT INTO cookabledb1.users (username, password, email) VALUES (?,?,?)";
-    sqlConnection.query(sqlString, [username, password, email], function (err, result) {
-        if (err) { console.log(err) }
-        else {
-            console.log(result);
-            res.end(result);
-        }
-    })
-    res.send("OK");
-}
-
+exports.createUser = function (req, res) {
+        User.create({ username: res.username, password: res.password, email: res.email })
+        .then(result => {
+            res.send('OK');
+          })
+          .catch(err => res.send('Error'), console.log(err))
+        },
 exports.login = function(req, res){
     let username = req.body.username;
     let password = req.body.password;
@@ -29,7 +23,7 @@ exports.login = function(req, res){
             
             if (result.length > 0){
                 // console.log('true2');
-                res.end('true');
+                res.end(processor.hash(username,password));
             }
             else{
                 // console.log('false3');

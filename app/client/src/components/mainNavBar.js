@@ -14,6 +14,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
+import axios from "axios";
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -96,12 +98,20 @@ class MainNavBar extends Component {
     mobileMoreAnchorEl: null,
     isLoggedIn: this.props.isLoggedIn,
     isLoggingIn: false,
+    searchInput: '',
+  };
+
+  handleSearchChange = event => {
+  	this.setState({
+      [event.target.id]: event.target.value
+    });
   };
 
   handleLoginChange = (e) => {
   	this.setState({ anchorEl: null });
   	this.setState({ isLoggingIn: true });
-  	//this.props.handleLogin(e.target.value);
+  	this.props.handleLogin(e.target.value);
+  	this.setState({ isLoggingIn: false });
   };
 
   handleLogout = event => {
@@ -128,6 +138,25 @@ class MainNavBar extends Component {
 
   handleMobileMenuClose = () => {
     this.setState({ mobileMoreAnchorEl: null });
+  };
+
+  handleSearch = event => {
+  	axios.get('/v1/searchIngredients', {
+  		params: {
+  			s: this.state.searchInput
+  		}
+    })
+    .then(function (response) {
+      if(response.data.length === 0) {
+      	console.log("No recipes exist for specified ingredient.");
+      }
+      else{
+      	console.log(response);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   };
 
   render() {
@@ -209,7 +238,13 @@ class MainNavBar extends Component {
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
+                id='searchInput'
+   							value={this.searchInput}
+                onChange={this.handleSearchChange}
               />
+              <Button onClick={this.handleSearch}>
+              	Search
+              </Button>
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
