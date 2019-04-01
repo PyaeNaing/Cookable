@@ -1,34 +1,37 @@
-const db = require("../database");
-const processor = require('./processor');
-const db1 = require('../config/database1');
 const User = require('../config/User');
-let sqlConnection = db.connectDb();
+const processor = require('../controllers/processor');
 
 exports.createUser = function (req, res) {
-        User.create({ username: res.username, password: res.password, email: res.email })
-        .then(result => {
-            res.send('OK');
+    
+        User.findOrCreate({
+            where: {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email}})
+        .then(([user, created]) => {
+            console.log(created);
+            res.send(created);
           })
-          .catch(err => res.send('Error'), console.log(err))
+          .catch(err => {
+           res.send('Error');
+           console.log(err)})
         },
+
 exports.login = function(req, res){
-    let username = req.body.username;
-    let password = req.body.password;
-    var sqlString = 'SELECT * FROM cookabledb1.users where username = ? and password = ?';
-    sqlConnection.query(sqlString,[username,password], function(err, result){
-        if(err) {
-            // console.log('false1');
-            res.end('false')}
-        else{
-            
-            if (result.length > 0){
-                // console.log('true2');
-                res.end(processor.hash(username,password));
-            }
-            else{
-                // console.log('false3');
-                res.end('false');   
-            }
+
+    User.findOne({
+        where: {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+          }
+    }).then(result => {
+        if(result != null){
+            res.send(processor.hash(req.body.username,req.body.password));
         }
-    });
+        else{
+            res.send('false');
+        }
+    }).catch(err => res.send('Error'))
+
 }
