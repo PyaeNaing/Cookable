@@ -1,23 +1,37 @@
-const db = require("../database");
+const User = require('../config/User');
+const processor = require('../controllers/processor');
 
-let sqlConnection = db.connectDb();
-
-exports.userCreate = function (req, res) {
-    let username = req.body.username;
-    let password = req.body.password;
-    let email = req.body.email;
-    let sqlString = "INSERT INTO cookabledb1.users (username, password, email) VALUES (?,?,?)";
-    sqlConnection.query(sqlString, [username, password, email], function (err, result) {
-        if (err) { console.log(err) }
-        else {
-            console.log(result);
-            res.end(result);
-        }
-    })
-    res.send("OK");
-}
+exports.createUser = function (req, res) {
+    
+        User.findOrCreate({
+            where: {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email}})
+        .then(([user, created]) => {
+            console.log(created);
+            res.send(created);
+          })
+          .catch(err => {
+           res.send('Error');
+           console.log(err)})
+        },
 
 exports.login = function(req, res){
 
-    res.send(true);
+    User.findOne({
+        where: {
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+          }
+    }).then(result => {
+        if(result != null){
+            res.send(processor.hash(req.body.username,req.body.password));
+        }
+        else{
+            res.send('false');
+        }
+    }).catch(err => res.send('Error'))
+
 }
