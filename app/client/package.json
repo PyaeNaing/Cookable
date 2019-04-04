@@ -4,8 +4,11 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.2",
+<<<<<<< HEAD
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
+=======
+>>>>>>> 4dd0046ea50c24ad0f8eb5320d555281da29cd30
     "react": "^16.8.3",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-dom": "^16.8.3",
