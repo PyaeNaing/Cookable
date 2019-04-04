@@ -150,7 +150,7 @@ class MainNavBar extends Component {
   };
 
   handleSearch = event => {
-  	axios.get('/v1/searchIngredients', {
+  	axios.get('/api/v1/searchIngredients', {
   		params: {
   			s: this.state.searchInput
   		}
