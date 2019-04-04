@@ -16,6 +16,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
+import Ingredient from './ingredient.js';
 
 const styles = theme => ({
   root: {
@@ -91,6 +92,8 @@ class MainNavBar extends Component {
   constructor(props) {
   	super(props);
   	this.handleLoginChange = this.handleLoginChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   };
 
   state = {
@@ -99,12 +102,12 @@ class MainNavBar extends Component {
     isLoggedIn: this.props.isLoggedIn,
     isLoggingIn: false,
     searchInput: '',
-  };
-
-  handleSearchChange = event => {
-  	this.setState({
-      [event.target.id]: event.target.value
-    });
+    isIngredientRetrieved: false,
+    ingredient: {
+      id: null,
+      name: '',
+      type: null,
+    },
   };
 
   handleLoginChange = (e) => {
@@ -140,31 +143,49 @@ class MainNavBar extends Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  handleInputChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  };
+
   handleSearch = event => {
   	axios.get('/v1/searchIngredients', {
   		params: {
   			s: this.state.searchInput
   		}
     })
-    .then(function (response) {
+    .then((response) => {
       if(response.data.length === 0) {
       	console.log("No recipes exist for specified ingredient.");
       }
       else{
       	console.log(response);
+        this.setState({ ingredient: { 
+                          id: response.data[0].ingredientID,
+                          name: response.data[0].ingredientName,
+                          type: response.data[0].ingredientType 
+                        }
+        });
+        this.setState({ isIngredientRetrieved: true });
+        console.log(this.state.ingredient);
       }
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
     });
   };
 
+  handleSearchChange = event => {
+    this.handleSearch();
+  };
+
   render() {
-    const { anchorEl, mobileMoreAnchorEl, isLoggingIn } = this.state;
+    const { anchorEl, mobileMoreAnchorEl, isLoggingIn, isIngredientRetrieved, ingredient } = this.state;
     const { isLoggedIn } = this.props.isLoggedIn;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);    
 
     const renderMenu = (
       <Menu
@@ -199,6 +220,16 @@ class MainNavBar extends Component {
 
     		/>
     	</div>
+    );
+
+    const renderIngredient = (
+      <div>
+        <Ingredient
+          id={ingredient.id}
+          name={ingredient.name}
+          type={ingredient.type}
+        />
+      </div>
     );
 
     const renderMobileMenu = (
@@ -240,10 +271,12 @@ class MainNavBar extends Component {
                 }}
                 id='searchInput'
    							value={this.searchInput}
-                onChange={this.handleSearchChange}
+                onChange={this.handleInputChange}
               />
-              <Button onClick={this.handleSearch}>
-              	Search
+            </div>
+            <div>
+              <Button onClick={this.handleSearchChange}>
+                Search
               </Button>
             </div>
             <div className={classes.grow} />
@@ -267,6 +300,7 @@ class MainNavBar extends Component {
         {isLoggedIn ? renderMenu : renderLoginMenu}
         {renderMobileMenu}
         {isLoggingIn ? renderLogin : undefined}
+        {isIngredientRetrieved ? renderIngredient : undefined}
       </div>
     );
   }
