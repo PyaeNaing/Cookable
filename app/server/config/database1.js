@@ -12,5 +12,4 @@ module.exports = new Sequelize('cookabledb1', 'master', 'TdWvQM3e75bbsXvyEvbR', 
   define: {
     timestamps: false
   }
-
 });
