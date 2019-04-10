@@ -22,6 +22,7 @@ exports.ingredientsList = function (req, res) {
 
 exports.ingredientsSearch = function (req, res) {
     let text = req.query.s;
+    text = "%" + text + "%";
     console.log(text);
     let sqlString = "SELECT * FROM CookableDBv3.ingredients WHERE ingredientName LIKE ?";
 
