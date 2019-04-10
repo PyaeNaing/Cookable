@@ -36,12 +36,6 @@ app.use("/v1", v1);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-
-// Simple test for front-backend connection
-app.get("/express_backend", (req, res) => {
-  res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
-});
-
 module.exports = app;
 
 // Uncaught

@@ -9,16 +9,8 @@ module.exports = {
       host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
       user: "master",
       password: "TdWvQM3e75bbsXvyEvbR",
-      database: "cookabledb1"
+      database: "CookableDBv3"
     });
-
-    // pool.getConnection(function (err, connection) {
-    //   if (err) return console.log("Error: " + err);
-  
-    //   //Connect to DB
-    //   sqlConnection = connection;
-  // })
-    // return sqlConnection;
   },
   
 };
