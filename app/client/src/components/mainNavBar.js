@@ -93,7 +93,7 @@ class MainNavBar extends Component {
   	super(props);
   	this.handleLoginChange = this.handleLoginChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleAddIngredient = this.handleAddIngredient.bind(this);
   };
 
   state = {
@@ -103,11 +103,7 @@ class MainNavBar extends Component {
     isLoggingIn: false,
     searchInput: '',
     isIngredientRetrieved: false,
-    ingredient: {
-      id: null,
-      name: '',
-      type: null,
-    },
+    searchResults: []
   };
 
   handleLoginChange = (e) => {
@@ -149,8 +145,16 @@ class MainNavBar extends Component {
     });
   };
 
+  handleSearchEnter = event => {
+    if(event.key === 'Enter') {
+      this.handleSearch();
+    }
+  };
+
   handleSearch = event => {
-  	axios.get('/api/v1/searchIngredients', {
+    // Use '/api/v1/searchIngredients' when is production.
+    // Use '/v1/searchIngredients' when on local machine.
+  	axios.get('/v1/searchIngredients', {
   		params: {
   			s: this.state.searchInput
   		}
@@ -159,16 +163,11 @@ class MainNavBar extends Component {
       if(response.data.length === 0) {
       	console.log("No recipes exist for specified ingredient.");
       }
-      else{
+      else {
       	console.log(response);
-        this.setState({ ingredient: { 
-                          id: response.data[0].ingredientID,
-                          name: response.data[0].ingredientName,
-                          type: response.data[0].ingredientType 
-                        }
+        this.setState({ searchResults: response.data
         });
         this.setState({ isIngredientRetrieved: true });
-        console.log(this.state.ingredient);
       }
     })
     .catch((error) => {
@@ -176,12 +175,31 @@ class MainNavBar extends Component {
     });
   };
 
-  handleSearchChange = event => {
-    this.handleSearch();
+  handleAddIngredient = event => {
+    // Use '/api/v1/createIngredient' when is production.
+    // Use '/v1/createIngredient' when on local machine.
+    axios.post('/v1/createIngredient', 
+                {
+                  'ingredientName': this.state.searchInput, 
+                  'ingredientType': 'Food',
+                  'description': 'Filler description'
+                }
+    )
+    .then((response) => {
+      if(response.length === 0) {
+        console.log("Failed to add the ingredient to the database.");
+      }
+      else {
+        console.log(response);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl, isLoggingIn, isIngredientRetrieved, ingredient } = this.state;
+    const { anchorEl, mobileMoreAnchorEl, isLoggingIn, isIngredientRetrieved } = this.state;
     const { isLoggedIn } = this.props.isLoggedIn;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
@@ -225,9 +243,8 @@ class MainNavBar extends Component {
     const renderIngredient = (
       <div>
         <Ingredient
-          id={ingredient.id}
-          name={ingredient.name}
-          type={ingredient.type}
+          ingredientList={this.state.searchResults}
+          query={this.state.searchInput}
         />
       </div>
     );
@@ -264,7 +281,7 @@ class MainNavBar extends Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search Ingredients…"
+                placeholder="Search/Add Ingredients…"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -272,11 +289,17 @@ class MainNavBar extends Component {
                 id='searchInput'
    							value={this.searchInput}
                 onChange={this.handleInputChange}
+                onKeyPress={this.handleSearchEnter}
               />
             </div>
             <div>
-              <Button onClick={this.handleSearchChange}>
+              <Button onClick={this.handleSearch}>
                 Search
+              </Button>
+            </div>
+            <div>
+              <Button onClick={this.handleAddIngredient}>
+                Add
               </Button>
             </div>
             <div className={classes.grow} />
