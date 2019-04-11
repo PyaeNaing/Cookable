@@ -154,7 +154,7 @@ class MainNavBar extends Component {
   handleSearch = event => {
     // Use '/api/v1/searchIngredients' when is production.
     // Use '/v1/searchIngredients' when on local machine.
-  	axios.get('/v1/searchIngredients', {
+  	axios.get('/api/v1/searchIngredients', {
   		params: {
   			s: this.state.searchInput
   		}
@@ -162,6 +162,7 @@ class MainNavBar extends Component {
     .then((response) => {
       if(response.data.length === 0) {
       	console.log("No recipes exist for specified ingredient.");
+        console.log(response);
       }
       else {
       	console.log(response);
@@ -178,7 +179,7 @@ class MainNavBar extends Component {
   handleAddIngredient = event => {
     // Use '/api/v1/createIngredient' when is production.
     // Use '/v1/createIngredient' when on local machine.
-    axios.post('/v1/createIngredient', 
+    axios.post('/api/v1/createIngredient', 
                 {
                   'ingredientName': this.state.searchInput, 
                   'ingredientType': 'Food',
@@ -186,10 +187,11 @@ class MainNavBar extends Component {
                 }
     )
     .then((response) => {
-      if(response.length === 0) {
+      if(response.request.status !== 200) {
         console.log("Failed to add the ingredient to the database.");
       }
       else {
+        console.log("Successfully added ingredient to the database.");
         console.log(response);
       }
     })
@@ -234,9 +236,9 @@ class MainNavBar extends Component {
 
     const renderLogin = (
     	<div>
-    		<Login 
+    		<Login
 
-    		/>
+        />
     	</div>
     );
 
