@@ -40,7 +40,8 @@ exports.ingredientsAdd = function (req, res) {
     pool.query(sqlString, [ingredientName, ingredientType, description], function (err, result) {
         if (err) { console.log(err); res.status(500); }
         else {
-            res.end(result.statusCode);
+            res.status(200);
+            res.json({'ingredientName':ingredientName,'ingredientType':ingredientType,'description':description});
         }
     })
 }
