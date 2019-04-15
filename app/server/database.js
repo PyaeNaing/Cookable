@@ -13,3 +13,5 @@ module.exports = new Sequelize('CookableDBv3', 'master', 'TdWvQM3e75bbsXvyEvbR',
     timestamps: false
   }
 });
+
+  

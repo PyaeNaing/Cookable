@@ -1,3 +1,20 @@
+//MYSQL NODE
+const mysql = require("mysql");
+let sqlConnection;
+let pool;
+
+function connectDb() {
+    if (pool) return pool;
+    pool = mysql.createPool({
+        host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
+        user: "master",
+        password: "TdWvQM3e75bbsXvyEvbR",
+        database: "CookableDBv3"
+    }); 
+}
+connectDb();
+
+//SEQUELIZE
 const Ingredient = require("../moudules/Ingredient");
 const Admin = require("../moudules/Admin")
 
@@ -11,16 +28,16 @@ exports.ingredientsList = function (req, res) {
 
 exports.ingredientsSearch = function (req, res) {
 
-/*    Ingredient.findOne({
-        where: {
-            ingredientName: req.query.s,
-        }.then(ingridient => {
-            res.send(ingridient);
-        }).catch(function (err) {
-            res.send("error");
+    /*    Ingredient.findOne({
+            where: {
+                ingredientName: req.query.s,
+            }.then(ingridient => {
+                res.send(ingridient);
+            }).catch(function (err) {
+                res.send("error");
+            })
         })
-    })
-*/
+    */
     let text = req.query.s;
     text = "%" + text + "%";
     console.log(text);
@@ -42,17 +59,17 @@ exports.ingredientsAdd = function (req, res) {
 
     Ingredient.create({
         where: {
-            ingredientName : req.body.ingredientName,
-            ingredientType : req.body.ingredientType,
-            description : req.body.description,
+            ingredientName: req.body.ingredientName,
+            ingredientType: req.body.ingredientType,
+            description: req.body.description,
         }
     }).then((ingridient) => {
-        console.log(ingridient.get({plain:true}));
-        res.send(ingridient.get({plain:true}));
+        console.log(ingridient.get({ plain: true }));
+        res.send(ingridient.get({ plain: true }));
     })
-    .catch(err => {
-        res.send('Error');
-        console.log(err)
-    })
+        .catch(err => {
+            res.send('Error');
+            console.log(err)
+        })
 
 }
