@@ -1,15 +1,16 @@
-const Sequelize = require('sequelize');
+const mysql = require("mysql");
+let pool;
+let sqlConnection;
 
-module.exports = new Sequelize('CookableDBv3', 'master', 'TdWvQM3e75bbsXvyEvbR', {
-  host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
-  dialect: 'mysql',
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
+module.exports = {
+  connectDb : function(){
+    if (pool) return pool;
+    pool = mysql.createPool({
+      host: "cookabledb.cjrhtew0vlgi.us-east-2.rds.amazonaws.com",
+      user: "master",
+      password: "TdWvQM3e75bbsXvyEvbR",
+      database: "CookableDBv3"
+    });
   },
-  define: {
-    timestamps: false
-  }
-});
+  
+};

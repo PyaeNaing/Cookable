@@ -7,7 +7,7 @@ exports.adminList = function (req, res) {
     }).catch(function (err) {
         res.send("error");
     });
-
+    
 }
 
 exports.adminCreate = function (req, res) {

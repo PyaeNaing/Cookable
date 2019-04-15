@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../database1');
+const db = require('../database');
 
 const ingredients = db.define('ingredients',{
     ingredientID: {
@@ -19,6 +19,8 @@ const ingredients = db.define('ingredients',{
     createdat: {
         type: Sequelize.DATE,
     }
+},{
+
 })
 
-module.export = ingredients;
+module.exports = ingredients;

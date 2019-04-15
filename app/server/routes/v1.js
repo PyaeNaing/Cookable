@@ -2,8 +2,6 @@ const express 			= require('express');
 const path              = require("path");
 var session             = require('express-session');
 
-var users = require('../moudules/User');
-
 const router 			= express.Router();
 
 const AdminController   = require("../controllers/admin.controller");

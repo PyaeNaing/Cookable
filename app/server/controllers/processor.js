@@ -1,4 +1,4 @@
-const db = require("../database");
+const db = require("../database1");
 var sqlConnection = db.connectDb();
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
