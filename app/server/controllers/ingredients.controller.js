@@ -1,4 +1,4 @@
-//MYSQL NODE
+//MYSQL NODE----------------------------------------------------------------
 const mysql = require("mysql");
 let sqlConnection;
 let pool;
@@ -10,13 +10,14 @@ function connectDb() {
         user: "master",
         password: "TdWvQM3e75bbsXvyEvbR",
         database: "CookableDBv3"
-    }); 
+    });
 }
 connectDb();
+//--------------------------------------------------------------------------
 
 //SEQUELIZE
-const Ingredient = require("../moudules/Ingredient");
-const Admin = require("../moudules/Admin")
+const Ingredient = require("../models/ingredients");
+const Admin = require("../models/admins")
 
 exports.ingredientsList = function (req, res) {
     Ingredient.findAll().then(function (ingridients) {
@@ -52,11 +53,9 @@ exports.ingredientsSearch = function (req, res) {
             res.send(result);
         }
     })
-    /**/
 }
 
 exports.ingredientsAdd = function (req, res) {
-
     Ingredient.create({
         where: {
             ingredientName: req.body.ingredientName,
@@ -66,10 +65,8 @@ exports.ingredientsAdd = function (req, res) {
     }).then((ingridient) => {
         console.log(ingridient.get({ plain: true }));
         res.send(ingridient.get({ plain: true }));
+    }).catch(err => {
+        res.send('Error');
+        console.log(err)
     })
-        .catch(err => {
-            res.send('Error');
-            console.log(err)
-        })
-
 }

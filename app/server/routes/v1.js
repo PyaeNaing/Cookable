@@ -4,8 +4,8 @@ var session             = require('express-session');
 
 const router 			= express.Router();
 
-const AdminController   = require("../controllers/admin.controller");
-const UserController   = require("../controllers/user.controller");
+const AdminController   = require("../controllers/admins.controller");
+const UserController   = require("../controllers/users.controller");
 const IngredientsController   = require("../controllers/ingredients.controller");
 
 router.get("/admins", AdminController.adminList);
