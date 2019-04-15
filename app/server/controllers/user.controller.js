@@ -1,13 +1,13 @@
-const User = require('../config/User');
+const User = require('../moudules/User');
 const processor = require('../controllers/processor');
 
 exports.createUser = function (req, res) {
-    
+
         User.findOrCreate({
             where: {
             username: req.body.username,
             password: req.body.password,
-            email: req.body.email}})
+            emailAddress: req.body.emailAddress}})
         .then(([user, created]) => {
             console.log(created);
             res.send(created);
