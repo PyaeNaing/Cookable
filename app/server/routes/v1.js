@@ -3,8 +3,8 @@ const express 			= require('express');
 
 const router 			= express.Router();
 
-const AdminController   = require("../controllers/admin.controller");
-const UserController   = require("../controllers/user.controller");
+const AdminController   = require("../controllers/admins.controller");
+const UserController   = require("../controllers/users.controller");
 const IngredientsController   = require("../controllers/ingredients.controller");
 const Recipe = require("../controllers/recipe.controller");
 
