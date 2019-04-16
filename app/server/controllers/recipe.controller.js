@@ -1,4 +1,4 @@
-const Recipe = require('../moudules/Recipe')
+const Recipe = require('../models/recipe')
 
 exports.createRecipe = function (req, res) {
     Recipe.create({
