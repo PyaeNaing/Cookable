@@ -13,11 +13,9 @@ const admins = db.define('admins', {
     },
     password: {
         type: Sequelize.STRING,
-        // allowNull defaults to true
     },
     firstName: {
         type: Sequelize.STRING,
-        // allowNull defaults to true
     },
     lastName: {
         type: Sequelize.STRING,
