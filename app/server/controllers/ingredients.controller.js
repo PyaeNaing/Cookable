@@ -15,7 +15,7 @@ exports.ingredientsSearch = function (req, res) {
     limit = 20,
     Ingredient.findAll({
         where: {
-            ingredientName: {[Op.like] : '%' + req.query.ingredients + '%'}
+            ingredientName: {[Op.like] : '%' + req.query.s + '%'}
         }
     }).then(ingredients => {
         console.log(ingredients);
