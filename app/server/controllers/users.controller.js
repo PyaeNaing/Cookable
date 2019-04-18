@@ -1,4 +1,4 @@
-const User = require('../moudules/User');
+const User = require('../models/users');
 const processor = require('../controllers/processor');
 
 exports.createUser = function (req, res) {
