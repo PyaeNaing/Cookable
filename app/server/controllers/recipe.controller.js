@@ -1,4 +1,6 @@
 const Recipe = require('../models/recipe')
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.createRecipe = function (req, res) {
     Recipe.create({
@@ -22,11 +24,12 @@ exports.createRecipe = function (req, res) {
 }
 
 exports.searchRecipe = function (req, res) {
-    
+    limit = 20,
     Recipe.findOne({
-        recipeName: req.query.recipeName
-    }).then(recipe => {
-        res.send(recipe);
+        where :
+        {recipeName: {[Op.like] : '%' + req.query.recipeName + '%'}}
+    }).then(recipes => {
+        res.json({recipe : recipes});
     }).catch(function (err) {
         res.send("error");
     })

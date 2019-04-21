@@ -1,21 +1,27 @@
 const Ingredient = require("../models/ingredients");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.ingredientsList = function (req, res) {
     Ingredient.findAll().then(function (ingridients) {
         res.send(ingridients);
     }).catch(function (err) {
-        res.send("error");
+        res.send("error");  
     });
 }
 
 exports.ingredientsSearch = function (req, res) {
 
+    limit = 20,
     Ingredient.findAll({
         where: {
-            ingredientName: req.query.ingredient,
+            ingredientName: {[Op.like] : '%' + req.query.s + '%'}
         }
-    }).then(ingridient => {
-        res.send(ingridient);
+    }).then(ingredients => {
+        console.log(ingredients);
+        res.json({
+            ingredients: ingredients
+        });
     }).catch(function (err) {
         res.send("error");
     })
