@@ -5,7 +5,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 
 var mysql = require('mysql');
 
-var db = require('../database');
+var db = require('../database1');
 
 var connection = db.connectDb();
 
