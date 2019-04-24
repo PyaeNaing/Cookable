@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class LoginRegisterPage extends Component {
+class LoginPage extends Component {
 	
 	// IMPLEMENT CONSTRUCTOR IF NEEDED
 	
@@ -12,4 +12,4 @@ class LoginRegisterPage extends Component {
 	}
 }
 
-export default LoginRegisterPage;
+export default LoginPage;

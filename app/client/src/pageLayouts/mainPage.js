@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import MainNavBar from '../components/mainNavBar.js';
-import LoginRegisterPage from './loginRegisterPage.js';
+import LoginPage from './loginPage.js';
+import RegisterPage from './registerPage.js';
 import RecommendationsPage from './recommendationsPage.js';
 import ProfilePage from './profilePage.js';
 import RecipeDisplayPage from './recipeDisplayPage.js';
@@ -10,10 +11,10 @@ class MainPage extends Component {
 	constructor(props) {
 		super(props);
 		this.handleLogin = this.handleLogin.bind(this);
+		this.handlePageChange = this.handlePageChange.bind(this);
 		this.state = {
 			loginStatus: false,
 			currentPage: 'recommendations',
-			profileSubpage: 'profile',
 			loginRegisterSubpage: 'login',
 			searchResult: [],
 		};
@@ -23,12 +24,20 @@ class MainPage extends Component {
 		this.setState({ loginStatus: status, });
 	}
 
+	handlePageChange(page) {
+		this.setState({ currentPage: page });
+	}
+
 	render() {
 		const loginStatus = this.state.loginStatus;
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
-		const renderLoginRegisterPage = (
-			<LoginRegisterPage subpage={this.state.loginRegisterSubpage}  />
+		const renderLoginPage = (
+			<LoginPage />
+		);
+
+		const renderRegisterPage = (
+			<RegisterPage />
 		);
 
 		const renderRecommendationsPage = (
@@ -57,7 +66,8 @@ class MainPage extends Component {
 					handlePageChange={this.handlePageChange}
 				/>
 				{(this.state.currentPage === 'recommendations') ? renderRecommendationsPage : undefined }
-				{(this.state.currentPage === 'loginRegisterPage') ? renderLoginRegisterPage : undefined }
+				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }
+				{(this.state.currentPage === 'registerPage') ? renderRegisterPage : undefined }
 				{(this.state.currentPage === 'profile') ? renderProfilePage : undefined }
 				{(this.state.currentPage === 'recipeDisplayPage') ? renderRecipeDisplayPage : undefined }
 				{(this.state.currentPage === 'createRecipePage') ? renderCreateRecipePage : undefined }
