@@ -10,32 +10,32 @@ import CreateRecipePage from './createRecipePage.js';
 class MainPage extends Component {
 	constructor(props) {
 		super(props);
-		this.handleLogin = this.handleLogin.bind(this);
-		this.handlePageChange = this.handlePageChange.bind(this);
 		this.state = {
 			loginStatus: false,
-			//for testing only, change it back to recommendations
-			currentPage: 'profilePage',
+			// Change currentPage for testing only, change it back to 'recommendationsPage'
+			currentPage: 'recommendationsPage',
 			loginRegisterSubpage: 'login',
 			searchResult: [],
 		};
 	}
 
-	handleLogin(status) {
-		this.setState({ loginStatus: status, });
+	handleLogin = (status) => {
+		this.setState({ loginStatus: status });
 	}
 
-	handlePageChange(page) {
+	handleLogout = (status) => {
+		this.setState({ loginStatus: status });
+	}
+
+	handlePageChange = (page) => {
 		this.setState({ currentPage: page });
-		// console.log(this.state.currentPage);
 	}
 
 	render() {
-		// const loginStatus = this.state.loginStatus;
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
-			<LoginPage />
+			<LoginPage handleLoginStatus={this.handleLogin}/>
 		);
 
 		const renderRegisterPage = (
@@ -65,10 +65,10 @@ class MainPage extends Component {
 			<div>
 				<MainNavBar
 					isLoggedIn={this.state.loginStatus} 
-					handleLogin={this.handleLogin}
+					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 				/>
-				{(this.state.currentPage === 'recommendations') ? renderRecommendationsPage : undefined }
+				{(this.state.currentPage === 'recommendationsPage') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }
 				{(this.state.currentPage === 'registerPage') ? renderRegisterPage : undefined }
 				{(this.state.currentPage === 'profilePage') ? renderProfilePage : undefined }
