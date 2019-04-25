@@ -33,7 +33,7 @@ app.use(cors());
 
 //App uses routes version 1
 app.use("/v1", v1);
-app.use("/v1", v2 );
+app.use("/v2", v2 );
 
 //Testing port...
 app.listen(port, () => console.log(`Listening on port ${port}`));
