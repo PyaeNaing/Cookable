@@ -14,8 +14,8 @@ class MainPage extends Component {
 		this.handlePageChange = this.handlePageChange.bind(this);
 		this.state = {
 			loginStatus: false,
-			//for testing only, change it back to recommendations
-			currentPage: 'profilePage',
+			// Change currentPage for testing only, change it back to 'recommendationsPage'
+			currentPage: 'recommendationsPage',
 			loginRegisterSubpage: 'login',
 			searchResult: [],
 		};
@@ -31,7 +31,6 @@ class MainPage extends Component {
 	}
 
 	render() {
-		// const loginStatus = this.state.loginStatus;
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
@@ -68,7 +67,7 @@ class MainPage extends Component {
 					handleLogin={this.handleLogin}
 					handlePageChange={this.handlePageChange}
 				/>
-				{(this.state.currentPage === 'recommendations') ? renderRecommendationsPage : undefined }
+				{(this.state.currentPage === 'recommendationsPage') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }
 				{(this.state.currentPage === 'registerPage') ? renderRegisterPage : undefined }
 				{(this.state.currentPage === 'profilePage') ? renderProfilePage : undefined }
