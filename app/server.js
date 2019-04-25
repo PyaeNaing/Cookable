@@ -12,6 +12,8 @@ const port = process.env.port || 4000;
 
 //Route
 const v1 = require("./server/routes/v1");
+const v2 = require("./server/routes/v2");
+
 const app = express();
 
 // for passport
@@ -31,6 +33,7 @@ app.use(cors());
 
 //App uses routes version 1
 app.use("/v1", v1);
+app.use("/v2", v2 );
 
 //Testing port...
 app.listen(port, () => console.log(`Listening on port ${port}`));
