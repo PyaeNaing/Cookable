@@ -17,6 +17,7 @@ router.get("/ingredient/search", IngredientsController.ingredientsSearch);
 router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 router.get("/recipe/search", Recipe.searchRecipe);
 router.post("/recipe/create", Recipe.createRecipe);
+router.post("/add", UserController.addIngredient);
 
 
 module.exports = router;
