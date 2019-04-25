@@ -51,28 +51,37 @@ class RegisterPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: "",
+			username: "",
+			email: "",
 			password: "",
+			confirmPassword: "",
 		};
 	}
 
-	handleLogin = event => {
-		axios.post('/v1/login', {
-      		user: this.state.user,
-      		password: this.state.password,
-	    })
-	    .then((response) => {
-	      	console.log(response);
-	    })
-	    .catch((error) => {
-	      	console.log(error);
-	    });
+	handleCreateUser = event => {
+		if (this.state.password === this.state.confirmPassword) {
+			axios.post('/v1/createUser', {
+	      		username: this.state.username,
+	      		email: this.state.email,
+	      		password: this.state.password,
+	      		confirmPassword: this.state.confirmPassword,
+		    })
+		    .then((response) => {
+		      	console.log(response);
+		    })
+		    .catch((error) => {
+		      	console.log(error);
+		    });
+		}
+		else {
+			console.log("Your passwords do not match. Please re-enter your password.")
+		}
 	}
 	
 	handleChange = event => {
 		this.setState({
       		[event.target.id]: event.target.value
-    	});
+    });
 	}
 
 	render() {
@@ -91,26 +100,34 @@ class RegisterPage extends Component {
         			<form className={classes.form}>
           				<FormControl margin="normal" required fullWidth>
             				<InputLabel htmlFor="email">Email Address</InputLabel>
-            				<Input id="email" name="email" autoComplete="email" autoFocus />
+            				<Input id="email" name="email" autoComplete="email" onChange={this.handleChange} autoFocus />
+          				</FormControl>
+          				<FormControl margin="normal" required fullWidth>
+            				<InputLabel htmlFor="username">Username</InputLabel>
+            				<Input id="username" name="username" autoComplete="username" onChange={this.handleChange} />
           				</FormControl>
           				<FormControl margin="normal" required fullWidth>
             				<InputLabel htmlFor="password">Password</InputLabel>
-            				<Input name="password" type="password" id="password" autoComplete="current-password" />
+            				<Input name="password" type="password" id="password" onChange={this.handleChange} autoComplete="current-password" />
           				</FormControl>
           				<FormControl margin="normal" required fullWidth>
             				<InputLabel htmlFor="password">Confirm Password</InputLabel>
-            				<Input name="confirmPassword" type="confirmPassword" id="confirmPassword" autoComplete="current-password" />
+            				<Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleChange} autoComplete="current-password" />
           				</FormControl>
           				<FormControlLabel
             				control={<Checkbox value="terms" color="primary" />}
             				label="I accept the Terms of Service."
           				/>
+          				{/*
+          				 type="submit"
+          				 add keyPress 'enter' functionality to Sign in button
+          			 	*/}
           				<Button
-            				type="submit"
             				fullWidth
             				variant="contained"
             				color="primary"
             				className={classes.submit}
+            				onClick={this.handleCreateUser}
           				>
             				Create Account
           				</Button>
