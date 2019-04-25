@@ -15,7 +15,9 @@ exports.createUser = function (req, res) {
             emailAddress: req.body.email}})
         .then(([user, created]) => {
             console.log(created);
-            res.send(created);
+            res.json({username: req.body.username,
+                password: pass,
+                emailAddress: req.body.email});
           })
           .catch(err => {
            res.status(500).send('Error: Server side issue. '+err);
