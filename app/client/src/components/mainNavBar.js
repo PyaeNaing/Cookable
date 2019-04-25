@@ -91,22 +91,34 @@ const styles = theme => ({
 class MainNavBar extends Component {
   constructor(props) {
   	super(props);
+    this.state = {
+      userMenuAnchor: null,
+      profileMenuAnchor: null,
+      loginMenuAnchor: null,
+      mobileMoreAnchorEl: null,
+      isLoggedIn: this.props.isLoggedIn,
+      isLoggingIn: false,
+      searchInput: '',
+      isIngredientRetrieved: false,
+      searchResults: []
+    };
   	this.handleLoginChange = this.handleLoginChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddIngredient = this.handleAddIngredient.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   };
 
-  state = {
-    userMenuAnchor: null,
-    loginMenuAnchor: null,
-    mobileMoreAnchorEl: null,
-    isLoggedIn: this.props.isLoggedIn,
-    isLoggingIn: false,
-    searchInput: '',
-    isIngredientRetrieved: false,
-    searchResults: []
-  };
+  // state = {
+  //   userMenuAnchor: null,
+  //   profileMenuAnchor: null,
+  //   loginMenuAnchor: null,
+  //   mobileMoreAnchorEl: null,
+  //   isLoggedIn: this.props.isLoggedIn,
+  //   isLoggingIn: false,
+  //   searchInput: '',
+  //   isIngredientRetrieved: false,
+  //   searchResults: []
+  // };
 
   handleLoginChange = (e) => {
   	this.setState({ anchorEl: null });
@@ -121,7 +133,7 @@ class MainNavBar extends Component {
   };
 
   handleLogout = event => {
-  	this.setState({ loginMenuAnchor: null });
+  	this.setState({ profileMenuAnchor: null });
   	this.setState({ isLoggingIn: false });
   };
 
@@ -134,7 +146,7 @@ class MainNavBar extends Component {
   };
 
   handleProfileMenuOpen = event => {
-    this.setState({ loginMenuAnchor: event.currentTarget });
+    this.setState({ profileMenuAnchor: event.currentTarget });
   };
 
   handleMenuClose = () => {
@@ -212,19 +224,26 @@ class MainNavBar extends Component {
   };
 
   render() {
-    const { userMenuAnchor, loginMenuAnchor, mobileMoreAnchorEl, isLoggingIn, isIngredientRetrieved } = this.state;
-    const { isLoggedIn } = this.props.isLoggedIn;
+    const { 
+      userMenuAnchor, 
+      profileMenuAnchor, 
+      loginMenuAnchor, 
+      mobileMoreAnchorEl, 
+      isLoggingIn, 
+      isIngredientRetrieved } = this.state;
     const { classes } = this.props;
+    const isLoggedIn = this.props.isLoggedIn;
     const isLoginMenuOpen = Boolean(loginMenuAnchor);
     const isUserMenuOpen = Boolean(userMenuAnchor);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);    
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);  
+    const isProfileMenuOpen = Boolean(profileMenuAnchor);  
 
-    const renderMenu = (
+    const renderProfileMenu = (
       <Menu
-        loginMenuAnchor={loginMenuAnchor}
+        anchorEl={profileMenuAnchor}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isLoginMenuOpen}
+        open={isProfileMenuOpen}
         onClose={this.handleMenuClose}
       >
         <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
@@ -338,7 +357,7 @@ class MainNavBar extends Component {
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton
-                aria-owns={isLoginMenuOpen ? 'material-appbar' : undefined}
+                aria-owns={isProfileMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
                 onClick={isLoggedIn ? this.handleProfileMenuOpen : this.handleLoginMenuOpen}
                 color="inherit"
@@ -353,7 +372,7 @@ class MainNavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        {isLoggedIn ? renderMenu : renderLoginMenu}
+        {isLoggedIn ? renderProfileMenu : renderLoginMenu}
         {renderUserMenu}
         {renderMobileMenu}
         {isLoggingIn ? renderLogin : undefined}

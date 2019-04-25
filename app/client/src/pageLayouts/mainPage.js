@@ -29,7 +29,7 @@ class MainPage extends Component {
 	}
 
 	render() {
-		const loginStatus = this.state.loginStatus;
+		// const loginStatus = this.state.loginStatus;
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
@@ -55,20 +55,21 @@ class MainPage extends Component {
 		);
 
 		const renderCreateRecipePage = (
-			<CreateRecipePage />
+			// Change true to this.state.loginStatus
+			<CreateRecipePage isLoggedIn={true} />
 		);
 
 		return (
 			<div>
 				<MainNavBar
-					isLoggedIn={loginStatus} 
+					isLoggedIn={this.state.loginStatus} 
 					handleLogin={this.handleLogin}
 					handlePageChange={this.handlePageChange}
 				/>
 				{(this.state.currentPage === 'recommendations') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }
 				{(this.state.currentPage === 'registerPage') ? renderRegisterPage : undefined }
-				{(this.state.currentPage === 'profile') ? renderProfilePage : undefined }
+				{(this.state.currentPage === 'profilePage') ? renderProfilePage : undefined }
 				{(this.state.currentPage === 'recipeDisplayPage') ? renderRecipeDisplayPage : undefined }
 				{(this.state.currentPage === 'createRecipePage') ? renderCreateRecipePage : undefined }
 			</div>
