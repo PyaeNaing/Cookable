@@ -78,6 +78,7 @@ class LoginPage extends Component {
 	render() {
 		const { classes } = this.props;
 
+
 		return (
 			<main className={classes.main}>
       			<CssBaseline />
@@ -90,23 +91,27 @@ class LoginPage extends Component {
         			</Typography>
         			<form className={classes.form}>
           				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="email">Email Address</InputLabel>
-            				<Input id="email" name="email" autoComplete="email" autoFocus />
+            				<InputLabel htmlFor="user">Username or Email Address</InputLabel>
+            				<Input id="user" name="user" onChange={this.handleChange} autoComplete="user" autoFocus />
           				</FormControl>
           				<FormControl margin="normal" required fullWidth>
             				<InputLabel htmlFor="password">Password</InputLabel>
-            				<Input name="password" type="password" id="password" autoComplete="current-password" />
+            				<Input name="password" type="password" id="password" onChange={this.handleChange} autoComplete="current-password" />
           				</FormControl>
           				<FormControlLabel
             				control={<Checkbox value="remember" color="primary" />}
             				label="Remember me"
           				/>
+          				{/*
+          				 type="submit"
+          				 add keyPress 'enter' functionality to Sign in button
+          			 	*/}
           				<Button
-            				type="submit"
             				fullWidth
             				variant="contained"
             				color="primary"
             				className={classes.submit}
+            				onClick={this.handleLogin}
           				>
             				Sign in
           				</Button>
