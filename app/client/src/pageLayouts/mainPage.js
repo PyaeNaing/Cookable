@@ -27,7 +27,6 @@ class MainPage extends Component {
 
 	handlePageChange(page) {
 		this.setState({ currentPage: page });
-		// console.log(this.state.currentPage);
 	}
 
 	render() {
