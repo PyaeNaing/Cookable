@@ -36,6 +36,7 @@ exports.ingredientsAdd = function (req, res) {
         .then((ingridient) => {
             console.log(ingridient.get({ plain: true }));
             res.send(ingridient.get({ plain: true }));
+            res.status(200);
         })
         .catch(err => {
             res.send('Error');
