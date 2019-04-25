@@ -102,18 +102,10 @@ class MainNavBar extends Component {
       isIngredientRetrieved: false,
       searchResults: []
     };
-  	// this.handleLoginChange = this.handleLoginChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleAddIngredient = this.handleAddIngredient.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   };
-
-  // handleLoginChange = (e) => {
-  // 	this.setState({ anchorEl: null });
-  // 	this.setState({ isLoggingIn: true });
-  // 	this.props.handleLogin(e.target.value);
-  // 	this.setState({ isLoggingIn: false });
-  // };
 
   handlePageChange = (page) => {
     this.props.handlePageChange(page);
@@ -122,7 +114,7 @@ class MainNavBar extends Component {
 
   handleLogout = event => {
   	this.setState({ profileMenuAnchor: null });
-  	this.setState({ isLoggingIn: false });
+  	this.props.handleLogout(false);
   };
 
   handleLoginMenuOpen = event => {

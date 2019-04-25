@@ -63,6 +63,7 @@ class LoginPage extends Component {
 	    })
 	    .then((response) => {
 	      	console.log(response);
+	      	this.props.handleLoginStatus(true);
 	    })
 	    .catch((error) => {
 	      	console.log(error);
@@ -72,7 +73,7 @@ class LoginPage extends Component {
 	handleChange = event => {
 		this.setState({
       		[event.target.id]: event.target.value
-    	});
+    });
 	}
 
 	render() {
