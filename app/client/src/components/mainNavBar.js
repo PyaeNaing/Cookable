@@ -309,9 +309,13 @@ class MainNavBar extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              Cookable
-            </Typography>
+            <Button 
+            	className={classes.title} variant="h6" 
+            	color="inherit" 
+            	onClick={() => this.handlePageChange('recommendationsPage')} 
+            	noWrap>
+              	Cookable
+            </Button>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -329,12 +333,12 @@ class MainNavBar extends Component {
               />
             </div>
             <div>
-              <Button onClick={this.handleSearch}>
+              <Button onClick={this.handleSearch} color="inherit">
                 Search
               </Button>
             </div>
             <div>
-              <Button onClick={this.handleAddIngredient}>
+              <Button onClick={this.handleAddIngredient} color="inherit">
                 Add
               </Button>
             </div>
