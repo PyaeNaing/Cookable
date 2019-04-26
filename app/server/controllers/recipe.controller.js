@@ -46,7 +46,7 @@ exports.getRecommendation = function (req, res) {
         .then((recipe) => {
             for(let i = 0; i < 8; i++)
             {
-            recipe[i].url = 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80';
+            recipe[i].url = 'https://images.media-allrecipes.com/userphotos/300x300/25840.jpg';
             }
             res.json(recipe);
         }).catch('Error')
