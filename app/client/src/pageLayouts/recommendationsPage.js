@@ -95,7 +95,8 @@ class RecommendationsPage extends Component {
 			}
 			else {
 				console.log(response);
-				this.setState({ recommendations: response.data.recommendations });
+				this.setState({ recommendations: response.data });
+				console.log(this.state.recommendations);
 			}
 		})
 		.catch((error) => {
@@ -103,9 +104,13 @@ class RecommendationsPage extends Component {
 		});
 	};
 
+	componentWillMount() {
+		this.handleRecommendations();
+	};
+
 	render() {
 		const { classes } = this.props;
-		const data = this.state.recommendations.data;
+		const data = this.state.recommendations;
 
 		return (
 			<div>
@@ -145,20 +150,20 @@ class RecommendationsPage extends Component {
 							<div className={classNames(classes.layout, classes.cardGrid)}>
 								{/* End hero unit */}
 								<Grid container spacing={40}>
-									{cards.map(card => (
-										<Grid item key={card} sm={6} md={4} lg={3}>
+									{data.map(recipe => (
+										<Grid item key={recipe.recipeID} sm={6} md={4} lg={3}>
 											<Card className={classes.card}>
 												<CardMedia
 													className={classes.cardMedia}
-													image={this.state.recommendationsSample[0].recipeImageUrl} // eslint-disable-line max-len
+													image={recipe.url} // eslint-disable-line max-len
 													title="Image title"
 												/>
 												<CardContent className={classes.cardContent}>
 													<Typography gutterBottom variant="h5" component="h2">
-														{this.state.recommendationsSample[0].recipeName}
+														{recipe.recipeName}
 													</Typography>
 													<Typography>
-														{this.state.recommendationsSample[0].recipeDescription}
+														{recipe.description}
 													</Typography>
 												</CardContent>
 												<CardActions>
