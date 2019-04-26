@@ -117,6 +117,12 @@ class MainNavBar extends Component {
     this.handleMenuClose();
   };
 
+  handleProfileSubpageChange = (subpage) => {
+    this.props.handlePageChange('profilePage');
+    this.props.handleProfileSubpageChange(subpage);
+    this.handleMenuClose();
+  };
+
   handleLogout = event => {
   	this.setState({ profileMenuAnchor: null });
   	this.props.handleLogout(false);
@@ -243,8 +249,8 @@ class MainNavBar extends Component {
         open={isProfileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>Profile</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>My account</MenuItem>
         <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
       </Menu>
     );
@@ -270,9 +276,9 @@ class MainNavBar extends Component {
         open={isUserMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={() => this.handlePageChange('profilePage')}>Pantry</MenuItem>
-        <MenuItem onClick={() => this.handlePageChange('profilePage')}>My Recipes</MenuItem>
-        <MenuItem onClick={() => this.handlePageChange('profilePage')}>Favorites</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('pantry')}>Pantry</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
         <MenuItem onClick={() => this.handlePageChange('createRecipePage')}>Create Recipe</MenuItem>
       </Menu>
     );
