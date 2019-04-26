@@ -3,6 +3,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { MuiThemeProvider } from "@material-ui/core";
+import PropTypes from 'prop-types'; 
 
 const paper = {
 	height: '100vh',
@@ -11,6 +13,7 @@ const paper = {
 const container = {
 	display: 'flex',
   flexWrap: 'wrap',
+  maxWidth: 300, 
 };
 
 const pageTitle = {
@@ -23,6 +26,9 @@ const textField = {
   width: 200,
 };
 
+function TextButtons(props){
+	const {classes} = props; 
+}
 class CreateRecipePage extends Component {
 
 	constructor(props) {
@@ -35,6 +41,9 @@ class CreateRecipePage extends Component {
 			ingredients: [],
 			cuisine: "",
 			recipeDirections: "",
+			uploadImage:"", 
+			add: "", 
+			cancel:"",
 		};
 	};
 
@@ -116,6 +125,17 @@ class CreateRecipePage extends Component {
 							margin="normal"
 							variant="outlined"
 						/>
+						<TextField
+							style={textField}
+							id="uploadImage"
+							label="Upload Image"
+							value={this.state.uploadImage}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+						<Button color = "primary" className = {this.state.Button}>Add</Button>
+						<Button color= "primary" className = {this.state.Button}>Cancel</Button>
 					</form>
 				</Paper>
 			</div>
@@ -128,7 +148,7 @@ class CreateRecipePage extends Component {
 				</Paper>
 			</div>
 		);
-
+			TextButtons.propTypes = { clases: PropTypes.object.isRequired}
 		return (
 			<div>
 				{isLoggedIn ? renderRecipeCreationPage : renderLoginError}
