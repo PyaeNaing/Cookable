@@ -1,5 +1,6 @@
 const Recipe = require('../models/recipe')
 const Sequelize = require('sequelize');
+var imageUrl = require('../models/recipeImages')
 const Op = Sequelize.Op;
 
 exports.createRecipe = function (req, res) {
@@ -25,13 +26,39 @@ exports.createRecipe = function (req, res) {
 
 exports.searchRecipe = function (req, res) {
     limit = 20,
-    Recipe.findOne({
-        where :
-        {recipeName: {[Op.like] : '%' + req.query.recipeName + '%'}}
-    }).then(recipes => {
-        res.json({recipe : recipes});
-    }).catch(function (err) {
-        res.send("error");
+        Recipe.findOne({
+            where:
+                { recipeName: { [Op.like]: '%' + req.query.recipeName + '%' } }
+        }).then(recipes => {
+            res.json({ recipe: recipes });
+        }).catch(function (err) {
+            res.send("error");
+        })
+}
+
+exports.getRecommendation = function (req, res) {
+    Recipe.findAll(
+        {
+            order: [[Sequelize.literal('RAND()')]],
+            limit: 8,
+        }
+    )
+        .then((recipe) => {
+            for(let i = 0; i < 8; i++)
+            {
+            recipe[i].url = 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80';
+            }
+            res.json(recipe);
+        }).catch('Error')
+}
+
+exports.testSearch = function(req, res) {
+    Recipe.findAll({
+        where:{
+            recipeID : id,
+        }
+    }).then(recipe => {
+        res.json(recipe);
     })
 
 }

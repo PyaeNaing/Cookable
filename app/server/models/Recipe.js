@@ -3,6 +3,8 @@ const db = require('../database');
 
 const recipes = db.define('recipes', {
 
+    url: Sequelize.VIRTUAL
+    ,
     recipeID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
