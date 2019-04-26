@@ -16,7 +16,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
-import Ingredient from './ingredient.js';
+// import Ingredient from './ingredient.js';
 
 const styles = theme => ({
   root: {
@@ -212,7 +212,7 @@ class MainNavBar extends Component {
       loginMenuAnchor, 
       mobileMoreAnchorEl, 
       isLoggingIn, 
-      isIngredientRetrieved } = this.state;
+      /*isIngredientRetrieved*/ } = this.state;
     const { classes } = this.props;
     const isLoggedIn = this.props.isLoggedIn;
     const isLoginMenuOpen = Boolean(loginMenuAnchor);
@@ -270,6 +270,7 @@ class MainNavBar extends Component {
     	</div>
     );
 
+    /*
     const renderIngredient = (
       <div>
         <Ingredient
@@ -278,6 +279,7 @@ class MainNavBar extends Component {
         />
       </div>
     );
+    */
 
     const renderMobileMenu = (
       <Menu
@@ -358,7 +360,7 @@ class MainNavBar extends Component {
         {renderUserMenu}
         {renderMobileMenu}
         {isLoggingIn ? renderLogin : undefined}
-        {isIngredientRetrieved ? renderIngredient : undefined}
+        {/*isIngredientRetrieved ? renderIngredient : undefined*/}
       </div>
     );
   }
