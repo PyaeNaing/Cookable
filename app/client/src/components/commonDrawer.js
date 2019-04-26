@@ -30,6 +30,8 @@ const styles = theme => ({
     flexShrink: 0
   },
   drawerPaper: {
+    //paddingTop: 4,
+    marginTop: '5%',
     width: drawerWidth
   },
   content: {
@@ -53,13 +55,13 @@ function ClippedDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      {/* <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
             Clipped drawer
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -77,7 +79,7 @@ function ClippedDrawer(props) {
         <br />
         <br />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          {["Pantry", "My Recipes", "Favorite Recipes", "Profile"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
