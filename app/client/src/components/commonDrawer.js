@@ -14,6 +14,7 @@ import AccountBox2tone from '@material-ui/icons/AccountBoxTwoTone';
 import StarBorderTwoTone from '@material-ui/icons/StarBorderTwoTone';
 import PaletteTwoTone from '@material-ui/icons/PaletteTwoTone';
 import Pantry from "./pantry";
+import Profile from "./profile";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -121,16 +122,14 @@ class ClippedDrawer extends Component {
               </Drawer>
               <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Pantry />
+                {/* <Pantry /> */}
               </main>
             </div>
           );
           
     }
   }
-
-
-
+  
 ClippedDrawer.propTypes = {
     classes: PropTypes.object.isRequired
   };
