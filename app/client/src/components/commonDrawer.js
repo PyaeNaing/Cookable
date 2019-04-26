@@ -14,6 +14,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Avatar from "@material-ui/core/Avatar";
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import AccountBox2tone from '@material-ui/icons/AccountBoxTwoTone';
+import StarBorderTwoTone from '@material-ui/icons/StarBorderTwoTone';
+import PaletteTwoTone from '@material-ui/icons/PaletteTwoTone';
 
 const drawerWidth = 240;
 
@@ -46,6 +51,14 @@ const styles = theme => ({
     margin: 10,
     width: 60,
     height: 60
+  },
+  menuItem: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& $primary, & $icon': {
+        color: theme.palette.common.white,
+      },
+    },
   }
 });
 
@@ -78,7 +91,7 @@ function ClippedDrawer(props) {
         <br />
         <br />
         <br />
-        <List>
+        {/* <List>
           {["Pantry", "My Recipes", "Favorite Recipes", "Profile"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
@@ -87,7 +100,33 @@ function ClippedDrawer(props) {
               <ListItemText primary={text} />
             </ListItem>
           ))}
-        </List>
+        </List> */}
+        <MenuList>
+        <MenuItem className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <AccountBox2tone />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset primary="Profile and Settings" />
+        </MenuItem>
+        <MenuItem className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <PaletteTwoTone />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset primary="Pantry" />
+        </MenuItem>
+        <MenuItem className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <StarBorderTwoTone />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset primary="Favorites" />
+        </MenuItem>
+        <MenuItem className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset primary="My Recipes" />
+        </MenuItem>
+      </MenuList>
         <Divider />
       </Drawer>
       <main className={classes.content}>
