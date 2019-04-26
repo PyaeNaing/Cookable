@@ -43,7 +43,7 @@ class MainPage extends Component {
 		);
 
 		const renderRecommendationsPage = (
-			<RecommendationsPage />
+			<RecommendationsPage handlePageChange={this.handlePageChange}/>
 		);
 
 		// Must lift up profileSubpage state from MainNavBar

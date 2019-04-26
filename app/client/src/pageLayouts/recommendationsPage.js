@@ -72,6 +72,10 @@ class RecommendationsPage extends Component {
 		};
 	};
 
+	handlePageChange = (page) => {
+    this.props.handlePageChange(page);
+  };
+
 	handleRecommendations = event => {
 	// Use '/api/v1/searchIngredients' when is production.
 	// Use '/v1/searchIngredients' when on local machine.
@@ -113,12 +117,12 @@ class RecommendationsPage extends Component {
 									<div className={classes.heroButtons}>
 										<Grid container spacing={16} justify="center">
 											<Grid item>
-												<Button variant="contained" color="primary">
+												<Button variant="contained" color="primary" onClick={() => this.handlePageChange('loginPage')}>
 													Login
 												</Button>
 											</Grid>
 											<Grid item>
-												<Button variant="outlined" color="primary">
+												<Button variant="outlined" color="primary" onClick={() => this.handlePageChange('registerPage')}>
 													Create Account
 												</Button>
 											</Grid>
