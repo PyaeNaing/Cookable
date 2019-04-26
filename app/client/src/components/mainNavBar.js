@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -16,7 +15,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
-import Ingredient from './ingredient.js';
+// import Ingredient from './ingredient.js';
 
 const styles = theme => ({
   root: {
@@ -173,6 +172,7 @@ class MainNavBar extends Component {
       	console.log(response);
         this.setState({ searchResults: response.data.ingredients });
         this.setState({ isIngredientRetrieved: true });
+        this.props.handlePageChange("recipeDisplayPage");
       }
     })
     .catch((error) => {
@@ -211,7 +211,7 @@ class MainNavBar extends Component {
       loginMenuAnchor, 
       mobileMoreAnchorEl, 
       isLoggingIn, 
-      isIngredientRetrieved } = this.state;
+      /*isIngredientRetrieved*/ } = this.state;
     const { classes } = this.props;
     const isLoggedIn = this.props.isLoggedIn;
     const isLoginMenuOpen = Boolean(loginMenuAnchor);
@@ -269,6 +269,7 @@ class MainNavBar extends Component {
     	</div>
     );
 
+    /*
     const renderIngredient = (
       <div>
         <Ingredient
@@ -277,6 +278,7 @@ class MainNavBar extends Component {
         />
       </div>
     );
+    */
 
     const renderMobileMenu = (
       <Menu
@@ -306,9 +308,13 @@ class MainNavBar extends Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              Cookable
-            </Typography>
+            <Button 
+            	className={classes.title} variant="h6" 
+            	color="inherit" 
+            	onClick={() => this.handlePageChange('recommendationsPage')} 
+            	noWrap>
+              	Cookable
+            </Button>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -326,12 +332,12 @@ class MainNavBar extends Component {
               />
             </div>
             <div>
-              <Button onClick={this.handleSearch}>
+              <Button onClick={this.handleSearch} color="inherit">
                 Search
               </Button>
             </div>
             <div>
-              <Button onClick={this.handleAddIngredient}>
+              <Button onClick={this.handleAddIngredient} color="inherit">
                 Add
               </Button>
             </div>
@@ -357,7 +363,7 @@ class MainNavBar extends Component {
         {renderUserMenu}
         {renderMobileMenu}
         {isLoggingIn ? renderLogin : undefined}
-        {isIngredientRetrieved ? renderIngredient : undefined}
+        {/*isIngredientRetrieved ? renderIngredient : undefined*/}
       </div>
     );
   }

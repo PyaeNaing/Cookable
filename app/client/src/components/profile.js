@@ -1,76 +1,129 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { MenuItem } from "@material-ui/core";
 
-
-const styles = {
-  card: {
-    minWidth: 275,
-    textAlign: 'center',
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 26,
-  },
-  pos: {
-    marginBottom: 12,
-  },
+const paper = {
+	height: '100vh',
 };
 
-class Profile extends Component {
-	
-	constructor(props) {
+const container = {
+	display: 'flex',
+  flexWrap: 'wrap',
+};
+
+const pageTitle = {
+	paddingTop: 10,
+};
+
+const textField = {
+  marginLeft: 25,
+  marginRight: 25,
+  width: 200,
+};
+
+class profileSettings extends Component {
+    constructor(props) {
 		super(props);
 		this.state = {
-			name: this.props.name,
-			role: this.props.role,
-			isLoading: false
+			fName: "",
+			lName: "",
+			gender: "",
+			email: "",
+			username: "",
+			dob: "",
 		};
-	}
+    };
 
-	componentDidMount() {
-    	this.setState({ isLoading: true });
-  	}
+    // Just a handleChange needed as per controls
+    handleChange = event => {
+		this.setState({
+			[event.target.id]: event.target.value
+		});
+	};
 
-  	componentWillUnmount() {
-    	this.setState({ isLoading: false });
-  	}
-	
-	render() {
-		const {isLoading} = this.state;
+    render() {
 
-		if(isLoading) {
-			return (
-				<paper square={false} elevation={10}>
-					<Card style={styles.card}>
-						<CircularProgress />
-					</Card>
-				</paper>
-			)
-		}
+		const isLoggedIn = this.props.isLoggedIn;
+
+		const renderRecipeCreationPage = (
+			<div>
+				<Paper style={paper} square={true}>
+					<Typography style={pageTitle} variant="headline">Profile</Typography>
+					<form style={container}>
+						<TextField
+							style={textField}
+							id="fName"
+							label="First Name"
+							value={this.state.fName}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+						<TextField
+							style={textField}
+							id="lName"
+							label="Last Name"
+							value={this.state.lName}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+                        <MenuItem>
+                            <MenuItem>Male</MenuItem>
+                            <MenuItem>Female</MenuItem> 
+                            <MenuItem>Don't want to specify</MenuItem>
+                        </MenuItem>
+						<TextField
+							style={textField}
+							id="calorieCount"
+							label="Calorie Count"
+							value={this.state.calorieCount}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+						<TextField
+							style={textField}
+							id="ingredients"
+							label="Ingredients"
+							value={this.state.ingredients}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+						<TextField
+							style={textField}
+							id="cuisine"
+							label="Cuisine"
+							value={this.state.cuisine}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+						<TextField
+							style={textField}
+							id="recipeDirections"
+							label="Recipe Directions"
+							value={this.state.recipeDirections}
+							onChange={this.handleChange}
+							margin="normal"
+							variant="outlined"
+						/>
+					</form>
+				</Paper>
+			</div>
+		);
+
 
 		return (
 			<div>
-				<Paper square={false} elevation={10}>
-					<Card style={styles.card}>
-						<h style={styles.title}>
-							{this.props.name}
-						</h>
-						<CardContent>
-							My name is {this.props.name + ' '} 
-						    and my role on Team 5 is {this.props.role}!
-						</CardContent>
-					</Card>
-				</Paper>
+				{profileSettings}
 			</div>
 		);
 	}
 }
 
-export default Profile;
+export default profileSettings;
