@@ -62,21 +62,12 @@ const styles = theme => ({
 	},
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
 class RecommendationsPage extends Component {
 	
 	constructor(props) {
 		super(props);
 		this.state = {
 			recommendations: [],
-			recommendationsSample: [
-				{
-					recipeName: "Scallops",
-					recipeDescription: "A simple recipe for scallops with a delightful citrus sauce.",
-					recipeImageUrl: "https://www.atlantisbahamas.com/media/Dining/Fine/Hero/olive-scallops.jpg",
-				}
-			],
 		};
 	};
 

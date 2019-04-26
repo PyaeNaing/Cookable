@@ -335,7 +335,7 @@ class MainNavBar extends Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search/Add Ingredients…"
+                placeholder={(this.state.searchStatus === false) ? "Search by recipe ..." : "Search by ingredient ..."}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
