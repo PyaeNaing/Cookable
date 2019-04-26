@@ -173,6 +173,7 @@ class MainNavBar extends Component {
       	console.log(response);
         this.setState({ searchResults: response.data.ingredients });
         this.setState({ isIngredientRetrieved: true });
+        this.props.handlePageChange("recipeDisplayPage");
       }
     })
     .catch((error) => {
