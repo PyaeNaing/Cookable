@@ -29,6 +29,7 @@ const styles = theme => ({
 	},
 	heroButtons: {
 		marginTop: theme.spacing.unit * 4,
+		marginBottom: theme.spacing.unit * 4,
 	},
 	layout: {
 		width: 'auto',
@@ -105,23 +106,27 @@ class RecommendationsPage extends Component {
 										Welcome to Cookable!
 									</Typography>
 									<Typography variant="h6" align="center" color="textSecondary" paragraph>
-										Here at Cookable our aim is to provide you with recipes. Here are
-										some recommendations to get you started.
+										Here at Cookable our aim is to provide you with recipes. If you are new to
+										Cookable, please feel free to create an account to gain access to member only
+										features!
 									</Typography>
 									<div className={classes.heroButtons}>
 										<Grid container spacing={16} justify="center">
 											<Grid item>
 												<Button variant="contained" color="primary">
-													Main call to action
+													Login
 												</Button>
 											</Grid>
 											<Grid item>
 												<Button variant="outlined" color="primary">
-													Secondary action
+													Create Account
 												</Button>
 											</Grid>
 										</Grid>
 									</div>
+									<Typography variant="h6" align="center" color="textSecondary" paragraph>
+										Here are some recommended recipes to get you started!
+									</Typography>
 								</div>
 							</div>
 							<div className={classNames(classes.layout, classes.cardGrid)}>
