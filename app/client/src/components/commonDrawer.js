@@ -30,6 +30,7 @@ const styles = theme => ({
     flexShrink: 0
   },
   drawerPaper: {
+    marginTop: '7%',
     width: drawerWidth
   },
   content: {
@@ -53,13 +54,13 @@ function ClippedDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      {/* <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" color="inherit" noWrap>
             Clipped drawer
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Drawer
         className={classes.drawer}
         variant="permanent"
