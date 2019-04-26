@@ -1,8 +1,9 @@
 const User = require('../models/users');
-const processor = require('../controllers/processor');
 const Ingredient = require('../models/ingredients')
 const Sequelize = require('sequelize');
 const Pantry = require('../models/pantry')
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const Op = Sequelize.Op;
 
 exports.createUser = function (req, res) {
@@ -81,4 +82,6 @@ exports.login = function(req, res){
         console.log(err);
       })
     }
-  
+  ,exports.setPassword = function(password){
+    let salt = crypto.randomBytes(16).toString('hex');
+  }
