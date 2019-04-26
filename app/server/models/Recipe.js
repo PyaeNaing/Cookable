@@ -26,7 +26,7 @@ const recipes = db.define('recipes', {
         type: Sequelize.INTEGER,
     },
     cookingTime: {
-        type: Sequelize.TIME,
+        type: Sequelize.STRING,
     },
     authorName: {
         type: Sequelize.STRING,
