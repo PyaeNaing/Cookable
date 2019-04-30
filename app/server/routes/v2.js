@@ -8,7 +8,7 @@ const UserController   = require("../controllers/users.controller");
 const IngredientsController   = require("../controllers/ingredients.controller");
 const Recipe = require("../controllers/recipe.controller");
 
- router.get("/admin/List", AdminController.adminList);
+ router.get("/admin/list", AdminController.adminList);
  router.post("/admin/create", AdminController.adminCreate);
  router.post("/user/create", UserController.createUser);
  router.post("/user/login", UserController.login);
@@ -18,7 +18,8 @@ const Recipe = require("../controllers/recipe.controller");
  router.get("/recipe/search", Recipe.searchRecipe);
  router.post("/recipe/create", Recipe.createRecipe);
  router.post("/user/pantry", Recipe.searchRecipe);
- router.post("/add", UserController.addIngredienttoPantry);
+ 
+ router.post("/test", UserController.addIngredienttoPantry);
 
 //  router.get("/test", Recipe.testSearch);
 

@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const Pantry = require('../models/pantry')
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+
 const Op = Sequelize.Op;
 
 exports.createUser = function (req, res) {
@@ -55,7 +56,7 @@ exports.login = function(req, res){
       .then(result => {
         if (result != null) {
           if(result.pantryID != null){
-            console.log('ITS FUKING NULL U NUT SACK');
+            console.log('Null');
           }
           Ingredient.findOne({
             where: {

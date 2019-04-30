@@ -20,7 +20,7 @@ const recipeI = db.define('recipeImages', {
         type: Sequelize.DATE
     },
     recipeID:{
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER
     },
 
 })
