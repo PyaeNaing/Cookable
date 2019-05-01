@@ -1,11 +1,13 @@
 const User = require('../models/users');
-const processor = require('../controllers/processor');
 const Ingredient = require('../models/ingredients')
 const Sequelize = require('sequelize');
+const Pantry = require('../models/pantry')
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
 const Op = Sequelize.Op;
 
 exports.createUser = function (req, res) {
-
         let pass = req.body.password;
         pass = Buffer.from(pass, 'utf8').toString('base64');
 
@@ -45,36 +47,42 @@ exports.login = function(req, res){
     }).catch(err => res.status(500).send('Error: Please send correct object'+err));
   },
 
-exports.addIngredient = function(req, res) {
-  User.findOne({
-    where: {
-      username: req.body.username
-    }
-  })
-    .then(result => {
-      if (result != null) {
-        Ingredient.findOne({
-          where: {
-            ingredientName: req.body.ingredientName
-          }
-        })
-          .then(iresult => {
-            if (iresult != null) {
-              res.send(iresult);
-            } else {
-                res.status(404).send('Error: ingredient not found')
-            }
-          })
-          .catch(err => {
-            res.send("Error");
-            console.log(err);
-          });
-      } else {
-        res.status(404).send("Error: User not found");
+  exports.addIngredienttoPantry = function(req, res) {
+    User.findOne({
+      where: {
+        userID: req.body.userID
       }
     })
-    .catch(err => {
-      res.send("Error");
-      console.log(err);
-    })
+      .then(result => {
+        if (result != null) {
+          if(result.pantryID != null){
+            console.log('Null');
+          }
+          Ingredient.findOne({
+            where: {
+              ingredientName: req.body.ingredientName
+            }
+          })
+            .then(iresult => {
+              if (iresult != null) {
+                res.send(iresult);
+              } else {
+                  res.status(404).send('Error: ingredient not found')
+              }
+            })
+            .catch(err => {
+              res.send('Error');
+              console.log(err);
+            });
+        } else {
+          res.status(404).send("Error: User not found");
+        }
+      })
+      .catch(err => {
+        res.send("Error");
+        console.log(err);
+      })
+    }
+  ,exports.setPassword = function(password){
+    let salt = crypto.randomBytes(16).toString('hex');
   }

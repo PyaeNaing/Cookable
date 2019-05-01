@@ -15,6 +15,8 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
 // import Ingredient from './ingredient.js';
 
 const styles = theme => ({
@@ -73,6 +75,9 @@ const styles = theme => ({
       width: 200,
     },
   },
+  switch: {
+    marginLeft: 50,
+  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -99,15 +104,22 @@ class MainNavBar extends Component {
       isLoggingIn: false,
       searchInput: '',
       isIngredientRetrieved: false,
+      searchStatus: false,
       searchResults: []
     };
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleAddIngredient = this.handleAddIngredient.bind(this);
+    //this.handleAddIngredient = this.handleAddIngredient.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   };
 
   handlePageChange = (page) => {
     this.props.handlePageChange(page);
+    this.handleMenuClose();
+  };
+
+  handleProfileSubpageChange = (subpage) => {
+    this.props.handlePageChange('profilePage');
+    this.props.handleProfileSubpageChange(subpage);
     this.handleMenuClose();
   };
 
@@ -155,6 +167,14 @@ class MainNavBar extends Component {
     }
   };
 
+  handleSearchStatusChange = event => {
+    this.setState({
+      [event.target.id]: event.target.checked
+    });
+
+  console.log(this.state.searchStatus);
+  };
+
   handleSearch = event => {
     // Use '/api/v1/searchIngredients' when is production.
     // Use '/v1/searchIngredients' when on local machine.
@@ -180,6 +200,7 @@ class MainNavBar extends Component {
     });
   };
 
+  /*
   handleAddIngredient = event => {
     // Use '/api/v1/createIngredient' when is production.
     // Use '/v1/createIngredient' when on local machine.
@@ -203,6 +224,7 @@ class MainNavBar extends Component {
       console.log(error);
     });
   };
+  */
 
   render() {
     const { 
@@ -227,8 +249,8 @@ class MainNavBar extends Component {
         open={isProfileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>Profile</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>My account</MenuItem>
         <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
       </Menu>
     );
@@ -254,9 +276,9 @@ class MainNavBar extends Component {
         open={isUserMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={() => this.handlePageChange('profilePage')}>Pantry</MenuItem>
-        <MenuItem onClick={() => this.handlePageChange('profilePage')}>My Recipes</MenuItem>
-        <MenuItem onClick={() => this.handlePageChange('profilePage')}>Favorites</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('pantry')}>Pantry</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
         <MenuItem onClick={() => this.handlePageChange('createRecipePage')}>Create Recipe</MenuItem>
       </Menu>
     );
@@ -309,10 +331,9 @@ class MainNavBar extends Component {
               <MenuIcon />
             </IconButton>
             <Button 
-            	className={classes.title} variant="h6" 
+            	className={classes.title}
             	color="inherit" 
-            	onClick={() => this.handlePageChange('recommendationsPage')} 
-            	noWrap>
+            	onClick={() => this.handlePageChange('recommendationsPage')}>
               	Cookable
             </Button>
             <div className={classes.search}>
@@ -320,7 +341,7 @@ class MainNavBar extends Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search/Add Ingredients…"
+                placeholder={(this.state.searchStatus === false) ? "Search by recipe ..." : "Search by ingredient ..."}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -336,10 +357,29 @@ class MainNavBar extends Component {
                 Search
               </Button>
             </div>
-            <div>
+            {/*<div>
               <Button onClick={this.handleAddIngredient} color="inherit">
                 Add
               </Button>
+            </div>*/}
+            <div>
+              <Typography className={classes.switch} color="inherit">
+                Recipe
+              </Typography>
+            </div>
+            <div>
+              <Switch
+                id="searchStatus"
+                checked={this.state.searchStatus}
+                onChange={this.handleSearchStatusChange}
+                value="checkedA"
+                color="default"
+              />
+            </div>
+            <div>
+              <Typography color="inherit">
+                Ingredient
+              </Typography>
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
