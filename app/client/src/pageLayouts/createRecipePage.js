@@ -208,8 +208,9 @@ const styles = theme => ({
 });
 
 function CreateRecipePage(props) {
-  const { classes } = props;
-
+	const { classes } = props;
+	const isLoggedIn = this.props.isLoggedIn;
+	
   return (
     <main className={classes.main}>
       <CssBaseline />
@@ -218,7 +219,7 @@ function CreateRecipePage(props) {
           <FolderIcon/>
         </Avatar>
         <Typography component="h1" variant="h5">
-          Add New Recipe
+         Add A New Recipe
         </Typography>
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
@@ -249,10 +250,7 @@ function CreateRecipePage(props) {
             <InputLabel htmlFor="uploadImage">Upload Image</InputLabel>
             <Input id="uploadImage" name="uploadImage" />
           </FormControl>
-          {/*<FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-		  />*/}
+
           <Button
             type="submit"
             fullWidth
@@ -275,7 +273,15 @@ function CreateRecipePage(props) {
       </Paper>
     </main>
   );
-}
+}		
+
+const renderLoginError = (
+	<div>
+		<Paper square={true}>
+			<Typography>You must be logged in to access this feature.</Typography>
+		</Paper>
+	</div>
+);
 
 CreateRecipePage.propTypes = {
   classes: PropTypes.object.isRequired,
