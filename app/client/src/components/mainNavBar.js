@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -16,7 +15,9 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
-import Ingredient from './ingredient.js';
+import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
+// import Ingredient from './ingredient.js';
 
 const styles = theme => ({
   root: {
@@ -74,6 +75,9 @@ const styles = theme => ({
       width: 200,
     },
   },
+  switch: {
+    marginLeft: 50,
+  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -91,43 +95,55 @@ const styles = theme => ({
 class MainNavBar extends Component {
   constructor(props) {
   	super(props);
-  	this.handleLoginChange = this.handleLoginChange.bind(this);
+    this.state = {
+      userMenuAnchor: null,
+      profileMenuAnchor: null,
+      loginMenuAnchor: null,
+      mobileMoreAnchorEl: null,
+      isLoggedIn: this.props.isLoggedIn,
+      isLoggingIn: false,
+      searchInput: '',
+      isIngredientRetrieved: false,
+      searchStatus: false,
+      searchResults: []
+    };
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleAddIngredient = this.handleAddIngredient.bind(this);
+    //this.handleAddIngredient = this.handleAddIngredient.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   };
 
-  state = {
-    anchorEl: null,
-    mobileMoreAnchorEl: null,
-    isLoggedIn: this.props.isLoggedIn,
-    isLoggingIn: false,
-    searchInput: '',
-    isIngredientRetrieved: false,
-    searchResults: []
+  handlePageChange = (page) => {
+    this.props.handlePageChange(page);
+    this.handleMenuClose();
   };
 
-  handleLoginChange = (e) => {
-  	this.setState({ anchorEl: null });
-  	this.setState({ isLoggingIn: true });
-  	this.props.handleLogin(e.target.value);
-  	this.setState({ isLoggingIn: false });
+  handleProfileSubpageChange = (subpage) => {
+    this.props.handlePageChange('profilePage');
+    this.props.handleProfileSubpageChange(subpage);
+    this.handleMenuClose();
   };
 
   handleLogout = event => {
-  	this.setState({ anchorEl: null });
-  	this.setState({ isLoggingIn: false });
+  	this.setState({ profileMenuAnchor: null });
+  	this.props.handleLogout(false);
   };
 
   handleLoginMenuOpen = event => {
-  	this.setState({ anchorEl: event.currentTarget });
+  	this.setState({ loginMenuAnchor: event.currentTarget });
+  };
+
+  handleUserMenuOpen = event => {
+    this.setState({ userMenuAnchor: event.currentTarget });
   };
 
   handleProfileMenuOpen = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ profileMenuAnchor: event.currentTarget });
   };
 
   handleMenuClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ loginMenuAnchor: null });
+    this.setState({ userMenuAnchor: null });
+    this.setState({ profileMenuAnchor: null });
     this.handleMobileMenuClose();
   };
 
@@ -151,6 +167,14 @@ class MainNavBar extends Component {
     }
   };
 
+  handleSearchStatusChange = event => {
+    this.setState({
+      [event.target.id]: event.target.checked
+    });
+
+  console.log(this.state.searchStatus);
+  };
+
   handleSearch = event => {
     // Use '/api/v1/searchIngredients' when is production.
     // Use '/v1/searchIngredients' when on local machine.
@@ -166,9 +190,9 @@ class MainNavBar extends Component {
       }
       else {
       	console.log(response);
-        this.setState({ searchResults: response.data
-        });
+        this.setState({ searchResults: response.data.ingredients });
         this.setState({ isIngredientRetrieved: true });
+        this.props.handlePageChange("recipeDisplayPage");
       }
     })
     .catch((error) => {
@@ -176,6 +200,7 @@ class MainNavBar extends Component {
     });
   };
 
+  /*
   handleAddIngredient = event => {
     // Use '/api/v1/createIngredient' when is production.
     // Use '/v1/createIngredient' when on local machine.
@@ -199,38 +224,62 @@ class MainNavBar extends Component {
       console.log(error);
     });
   };
+  */
 
   render() {
-    const { anchorEl, mobileMoreAnchorEl, isLoggingIn, isIngredientRetrieved } = this.state;
-    const { isLoggedIn } = this.props.isLoggedIn;
+    const { 
+      userMenuAnchor, 
+      profileMenuAnchor, 
+      loginMenuAnchor, 
+      mobileMoreAnchorEl, 
+      isLoggingIn, 
+      /*isIngredientRetrieved*/ } = this.state;
     const { classes } = this.props;
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);    
+    const isLoggedIn = this.props.isLoggedIn;
+    const isLoginMenuOpen = Boolean(loginMenuAnchor);
+    const isUserMenuOpen = Boolean(userMenuAnchor);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);  
+    const isProfileMenuOpen = Boolean(profileMenuAnchor);  
 
-    const renderMenu = (
+    const renderProfileMenu = (
       <Menu
-        anchorEl={anchorEl}
+        anchorEl={profileMenuAnchor}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
+        open={isProfileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>Profile</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>My account</MenuItem>
         <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
       </Menu>
     );
 
     const renderLoginMenu = (
     	<Menu
-      	anchorEl={anchorEl}
+      	anchorEl={loginMenuAnchor}
       	anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       	transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      	open={isMenuOpen}
+      	open={isLoginMenuOpen}
       	onClose={this.handleMenuClose}
       >
-      	<MenuItem onClick={this.handleLoginChange}>Login</MenuItem>
-      	<MenuItem onClick={this.handleMenuClose}>Create Account</MenuItem>
+      	<MenuItem onClick={() => this.handlePageChange('loginPage')}>Login</MenuItem>
+        <MenuItem onClick={() => this.handlePageChange('registerPage')}>Create Account</MenuItem>
+      </Menu>
+    );
+
+    const renderUserMenu = (
+      <Menu
+        anchorEl={userMenuAnchor}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        open={isUserMenuOpen}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem onClick={() => this.handleProfileSubpageChange('pantry')}>Pantry</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
+        <MenuItem onClick={() => this.handlePageChange('createRecipePage')}>Create Recipe</MenuItem>
       </Menu>
     );
 
@@ -242,6 +291,7 @@ class MainNavBar extends Component {
     	</div>
     );
 
+    /*
     const renderIngredient = (
       <div>
         <Ingredient
@@ -250,6 +300,7 @@ class MainNavBar extends Component {
         />
       </div>
     );
+    */
 
     const renderMobileMenu = (
       <Menu
@@ -272,18 +323,25 @@ class MainNavBar extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
+            <IconButton 
+              className={classes.menuButton} 
+              color="inherit" aria-label="Open drawer"
+              onClick={this.handleUserMenuOpen}
+            >
               <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-              Cookable
-            </Typography>
+            <Button 
+            	className={classes.title}
+            	color="inherit" 
+            	onClick={() => this.handlePageChange('recommendationsPage')}>
+              	Cookable
+            </Button>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder="Search/Add Ingredients…"
+                placeholder={(this.state.searchStatus === false) ? "Search by recipe ..." : "Search by ingredient ..."}
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -295,19 +353,38 @@ class MainNavBar extends Component {
               />
             </div>
             <div>
-              <Button onClick={this.handleSearch}>
+              <Button onClick={this.handleSearch} color="inherit">
                 Search
               </Button>
             </div>
-            <div>
-              <Button onClick={this.handleAddIngredient}>
+            {/*<div>
+              <Button onClick={this.handleAddIngredient} color="inherit">
                 Add
               </Button>
+            </div>*/}
+            <div>
+              <Typography className={classes.switch} color="inherit">
+                Recipe
+              </Typography>
+            </div>
+            <div>
+              <Switch
+                id="searchStatus"
+                checked={this.state.searchStatus}
+                onChange={this.handleSearchStatusChange}
+                value="checkedA"
+                color="default"
+              />
+            </div>
+            <div>
+              <Typography color="inherit">
+                Ingredient
+              </Typography>
             </div>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton
-                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+                aria-owns={isProfileMenuOpen ? 'material-appbar' : undefined}
                 aria-haspopup="true"
                 onClick={isLoggedIn ? this.handleProfileMenuOpen : this.handleLoginMenuOpen}
                 color="inherit"
@@ -322,10 +399,11 @@ class MainNavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        {isLoggedIn ? renderMenu : renderLoginMenu}
+        {isLoggedIn ? renderProfileMenu : renderLoginMenu}
+        {renderUserMenu}
         {renderMobileMenu}
         {isLoggingIn ? renderLogin : undefined}
-        {isIngredientRetrieved ? renderIngredient : undefined}
+        {/*isIngredientRetrieved ? renderIngredient : undefined*/}
       </div>
     );
   }
