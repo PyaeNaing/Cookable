@@ -8,7 +8,7 @@ class Ingredient extends Component {
     	this.state = {
       		query: this.props.query
     	};
-    }
+  }
 
   render() {
 
@@ -29,7 +29,7 @@ class Ingredient extends Component {
 
   	return (
   		<div>
-  			<Paper p='60px' elevation={2} square={true}>
+  			<Paper p='60px' square={true}>
   				<Typography variant="h5" component="h3">
         		Thank you for using Cookable! Here are the ingredient search results containing: '{this.props.query}'.
       		</Typography>
