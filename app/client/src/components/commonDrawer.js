@@ -14,7 +14,9 @@ import AccountBox2tone from '@material-ui/icons/AccountBoxTwoTone';
 import StarBorderTwoTone from '@material-ui/icons/StarBorderTwoTone';
 import PaletteTwoTone from '@material-ui/icons/PaletteTwoTone';
 import Pantry from "./pantry";
+import Favorites from "./favorites";
 import ProfileSettings from "./profile";
+import MyRecipes from "./myRecipes";
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -36,9 +38,9 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit
   },
-  toolbar: theme.mixins.toolbar,
+  // toolbar: theme.mixins.toolbar,
   avatar: {
     margin: 10
   },
@@ -77,6 +79,12 @@ class CommonDrawer extends Component {
       const renderPantry = (
         <Pantry handleSubPageChange={this.handleSubPageChange} />
       );
+      const renderFavorites = (
+        <Favorites handleSubPageChange={this.handleSubPageChange} />
+      );
+      const renderMyRecipes = (
+        <MyRecipes handleSubPageChange={this.handleSubPageChange} />
+      );
       const renderProfile = (
         <ProfileSettings />
       );
@@ -84,7 +92,6 @@ class CommonDrawer extends Component {
         return (
             <div className={classes.root}>
               <CssBaseline />
-              {/* Clipped drawer toolbar removed as depreceated */}
               <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -92,14 +99,11 @@ class CommonDrawer extends Component {
                   paper: classes.drawerPaper
                 }}
               >
-                <div className={classes.toolbar} />
                 <Avatar
                   alt="Profile picture"
                   src="/static/images/avatar/1.jpg"
                   className={classes.bigAvatar}
                 />
-                <br />
-                <br />
                 <MenuList>
                 <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('profileSettings') }>
                   <ListItemIcon className={classes.icon}>
@@ -113,13 +117,13 @@ class CommonDrawer extends Component {
                   </ListItemIcon>
                   <ListItemText classes={{ primary: classes.primary }} inset primary="Pantry" />
                 </MenuItem>
-                <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('pantry')}>
+                <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('favorites')}>
                   <ListItemIcon className={classes.icon}>
                     <StarBorderTwoTone />
                   </ListItemIcon>
                   <ListItemText classes={{ primary: classes.primary }} inset primary="Favorites" />
                 </MenuItem>
-                <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('pantry')}>
+                <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('myRecipes')}>
                   <ListItemIcon className={classes.icon}>
                     <InboxIcon />
                   </ListItemIcon>
@@ -129,10 +133,10 @@ class CommonDrawer extends Component {
                 <Divider />
               </Drawer>
               <main className={classes.content}>
-                <div className={classes.toolbar} />
+                {/* <div className={classes.toolbar} /> */}
                 {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
+				        {(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }
 				        {(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
               </main>
             </div>
