@@ -4,6 +4,11 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { MenuItem } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+
+});
 
 const paper = {
 	height: '100vh',
@@ -24,7 +29,7 @@ const textField = {
   width: 200,
 };
 
-class profileSettings extends Component {
+class ProfileSettings extends Component {
     constructor(props) {
 		super(props);
 		this.state = {
@@ -48,7 +53,13 @@ class profileSettings extends Component {
 
 		const isLoggedIn = this.props.isLoggedIn;
 
-		const renderRecipeCreationPage = (
+		const { classes } = this.props;
+
+		// const renderRecipeCreationPage = (
+			
+		// );
+		return (
+		<div>
 			<div>
 				<Paper style={paper} square={true}>
 					<Typography style={pageTitle} variant="headline">Profile</Typography>
@@ -115,15 +126,13 @@ class profileSettings extends Component {
 					</form>
 				</Paper>
 			</div>
-		);
+		{ProfileSettings}
+		</div>
+);
+		
 
 
-		return (
-			<div>
-				{profileSettings}
-			</div>
-		);
 	}
 }
 
-export default profileSettings;
+export default withStyles(styles)(ProfileSettings);
