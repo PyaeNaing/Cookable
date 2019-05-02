@@ -60,7 +60,9 @@ class RegisterPage extends Component {
 
 	handleCreateUser = event => {
 		if (this.state.password === this.state.confirmPassword) {
-			axios.post('/v1/createUser', {
+      // Use '/api/v1/searchIngredients' when is production.
+      // Use '/v1/searchIngredients' when on local machine.
+			axios.post('/api/v1/createUser', {
 	      		username: this.state.username,
 	      		email: this.state.email,
 	      		password: this.state.password,
