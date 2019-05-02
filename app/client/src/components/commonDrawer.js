@@ -57,7 +57,7 @@ const styles = theme => ({
   }
 });
 
-class ClippedDrawer extends Component {
+class CommonDrawer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -67,12 +67,20 @@ class ClippedDrawer extends Component {
 
     handleSubPageChange = (page) => {
         this.setState({ currentSubPage: page });
+        console.log(this.state.currentPage);
     }
+
     
     render() {
 
       const { classes } = this.props;
       //const { currentSubPage } = this.currentSubPage;
+      const renderPantry = (
+        <Pantry handleSubPageChange={this.handleSubPageChange} />
+      );
+      const renderProfile = (
+        <ProfileSettings handleSubPageChange={this.handleSubPageChange} />
+      );
 
         return (
             <div className={classes.root}>
@@ -120,6 +128,10 @@ class ClippedDrawer extends Component {
                 </MenuItem>
               </MenuList>
                 <Divider />
+                {(this.state.currentSubPage === 'recommendationsPage') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'loginPage') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'registerPage') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'profilePage') ? renderProfile : undefined }
               </Drawer>
               <main className={classes.content}>
                 <div className={classes.toolbar} />
@@ -131,8 +143,8 @@ class ClippedDrawer extends Component {
     }
   }
   
-ClippedDrawer.propTypes = {
+CommonDrawer.propTypes = {
     classes: PropTypes.object.isRequired
   };
   
-export default withStyles(styles)(ClippedDrawer);
+export default withStyles(styles)(CommonDrawer);
