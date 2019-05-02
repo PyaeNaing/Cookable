@@ -64,12 +64,11 @@ class CommonDrawer extends Component {
       currentSubPage : 'pantry',
       };
     }
-
+    
     handleSubPageChange = (page) => {
-        this.setState({ currentSubPage: page });
-        console.log(this.state.currentPage);
+      this.setState({ currentSubPage: page });
+      console.log(this.state.currentSubPage);
     }
-
     
     render() {
 
@@ -79,7 +78,7 @@ class CommonDrawer extends Component {
         <Pantry handleSubPageChange={this.handleSubPageChange} />
       );
       const renderProfile = (
-        <ProfileSettings handleSubPageChange={this.handleSubPageChange} />
+        <ProfileSettings />
       );
 
         return (
@@ -102,7 +101,7 @@ class CommonDrawer extends Component {
                 <br />
                 <br />
                 <MenuList>
-                <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('ProfileSettings')}>
+                <MenuItem className={classes.menuItem} onClick={() => this.handleSubPageChange('profileSettings') }>
                   <ListItemIcon className={classes.icon}>
                     <AccountBox2tone />
                   </ListItemIcon>
@@ -128,14 +127,13 @@ class CommonDrawer extends Component {
                 </MenuItem>
               </MenuList>
                 <Divider />
-                {(this.state.currentSubPage === 'recommendationsPage') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'loginPage') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'registerPage') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'profilePage') ? renderProfile : undefined }
               </Drawer>
               <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Pantry />
+                {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
+				        {(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
               </main>
             </div>
           );
