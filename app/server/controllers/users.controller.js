@@ -83,6 +83,45 @@ exports.login = function(req, res){
         console.log(err);
       })
     }
-  ,exports.setPassword = function(password){
+  ,
+  exports.setPassword = function (password) {
     let salt = crypto.randomBytes(16).toString('hex');
+    let hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString();
+  },
+
+  exports.validatePassword = function (password) {
+    //get hash and salt from DB
+    let salt;
+    let hashDB;
+    let hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString();
+
+    return hash === hashDB;
+  },
+
+  exports.generateJWT = function () {
+    const today = new Date();
+    const expirationDate = new Date(today);
+    expirationDate.setDate(today.getDate() + 60);
+
+    //Get email and id from DB
+    let emailDB;
+    let idDB;
+
+    return jwt.sign({
+      email: emailDB,
+      id: idDB,
+      exp: parseInt(expirationDate.getTime() / 1000, 10),
+    }, 'secret');
+  },
+
+  exports.toAuthJSON = function()
+  {
+    let emailDB;
+    let idDB;
+    //Get email and ID from DB
+    return {
+      _id: idDB,
+      email: emailDB,
+      token: this.generateJWT(),
+    };
   }
