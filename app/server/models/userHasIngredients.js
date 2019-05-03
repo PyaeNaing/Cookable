@@ -6,10 +6,13 @@ const pantryHasIngredients =  db.define('pantryHasIngredients', {
     pantryID:{
         type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true
     },
     ingredientID:{
-        type: Sequelize.INTEGER,
-        primaryKey: true,
+        type: Sequelize.INTEGER
+    },
+    userID:{
+        type: Sequelize.INTEGER
     }
 })
 

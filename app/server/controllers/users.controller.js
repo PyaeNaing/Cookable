@@ -44,11 +44,19 @@ exports.createUser = function (req, res) {
       }
     }).then(result => {
 
-      console.log(result);
-      let hash = crypto.pbkdf2Sync(req.body.password, result.body.salt, 10000, 512, 'sha512').toString();
+      console.log(result.salt);
+      let hash = crypto.pbkdf2Sync(req.body.password, result.salt, 10000, 512, 'sha512').toString();
 
       if (result != null && result.password === hash) {
-        res.send(result);
+        res.send(
+          {
+            "userID": result.userID,
+            "username": result.username,
+            "emailAddress": result.emailAddress,
+            "createdAt": result.createdAt,
+            "pantryID": result.pantryID
+          }
+        );
       }
       else {
         res.send('False');
