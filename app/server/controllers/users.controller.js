@@ -8,46 +8,55 @@ const crypto = require('crypto');
 const Op = Sequelize.Op;
 
 exports.createUser = function (req, res) {
-        let pass = req.body.password;
-        pass = Buffer.from(pass, 'utf8').toString('base64');
+  let salt = crypto.randomBytes(16).toString('hex');
+  let pass = req.body.password;
+  let hash = crypto.pbkdf2Sync(pass, salt, 10000, 512, 'sha512').toString();
 
-        User.findOrCreate({
-            where: {
-            username: req.body.username,
-            password: pass,
-            emailAddress: req.body.email}})
-        .then(([user, created]) => {
-            console.log(created);
-            res.json({username: req.body.username,
-                password: pass,
-                emailAddress: req.body.email});
-          })
-          .catch(err => {
-           res.status(500).send('Error: Server side issue. '+err);
-           console.log(err)})
-        },
+  User.findOrCreate({
+    where: {
+      username: req.body.username,
+      password: hash,
+      emailAddress: req.body.email,
+      salt: salt
+    }
+  })
+    .then(([user, created]) => {
+      console.log(created);
+      res.json({
+        username: req.body.username,
+        password: pass,
+        emailAddress: req.body.email
+      });
+    })
+    .catch(err => {
+      if (err.name == 'SequelizeUniqueConstraintError') {
+        res.send("Username and/or Email already in use");
+      }
+      else { res.status(500).send('Error: Server side issue. ' + err); }
+    })
+},
 
-exports.login = function(req, res){
-
-    let pass = req.body.password;
-        pass = Buffer.from(pass, 'utf8').toString('base64');
+  exports.login = function (req, res) {
 
     User.findOne({
-        where: {
-            [Op.or]: [{username: req.body.user}, {emailAddress: req.body.user}],
-            password: pass
-          }
+      where: {
+        [Op.or]: [{ username: req.body.user }, { emailAddress: req.body.user }]
+      }
     }).then(result => {
-        if(result != null){
-            res.send(result);
-        }
-        else{
-            res.send('False');
-        }
-    }).catch(err => res.status(500).send('Error: Please send correct object'+err));
+
+      console.log(result);
+      let hash = crypto.pbkdf2Sync(req.body.password, result.body.salt, 10000, 512, 'sha512').toString();
+
+      if (result != null && result.password === hash) {
+        res.send(result);
+      }
+      else {
+        res.send('False');
+      }
+    }).catch(err => res.status(500).send('Error: Please send correct object' + err));
   },
 
-  exports.addIngredienttoPantry = function(req, res) {
+  exports.addIngredienttoPantry = function (req, res) {
     User.findOne({
       where: {
         userID: req.body.userID
@@ -55,7 +64,7 @@ exports.login = function(req, res){
     })
       .then(result => {
         if (result != null) {
-          if(result.pantryID != null){
+          if (result.pantryID != null) {
             console.log('Null');
           }
           Ingredient.findOne({
@@ -67,7 +76,7 @@ exports.login = function(req, res){
               if (iresult != null) {
                 res.send(iresult);
               } else {
-                  res.status(404).send('Error: ingredient not found')
+                res.status(404).send('Error: ingredient not found')
               }
             })
             .catch(err => {
@@ -82,11 +91,13 @@ exports.login = function(req, res){
         res.send("Error");
         console.log(err);
       })
-    }
+  }
   ,
   exports.setPassword = function (password) {
     let salt = crypto.randomBytes(16).toString('hex');
     let hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString();
+
+
   },
 
   exports.validatePassword = function (password) {
@@ -114,8 +125,7 @@ exports.login = function(req, res){
     }, 'secret');
   },
 
-  exports.toAuthJSON = function()
-  {
+  exports.toAuthJSON = function () {
     let emailDB;
     let idDB;
     //Get email and ID from DB
