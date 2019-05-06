@@ -4,8 +4,8 @@ const Sequelize = require('sequelize');
 const Pantry = require('../models/pantry')
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-
 const Op = Sequelize.Op;
+let secretOrKey = 'cinamonbun';
 
 exports.createUser = function (req, res) {
   let salt = crypto.randomBytes(16).toString('hex');
@@ -48,15 +48,20 @@ exports.createUser = function (req, res) {
       let hash = crypto.pbkdf2Sync(req.body.password, result.salt, 10000, 512, 'sha512').toString();
 
       if (result != null && result.password === hash) {
-        res.send(
-          {
-            "userID": result.userID,
-            "username": result.username,
-            "emailAddress": result.emailAddress,
-            "createdAt": result.createdAt,
-            "pantryID": result.pantryID
-          }
-        );
+
+        let payload = { sub: result.userID };
+        let token = jwt.sign(payload, secretOrKey);
+        res.json({ msg: 'ALL OK', token: token });
+
+        // res.send(
+        //   {
+        //     "userID": result.userID,
+        //     "username": result.username,
+        //     "emailAddress": result.emailAddress,
+        //     "createdAt": result.createdAt,
+        //     "pantryID": result.pantryID
+        //   }
+        //);
       }
       else {
         res.send('False');
@@ -99,22 +104,6 @@ exports.createUser = function (req, res) {
         res.send("Error");
         console.log(err);
       })
-  }
-  ,
-  exports.setPassword = function (password) {
-    let salt = crypto.randomBytes(16).toString('hex');
-    let hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString();
-
-
-  },
-
-  exports.validatePassword = function (password) {
-    //get hash and salt from DB
-    let salt;
-    let hashDB;
-    let hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString();
-
-    return hash === hashDB;
   },
 
   exports.generateJWT = function () {
