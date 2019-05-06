@@ -19,7 +19,7 @@ const Recipe = require("../controllers/recipe.controller");
  router.post("/recipe/create", Recipe.createRecipe);
  router.post("/user/pantry", Recipe.searchRecipe);
  
- router.post("/test", UserController.addIngredienttoPantry);
+ router.post("/test", Recipe.searchByRecipe);
 
 //  router.get("/test", Recipe.testSearch);
 

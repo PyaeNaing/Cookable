@@ -50,6 +50,36 @@ exports.getRecommendation = async function(req, res) {
   } catch (e) {}
 };
 
+
+exports.searchByRecipe = async function(req, res) {
+
+  try {
+    Recipe.findAll({
+      where: {
+        recipeName: {[Op.like] : '%' + req.body.recipeName + '%'}
+      }
+    }).then(result =>{
+      res.json(result);
+    }).catch()
+  } catch (e) {}
+}
+
+
+exports.searchByIngredients = async function(req, res){
+/*  
+  try {
+    Recipe.findAll({
+      where: {
+        ingedient: {[Op.like] : '%' + req.body.recipeName + '%'}
+      }
+    }).then(result =>{
+      res.json(result);
+    }).catch()
+  } catch (e) {}
+  */
+}
+
+
 function getarray(recipe) {
   let arr = [];
   for (let i = 0; i < 8; i++) {
