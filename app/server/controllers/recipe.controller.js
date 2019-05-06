@@ -74,7 +74,7 @@ exports.searchByIngredient = async function (req, res) {
     ingredientused = await getRecipeByIngredient(req);
 
     arr = await getarrayinorder(ingredientused);
-    recipe = await getRecipe(arr);
+    recipe = await getRecipei(arr);
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
     console.log(arr);
@@ -155,7 +155,7 @@ function getImageUrl(arr) {
   });
 }
 
-function getRecipe(arr) {
+function getRecipei(arr) {
   return Recipe.findAll({
     where: {
       recipeID: arr

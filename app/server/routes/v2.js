@@ -21,10 +21,8 @@ router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 router.get("/recipe/search", Recipe.searchRecipe);
 router.post("/recipe/create", Recipe.createRecipe);
 router.post("/user/pantry", Recipe.searchRecipe);
-
 router.get("/searchByRecipe", Recipe.searchByRecipe);
 router.get("/searchByIngredient", Recipe.searchByIngredient);
-
 router.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
     
     res.json({ msg: 'Congrats! You are seeing this because you are authorized'});
