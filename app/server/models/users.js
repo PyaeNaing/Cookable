@@ -35,13 +35,7 @@ const users = db.define('users', {
   },
   createdAt: {
     type: Sequelize.DATE,
-  },
-  pantryID: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
   }
-}, {
-
-  })
+}, {})
 
 module.exports = users;

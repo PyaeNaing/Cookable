@@ -17,5 +17,4 @@ const ingredientsListFull = db.define('ingredientsListFull',{
         type: Sequelize.STRING,
     },
 })
-
 module.exports = ingredientsListFull;
