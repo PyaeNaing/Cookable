@@ -1,10 +1,10 @@
 const Recipe = require("../models/recipe");
 const Sequelize = require("sequelize");
 const recipeImages = require("../models/recipeImages");
-const ingredientList = require("../models/ingredientsListFull")
+const ingredientList = require("../models/ingredientsListFulls");
 const Op = Sequelize.Op;
 
-exports.createRecipe = function(req, res) {
+exports.createRecipe = function (req, res) {
   Recipe.create({
     recipeName: req.body.recipeName,
     description: req.body.description,
@@ -25,7 +25,7 @@ exports.createRecipe = function(req, res) {
     });
 };
 
-exports.searchRecipe = function(req, res) {
+exports.searchRecipe = function (req, res) {
   (limit = 20),
     Recipe.findOne({
       where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
@@ -33,12 +33,12 @@ exports.searchRecipe = function(req, res) {
       .then(recipes => {
         res.json({ recipe: recipes });
       })
-      .catch(function(err) {
+      .catch(function (err) {
         res.send("error");
       });
 };
 
-exports.getRecommendation = async function(req, res) {
+exports.getRecommendation = async function (req, res) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -48,11 +48,11 @@ exports.getRecommendation = async function(req, res) {
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
     res.json(recipe);
-  } catch (e) {}
+  } catch (e) { }
 };
 
 
-exports.searchByRecipe = async function(req, res) {
+exports.searchByRecipe = async function (req, res) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -62,59 +62,80 @@ exports.searchByRecipe = async function(req, res) {
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
     res.json(recipe);
-  } catch (e) {}
+  } catch (e) { }
 }
 
-function getRecipeByName(req){
+exports.searchByIngredient = async function (req, res) {
+  let recipe;
+  let ingredientused;
+  let arr = [];
+  let recipeurl;
+  try {
+    ingredientused = await getRecipeByIngredient(req);
+
+    arr = await getarrayinorder(ingredientused);
+    recipe = await getRecipe(arr);
+    recipeurl = await getImageUrl(arr);
+    recipe = await combinethem(recipe, recipeurl)
+    console.log(arr);
+    res.json(recipe);
+  } catch (e) { }
+}
+
+// helper functions
+
+function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
-      recipeName: {[Op.like] : '%' + req.query.recipeName + '%'}
+      recipeName: { [Op.like]: '%' + req.query.recipeName + '%' }
     }
   });
 }
 
-exports.searchByIngredient = async function(req, res){
-  let recipe;
-  let arr = [];
-  let recipeurl;
-  try {
-    recipe = await getRecipeByIngredient(req);
-    // arr = await getarray(recipe);
-    // recipeurl = await getImageUrl(arr);
-    // recipe = await combinethem(recipe, recipeurl)
-    res.json(recipe);
-  } catch (e) {}
-}
-
-
-
-function getRecipeByIngredient(req){
+function getRecipeByIngredient(req) {
   return ingredientList.findAll({
     where: {
-      //ingredientsFull: {[Op.like] : '%' + req.query.ingredientName + '%'},
-      recipeID: req.query.recipeID,
-    },  raw: true
-  });
+      ingredientsFull: { [Op.like]: '%' + req.query.ingredientName + '%' },
+    }, raw: true
+  })
+}
+
+function getarrayinorder(recipe) {
+  let arr = [];
+  let temp = -1;
+  for (let i = 0; i < recipe.length; i++) {
+    if (temp != recipe[i].recipeID) {
+      arr[i] = recipe[i].recipeID;
+      temp = arr[i];
+      recipe[i].url = 'https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg';
+    }
+    else{
+      recipe.splice(i, 1);
+      i--;
+    }
+  }
+  return arr;
 }
 
 function getarray(recipe) {
   let arr = [];
   for (let i = 0; i < recipe.length; i++) {
-    arr[i] = recipe[i].recipeID;
-    recipe[i].url = 'https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg';
+    {
+      arr[i] = recipe[i].recipeID;
+      recipe[i].url = 'https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg';
+    }
   }
   return arr;
 }
 
 function combinethem(recipe, recipeUrl) {
   for (let i = 0; i < recipe.length; i++) {
-      for(let j = 0; j < recipeUrl.length; j++)
-      {
-          if(recipe[i].recipeID === recipeUrl[j].recipeID){
-            recipe[i].url = recipeUrl[j].recipeImageDir;
-            break;
-          }
+    for (let j = 0; j < recipeUrl.length; j++) {
+      if (recipe[i].recipeID === recipeUrl[j].recipeID) {
+        recipe[i].url = recipeUrl[j].recipeImageDir;
+        break;
       }
+    }
   }
   return recipe;
 }
@@ -134,11 +155,10 @@ function getImageUrl(arr) {
   });
 }
 
-exports.test = function(req, res) {
-  console.log('called')
-  ingredientList.findOne({
-    where: { ingredientsListFullID: 10},
-  }).then(r => {
-    res.send(r);
-  })
-};
+function getRecipe(arr) {
+  return Recipe.findAll({
+    where: {
+      recipeID: arr
+    }
+  });
+}

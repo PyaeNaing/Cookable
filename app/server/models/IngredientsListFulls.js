@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const ingredientsListFull = db.define('ingredientsListFull',{
+const ingredientsListFulls = db.define('ingredientsListFulls',{
     ingredientsListFullID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -17,4 +17,4 @@ const ingredientsListFull = db.define('ingredientsListFull',{
         type: Sequelize.STRING,
     },
 })
-module.exports = ingredientsListFull;
+module.exports = ingredientsListFulls;

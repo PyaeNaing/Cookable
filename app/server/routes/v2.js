@@ -24,7 +24,6 @@ router.post("/user/pantry", Recipe.searchRecipe);
 
 router.get("/searchByRecipe", Recipe.searchByRecipe);
 router.get("/searchByIngredient", Recipe.searchByIngredient);
-router.post("/test", Recipe.test);
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), function(req, res) {
     

@@ -19,6 +19,7 @@ router.get("/searchRecipe", Recipe.searchRecipe);
 router.post("/createRecipe", Recipe.createRecipe);
 router.get("/recommendation", Recipe.getRecommendation);
 router.get("/searchByRecipe", Recipe.searchByRecipe);
+router.get("/searchByIngredient", Recipe.searchByIngredient);
 
 
 module.exports = router;
