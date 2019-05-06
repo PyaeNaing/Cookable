@@ -18,10 +18,10 @@ const Recipe = require("../controllers/recipe.controller");
  router.get("/recipe/search", Recipe.searchRecipe);
  router.post("/recipe/create", Recipe.createRecipe);
  router.post("/user/pantry", Recipe.searchRecipe);
+ router.get("/recipe/searchByRecipe", Recipe.searchByRecipe);
  
- router.post("/test", Recipe.searchByRecipe);
-
-//  router.get("/test", Recipe.testSearch);
-
+ router.get("/searchByRecipe", Recipe.searchByRecipe);
+ router.get("/searchByIngredient", Recipe.searchByIngredient);
+ router.post("/test", Recipe.test);
 
 module.exports = router;

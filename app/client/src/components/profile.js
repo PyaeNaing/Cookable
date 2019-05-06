@@ -1,138 +1,161 @@
-import React, { Component } from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { MenuItem } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import Button from '@material-ui/core/Button';
+
 
 const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    height: 140,
+    width: 100,
+  },
+  control: {
+    padding: theme.spacing.unit * 2,
+  },
+  pageTitle: {
 
+  },
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: 25,
+    marginRight: 25,
+    width: 200
+  },
 });
 
-const paper = {
-	height: '100vh',
-};
-
-const container = {
-	display: 'flex',
-  flexWrap: 'wrap',
-};
-
-const pageTitle = {
-	paddingTop: 10,
-};
-
-const textField = {
-  marginLeft: 25,
-  marginRight: 25,
-  width: 200,
-};
-
-class ProfileSettings extends Component {
-    constructor(props) {
-		super(props);
-		this.state = {
-			fName: "",
-			lName: "",
-			gender: "",
-			email: "",
-			username: "",
-			dob: "",
-		};
+class ProfileSettings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fName: "",
+      lName: "",
+      gender: "",
+      email: "",
+      username: "",
+      dob: "",
+      oldPassword: "",
+      newPassword: "",
     };
+  }
+  state = {
+    spacing: '16',
+  };
 
-    // Just a handleChange needed as per controls
-    handleChange = event => {
-		this.setState({
-			[event.target.id]: event.target.value
-		});
-	};
+  handleChange = key => (event, value) => {
+    this.setState({
+      [key]: value,
+    });
+  };
 
-    render() {
+  render() {
+    const { classes } = this.props;
+    const { spacing } = this.state;
 
-		const isLoggedIn = this.props.isLoggedIn;
-
-		const { classes } = this.props;
-
-		// const renderRecipeCreationPage = (
-			
-		// );
-		return (
-		<div>
-			<div>
-				<Paper style={paper} square={true}>
-					<Typography style={pageTitle} variant="headline">Profile</Typography>
-					<form style={container}>
-						<TextField
-							style={textField}
-							id="fName"
-							label="First Name"
-							value={this.state.fName}
-							onChange={this.handleChange}
-							margin="normal"
-							variant="outlined"
-						/>
-						<TextField
-							style={textField}
-							id="lName"
-							label="Last Name"
-							value={this.state.lName}
-							onChange={this.handleChange}
-							margin="normal"
-							variant="outlined"
-						/>
-                        <MenuItem>
-                            <MenuItem>Male</MenuItem>
-                            <MenuItem>Female</MenuItem> 
-                            <MenuItem>Don't want to specify</MenuItem>
-                        </MenuItem>
-						<TextField
-							style={textField}
-							id="calorieCount"
-							label="Calorie Count"
-							value={this.state.calorieCount}
-							onChange={this.handleChange}
-							margin="normal"
-							variant="outlined"
-						/>
-						<TextField
-							style={textField}
-							id="ingredients"
-							label="Ingredients"
-							value={this.state.ingredients}
-							onChange={this.handleChange}
-							margin="normal"
-							variant="outlined"
-						/>
-						<TextField
-							style={textField}
-							id="cuisine"
-							label="Cuisine"
-							value={this.state.cuisine}
-							onChange={this.handleChange}
-							margin="normal"
-							variant="outlined"
-						/>
-						<TextField
-							style={textField}
-							id="recipeDirections"
-							label="Recipe Directions"
-							value={this.state.recipeDirections}
-							onChange={this.handleChange}
-							margin="normal"
-							variant="outlined"
-						/>
-					</form>
-				</Paper>
-			</div>
-		{ProfileSettings}
-		</div>
-);
-		
-
-
-	}
+    return (
+      <Grid container className={classes.root} spacing={16}>
+        <Grid item xs={12}>
+          <Grid container className={classes.demo} justify="center" spacing={Number(spacing)}>
+            <Paper >
+              <Typography style={styles.pageTitle} variant="headline">Profile</Typography>
+              <form style={styles.container}>
+                    <TextField
+                      style={styles.textField}
+                      id="fName"
+                      label="First Name"
+                      value={this.state.fName}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      style={styles.textField}
+                      id="lName"
+                      label="Last Name"
+                      value={this.state.lName}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <MenuItem>
+                      <MenuItem>Male</MenuItem>
+                      <MenuItem>Female</MenuItem>
+                      <MenuItem>Don't want to specify</MenuItem>
+                    </MenuItem>
+                    <TextField
+                      style={styles.textField}
+                      id="username"
+                      label="Username"
+                      value={this.state.username}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <TextField
+                      style={styles.textField}
+                      id="dob"
+                      label="Date of Birth"
+                      value={this.state.dob}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+                    />
+                    <Button variant="contained" className={classes.button}>
+                    Save Info
+                    </Button>
+                    <Button variant="contained" className={classes.button}>
+                    Return without Saving
+                    </Button>
+                    />
+                  </form>
+            </Paper>
+            <Paper >
+              <Typography style={styles.pageTitle} variant="headline">Update Password</Typography>
+              <TextField
+                      style={styles.textField}
+                      id="oldPassword"
+                      label="Old Password"
+                      value={this.state.oldPassword}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+                    />
+              <TextField
+                      style={styles.textField}
+                      id="newPassword"
+                      label="New Password"
+                      value={this.state.newPassword}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+                    />
+              <Button variant="contained" className={classes.button}>
+              Update Password
+              </Button>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  }
 }
+
+ProfileSettings.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(ProfileSettings);

@@ -1,6 +1,7 @@
 const Recipe = require("../models/recipe");
 const Sequelize = require("sequelize");
 const recipeImages = require("../models/recipeImages");
+const ingredientList = require("../models/ingredientsListFull")
 const Op = Sequelize.Op;
 
 exports.createRecipe = function(req, res) {
@@ -52,37 +53,53 @@ exports.getRecommendation = async function(req, res) {
 
 
 exports.searchByRecipe = async function(req, res) {
-
+  let recipe;
+  let arr = [];
+  let recipeurl;
   try {
-    Recipe.findAll({
-      where: {
-        recipeName: {[Op.like] : '%' + req.body.recipeName + '%'}
-      }
-    }).then(result =>{
-      res.json(result);
-    }).catch()
+    recipe = await getRecipeByName(req);
+    arr = await getarray(recipe);
+    recipeurl = await getImageUrl(arr);
+    recipe = await combinethem(recipe, recipeurl)
+    res.json(recipe);
+  } catch (e) {}
+}
+
+function getRecipeByName(req){
+  return Recipe.findAll({
+    where: {
+      recipeName: {[Op.like] : '%' + req.query.recipeName + '%'}
+    }
+  });
+}
+
+exports.searchByIngredient = async function(req, res){
+  let recipe;
+  let arr = [];
+  let recipeurl;
+  try {
+    recipe = await getRecipeByIngredient(req);
+    // arr = await getarray(recipe);
+    // recipeurl = await getImageUrl(arr);
+    // recipe = await combinethem(recipe, recipeurl)
+    res.json(recipe);
   } catch (e) {}
 }
 
 
-exports.searchByIngredients = async function(req, res){
-/*  
-  try {
-    Recipe.findAll({
-      where: {
-        ingedient: {[Op.like] : '%' + req.body.recipeName + '%'}
-      }
-    }).then(result =>{
-      res.json(result);
-    }).catch()
-  } catch (e) {}
-  */
-}
 
+function getRecipeByIngredient(req){
+  return ingredientList.findAll({
+    where: {
+      //ingredientsFull: {[Op.like] : '%' + req.query.ingredientName + '%'},
+      recipeID: req.query.recipeID,
+    },  raw: true
+  });
+}
 
 function getarray(recipe) {
   let arr = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < recipe.length; i++) {
     arr[i] = recipe[i].recipeID;
     recipe[i].url = 'https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg';
   }
@@ -117,12 +134,11 @@ function getImageUrl(arr) {
   });
 }
 
-exports.testSearch = function(req, res) {
-  Recipe.findAll({
-    where: {
-      recipeID: id
-    }
-  }).then(recipe => {
-    res.json(recipe);
-  });
+exports.test = function(req, res) {
+  console.log('called')
+  ingredientList.findOne({
+    where: { ingredientsListFullID: 10},
+  }).then(r => {
+    res.send(r);
+  })
 };
