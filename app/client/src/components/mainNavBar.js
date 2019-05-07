@@ -12,7 +12,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -99,7 +98,6 @@ class MainNavBar extends Component {
       profileMenuAnchor: null,
       loginMenuAnchor: null,
       mobileMoreAnchorEl: null,
-      isLoggingIn: false,
       searchInput: '',
       searchStatus: false,
     };
@@ -218,8 +216,7 @@ class MainNavBar extends Component {
       userMenuAnchor, 
       profileMenuAnchor, 
       loginMenuAnchor, 
-      mobileMoreAnchorEl, 
-      isLoggingIn, } = this.state;
+      mobileMoreAnchorEl, } = this.state;
     const { classes } = this.props;
     const isLoggedIn = this.props.isLoggedIn;
     const username = this.props.username;
@@ -267,15 +264,18 @@ class MainNavBar extends Component {
         <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
         <MenuItem onClick={((this.props.isLoggedIn) ? ( () => this.handlePageChange('createRecipePage') ) : (() => this.handlePageChange('loginPage')) )}>Create Recipe</MenuItem>
-        
       </Menu>
     );
 
-    const renderLogin = (
+    const renderUserButton = (
     	<div>
-    		<Login
-
-        />
+    		<IconButton 
+            className={classes.menuButton} 
+            color="inherit" aria-label="Open drawer"
+            onClick={this.handleUserMenuOpen}
+          >
+              <MenuIcon />
+        </IconButton>
     	</div>
     );
 
@@ -300,13 +300,7 @@ class MainNavBar extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton 
-              className={classes.menuButton} 
-              color="inherit" aria-label="Open drawer"
-              onClick={this.handleUserMenuOpen}
-            >
-              <MenuIcon />
-            </IconButton>
+            {this.props.isLoggedIn ? renderUserButton : undefined}
             <Button 
             	className={classes.title}
             	color="inherit" 
@@ -360,7 +354,6 @@ class MainNavBar extends Component {
         {isLoggedIn ? renderProfileMenu : renderLoginMenu}
         {renderUserMenu}
         {renderMobileMenu}
-        {isLoggingIn ? renderLogin : undefined}
       </div>
     );
   }
