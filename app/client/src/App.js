@@ -1,7 +1,17 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import axios from "axios";
 import "./styles/App.css";
 import MainPage from './pageLayouts/mainPage.js';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
+const styles = theme => ({
+  progress: {
+    flexGrow: 1,
+    paddingTop: theme.spacing.unit * 50,
+  },
+});
 
 class App extends Component {
 
@@ -9,6 +19,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
+      completed: 0,
       loginStatus: false,
       user: {
         userID: '',
@@ -21,6 +33,24 @@ class App extends Component {
   componentWillMount() {
     this.handleSessionAuthorization();
   }
+
+  componentDidMount() {
+    this.timer = setInterval(this.progress, 500);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  progress = () => {
+    const { completed } = this.state;
+    if (completed === 100) {
+      this.setState({ completed: 0, isLoading: false });
+    } else {
+      const diff = Math.random() * 300;
+      this.setState({ completed: Math.min(completed + diff, 100) });
+    }
+  };
 
   handleLogin = (status) => {
     this.setState({ loginStatus: status });
@@ -49,8 +79,7 @@ class App extends Component {
         })
         .then((response) => {
             console.log(response);
-            this.setState({ loginStatus: true });
-            this.setState({ user: response.data});
+            this.setState({ loginStatus: true, user: response.data });
         })
         .catch((error) => {
             console.log(error);
@@ -59,8 +88,12 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div className="App">
+
+    const isLoading = this.state.isLoading;
+    const { classes } = this.props;
+
+    const renderMainPage = (
+      <div>
         <MainPage 
           loginStatus={this.state.loginStatus}
           user={this.state.user}
@@ -70,7 +103,23 @@ class App extends Component {
         />
       </div>
     );
+
+    const renderLoading = (
+      <div className={classes.progress}>
+        <LinearProgress variant='determinate' value={this.state.completed}/>
+      </div>
+    );
+
+    return (
+      <div className="App">
+        {isLoading ? renderLoading : renderMainPage}
+      </div>
+    );
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(App);
