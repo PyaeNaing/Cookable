@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { MenuItem } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
-
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 const styles = theme => ({
   root: {
@@ -47,7 +48,7 @@ class ProfileSettings extends React.Component {
       gender: "",
       email: "",
       username: "",
-      dob: "",
+      dob: new Date(),
       oldPassword: "",
       newPassword: "",
     };
@@ -59,6 +60,12 @@ class ProfileSettings extends React.Component {
   handleChange = key => (event, value) => {
     this.setState({
       [key]: value,
+    });
+  };
+
+  handleDateChange = (date) => {
+    this.setState({
+      dob: date,
     });
   };
 
@@ -105,14 +112,19 @@ class ProfileSettings extends React.Component {
                       margin="normal"
                       variant="outlined"
                     />
-                    <TextField
+                    {/* <TextField
                       style={styles.textField}
                       id="dob"
                       label="Date of Birth"
                       value={this.state.dob}
-                      onChange={this.handleChange}
+                      onChange={this.handleDateChange}
                       margin="normal"
                       variant="outlined"
+                    /> */}
+                    <DatePicker
+                      style={styles.textField}
+                      selected={this.state.dob}
+                      onChange={this.handleDateChange}
                     />
                     <Button variant="contained" className={classes.button}>
                     Save Info
@@ -120,7 +132,6 @@ class ProfileSettings extends React.Component {
                     <Button variant="contained" className={classes.button}>
                     Return without Saving
                     </Button>
-                    />
                   </form>
             </Paper>
             <Paper >
