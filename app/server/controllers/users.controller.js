@@ -51,17 +51,13 @@ exports.createUser = function (req, res) {
 
         let payload = { sub: result.userID };
         let token = jwt.sign(payload, secretOrKey);
-        res.json({ msg: 'ALL OK', token: token });
-
-        // res.send(
-        //   {
-        //     "userID": result.userID,
-        //     "username": result.username,
-        //     "emailAddress": result.emailAddress,
-        //     "createdAt": result.createdAt,
-        //     "pantryID": result.pantryID
-        //   }
-        //);
+        res.json({
+          "userID": result.userID,
+          "username": result.username,
+          "emailAddress": result.emailAddress,
+          "createdAt": result.createdAt,
+          token: token
+        });
       }
       else {
         res.send('False');

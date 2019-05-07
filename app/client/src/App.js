@@ -11,12 +11,14 @@ class App extends Component {
     this.state = {
       loginStatus: false,
       user: {
-        userName: 'Test',
+        userID: '',
+        userName: '',
+        emailAddress: '',
       }
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.handleSessionAuthorization();
   }
 
@@ -48,7 +50,6 @@ class App extends Component {
         .then((response) => {
             console.log(response);
             this.setState({ loginStatus: true });
-            console.log(this.state.loginStatus);
         })
         .catch((error) => {
             console.log(error);
