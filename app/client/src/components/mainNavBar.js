@@ -266,7 +266,8 @@ class MainNavBar extends Component {
         <MenuItem onClick={() => this.handleProfileSubpageChange('pantry')}>Pantry</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
-        <MenuItem onClick={() => this.handlePageChange('createRecipePage')}>Create Recipe</MenuItem>
+        <MenuItem onClick={((this.props.isLoggedIn) ? ( () => this.handlePageChange('createRecipePage') ) : (() => this.handlePageChange('loginPage')) )}>Create Recipe</MenuItem>
+        
       </Menu>
     );
 
