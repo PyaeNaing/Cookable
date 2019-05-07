@@ -59,7 +59,7 @@ class LoginPage extends Component {
 	handleLogin = event => {
   // Use '/api/v1/searchIngredients' when is production.
   // Use '/v1/searchIngredients' when on local machine.
-		axios.post('/api/v1/login', {
+		axios.post('/v1/login', {
       		user: this.state.user,
       		password: this.state.password,
 	    })

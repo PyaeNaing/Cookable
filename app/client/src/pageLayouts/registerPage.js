@@ -62,7 +62,7 @@ class RegisterPage extends Component {
 		if (this.state.password === this.state.confirmPassword) {
       // Use '/api/v1/searchIngredients' when is production.
       // Use '/v1/searchIngredients' when on local machine.
-			axios.post('/api/v1/createUser', {
+			axios.post('/v1/createUser', {
 	      		username: this.state.username,
 	      		email: this.state.email,
 	      		password: this.state.password,

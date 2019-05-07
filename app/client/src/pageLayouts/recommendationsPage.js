@@ -78,7 +78,7 @@ class RecommendationsPage extends Component {
 	handleRecommendations = event => {
 	// Use '/api/v1/searchIngredients' when is production.
 	// Use '/v1/searchIngredients' when on local machine.
-		axios.get('/api/v1/recommendation')
+		axios.get('/v1/recommendation')
 		.then((response) => {
 			if(response.data.length === 0) {
 				console.log("Recommendations could not be retreived.");

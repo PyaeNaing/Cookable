@@ -12,6 +12,7 @@ class MainPage extends Component {
 		super(props);
 		this.state = {
 			loginStatus: false,
+			user: [],
 			// Change currentPage for testing only, change it back to 'recommendationsPage'
 			currentPage: 'recommendationsPage',
 			profileSubpage: 'settings',
@@ -30,12 +31,15 @@ class MainPage extends Component {
 
 	handlePageChange = (page) => {
 		this.setState({ currentPage: page });
-		console.log(this.state.currentPage);
 	}
 
 	handleProfileSubpageChange = (page) => {
 		this.setState({ profileSubpage: page });
-		console.log(this.state.profileSubpage);
+	}
+
+	handleSearchResult = (result) => {
+		console.log(result);
+		this.setState({ searchResult: result });
 	}
 
 	render() {
@@ -72,9 +76,11 @@ class MainPage extends Component {
 			<div>
 				<MainNavBar
 					isLoggedIn={this.state.loginStatus} 
+					user={this.state.user}
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
+					handleSearch={this.handleSearchResult}
 				/>
 				{(this.state.currentPage === 'recommendationsPage') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }

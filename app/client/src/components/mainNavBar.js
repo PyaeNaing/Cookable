@@ -15,7 +15,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
-import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 // import Ingredient from './ingredient.js';
 
@@ -48,7 +47,7 @@ const styles = theme => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 3,
-      width: 'auto',
+      width: '60%',
     },
   },
   searchIcon: {
@@ -72,11 +71,11 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
+      width: 800,
     },
   },
-  switch: {
-    marginLeft: 50,
+  user: {
+    marginRight: 50,
   },
   sectionDesktop: {
     display: 'none',
@@ -97,15 +96,14 @@ class MainNavBar extends Component {
   	super(props);
     this.state = {
       userMenuAnchor: null,
+      user: this.props.user,
       profileMenuAnchor: null,
       loginMenuAnchor: null,
       mobileMoreAnchorEl: null,
       isLoggedIn: this.props.isLoggedIn,
       isLoggingIn: false,
       searchInput: '',
-      isIngredientRetrieved: false,
       searchStatus: false,
-      searchResults: []
     };
     this.handleSearch = this.handleSearch.bind(this);
     //this.handleAddIngredient = this.handleAddIngredient.bind(this);
@@ -167,18 +165,10 @@ class MainNavBar extends Component {
     }
   };
 
-  handleSearchStatusChange = event => {
-    this.setState({
-      [event.target.id]: event.target.checked
-    });
-
-  console.log(this.state.searchStatus);
-  };
-
   handleSearch = event => {
     // Use '/api/v1/searchIngredients' when is production.
     // Use '/v1/searchIngredients' when on local machine.
-  	axios.get('/api/v1/searchIngredients', {
+  	axios.get('/v1/searchIngredients', {
   		params: {
   			s: this.state.searchInput
   		}
@@ -190,8 +180,7 @@ class MainNavBar extends Component {
       }
       else {
       	console.log(response);
-        this.setState({ searchResults: response.data.ingredients });
-        this.setState({ isIngredientRetrieved: true });
+        this.props.handleSearch(response.data);
         this.props.handlePageChange("recipeDisplayPage");
       }
     })
@@ -232,8 +221,7 @@ class MainNavBar extends Component {
       profileMenuAnchor, 
       loginMenuAnchor, 
       mobileMoreAnchorEl, 
-      isLoggingIn, 
-      /*isIngredientRetrieved*/ } = this.state;
+      isLoggingIn, } = this.state;
     const { classes } = this.props;
     const isLoggedIn = this.props.isLoggedIn;
     const isLoginMenuOpen = Boolean(loginMenuAnchor);
@@ -291,17 +279,6 @@ class MainNavBar extends Component {
     	</div>
     );
 
-    /*
-    const renderIngredient = (
-      <div>
-        <Ingredient
-          ingredientList={this.state.searchResults}
-          query={this.state.searchInput}
-        />
-      </div>
-    );
-    */
-
     const renderMobileMenu = (
       <Menu
         anchorEl={mobileMoreAnchorEl}
@@ -341,7 +318,7 @@ class MainNavBar extends Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder={(this.state.searchStatus === false) ? "Search by recipe ..." : "Search by ingredient ..."}
+                placeholder='Search by recipe name or ingredient ...'
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -357,31 +334,12 @@ class MainNavBar extends Component {
                 Search
               </Button>
             </div>
-            {/*<div>
-              <Button onClick={this.handleAddIngredient} color="inherit">
-                Add
-              </Button>
-            </div>*/}
-            <div>
-              <Typography className={classes.switch} color="inherit">
-                Recipe
-              </Typography>
-            </div>
-            <div>
-              <Switch
-                id="searchStatus"
-                checked={this.state.searchStatus}
-                onChange={this.handleSearchStatusChange}
-                value="checkedA"
-                color="default"
-              />
-            </div>
-            <div>
-              <Typography color="inherit">
-                Ingredient
-              </Typography>
-            </div>
             <div className={classes.grow} />
+            <div className={classes.user}>
+              <Typography color="inherit">
+                {(this.state.isLoggedIn === true) ? ("You are logged in as " + this.state.user) : "Login Menu"}
+              </Typography>
+            </div>
             <div className={classes.sectionDesktop}>
               <IconButton
                 aria-owns={isProfileMenuOpen ? 'material-appbar' : undefined}
@@ -403,7 +361,6 @@ class MainNavBar extends Component {
         {renderUserMenu}
         {renderMobileMenu}
         {isLoggingIn ? renderLogin : undefined}
-        {/*isIngredientRetrieved ? renderIngredient : undefined*/}
       </div>
     );
   }
