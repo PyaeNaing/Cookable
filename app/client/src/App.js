@@ -12,7 +12,7 @@ class App extends Component {
       loginStatus: false,
       user: {
         userID: '',
-        userName: '',
+        username: '',
         emailAddress: '',
       }
     };
@@ -50,6 +50,7 @@ class App extends Component {
         .then((response) => {
             console.log(response);
             this.setState({ loginStatus: true });
+            this.setState({ user: response.data});
         })
         .catch((error) => {
             console.log(error);

@@ -67,8 +67,9 @@ class LoginPage extends Component {
 	      	console.log(response);
           this.props.handleUser(
             { 
-              userName: this.state.user,
-              token: response.data.token 
+              userID: response.data.userID,
+              username: response.data.username,
+              emailAddress: response.data.emailAddress,  
             }
           );
 	      	this.props.handleLoginStatus(true);

@@ -11,11 +11,6 @@ class MainPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loginStatus: this.props.loginStatus,
-			user: {
-				userName: '',
-				token: '',
-			},
 			// Change currentPage for testing only, change it back to 'recommendationsPage'
 			currentPage: 'recommendationsPage',
 			profileSubpage: 'settings',
@@ -82,7 +77,7 @@ class MainPage extends Component {
 			<div>
 				<MainNavBar
 					isLoggedIn={this.props.loginStatus} 
-					userName={this.props.user.userName}
+					username={this.props.user.username}
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
