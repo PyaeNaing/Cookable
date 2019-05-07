@@ -76,8 +76,8 @@ class RecommendationsPage extends Component {
   };
 
 	handleRecommendations = event => {
-	// Use '/api/v1/searchIngredients' when is production.
-	// Use '/v1/searchIngredients' when on local machine.
+	// Use '/api/v1/recommendation' when is production.
+	// Use '/v1/recommendation' when on local machine.
 		axios.get('/v1/recommendation')
 		.then((response) => {
 			if(response.data.length === 0) {
@@ -146,7 +146,7 @@ class RecommendationsPage extends Component {
 											<Card className={classes.card}>
 												<CardMedia
 													className={classes.cardMedia}
-													image={recipe.url} // eslint-disable-line max-len
+													image={recipe.url}
 													title="Image title"
 												/>
 												<CardContent className={classes.cardContent}>

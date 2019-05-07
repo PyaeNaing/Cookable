@@ -1,22 +1,71 @@
 import React, { Component } from "react";
+import axios from "axios";
 import "./styles/App.css";
-import Login from "./components/login.js";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import MainPage from './pageLayouts/mainPage.js';
 
 class App extends Component {
-  state = {
-    user: null,
-    password: null
-  };
+
+  // Need to add user info from Authorization request.
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginStatus: false,
+      user: {
+        userName: 'Test',
+      }
+    };
+  }
+
+  componentDidMount() {
+    this.handleSessionAuthorization();
+  }
+
+  handleLogin = (status) => {
+    this.setState({ loginStatus: status });
+  }
+
+  handleLogout = (status) => {
+    this.setState({ loginStatus: status })
+    localStorage.removeItem("token");
+  }
+
+  handleUser = (user) => {
+    this.setState({ user: user });
+  }
+
+  handleSessionAuthorization = () => {
+    
+    const token = localStorage.token;
+
+    const headers = {
+      'Authorization': 'Bearer ' + token,
+    };
+
+    if(token) {
+      axios.get('/v2/protected', {
+            headers:  headers,
+        })
+        .then((response) => {
+            console.log(response);
+            this.setState({ loginStatus: true });
+            console.log(this.state.loginStatus);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+  }
 
   render() {
     return (
       <div className="App">
-        <Router>
-          <Route path="/login" exact component={Login} />
-        </Router>
-        <MainPage />
+        <MainPage 
+          loginStatus={this.state.loginStatus}
+          user={this.state.user}
+          handleLogin={this.handleLogin}
+          handleLogout={this.handleLogout} 
+          handleUser={this.handleUser}
+        />
       </div>
     );
   }

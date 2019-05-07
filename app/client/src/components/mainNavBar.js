@@ -96,11 +96,9 @@ class MainNavBar extends Component {
   	super(props);
     this.state = {
       userMenuAnchor: null,
-      user: this.props.user,
       profileMenuAnchor: null,
       loginMenuAnchor: null,
       mobileMoreAnchorEl: null,
-      isLoggedIn: this.props.isLoggedIn,
       isLoggingIn: false,
       searchInput: '',
       searchStatus: false,
@@ -337,7 +335,7 @@ class MainNavBar extends Component {
             <div className={classes.grow} />
             <div className={classes.user}>
               <Typography color="inherit">
-                {(this.state.isLoggedIn === true) ? ("You are logged in as " + this.state.user) : "Login Menu"}
+                {isLoggedIn ? ("Logged in as " + this.props.userName) : "Login Menu"}
               </Typography>
             </div>
             <div className={classes.sectionDesktop}>

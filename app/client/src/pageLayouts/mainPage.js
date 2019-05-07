@@ -11,8 +11,11 @@ class MainPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loginStatus: false,
-			user: [],
+			loginStatus: this.props.loginStatus,
+			user: {
+				userName: '',
+				token: '',
+			},
 			// Change currentPage for testing only, change it back to 'recommendationsPage'
 			currentPage: 'recommendationsPage',
 			profileSubpage: 'settings',
@@ -22,11 +25,15 @@ class MainPage extends Component {
 	}
 
 	handleLogin = (status) => {
-		this.setState({ loginStatus: status });
+		this.props.handleLogin(status);
 	}
 
 	handleLogout = (status) => {
-		this.setState({ loginStatus: status });
+		this.props.handleLogout(status);
+	}
+
+	handleUser = (user) => {
+		this.props.handleUser(user);
 	}
 
 	handlePageChange = (page) => {
@@ -38,7 +45,6 @@ class MainPage extends Component {
 	}
 
 	handleSearchResult = (result) => {
-		console.log(result);
 		this.setState({ searchResult: result });
 	}
 
@@ -46,7 +52,7 @@ class MainPage extends Component {
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
-			<LoginPage handleLoginStatus={this.handleLogin}/>
+			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser}/>
 		);
 
 		const renderRegisterPage = (
@@ -75,8 +81,8 @@ class MainPage extends Component {
 		return (
 			<div>
 				<MainNavBar
-					isLoggedIn={this.state.loginStatus} 
-					user={this.state.user}
+					isLoggedIn={this.props.loginStatus} 
+					userName={this.props.user.userName}
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
