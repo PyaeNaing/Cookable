@@ -60,23 +60,48 @@ exports.getIngredientfromPantry = async function(req, res) {
   }
 };
 
+exports.addIngredienttoPantry = function(req, res) {
+  try {
+    Ingredient.findOne({
+      where: {
+        ingredientName: { [Op.like]: "%" + req.body.ingredientName + "%" }
+      }
+    }).then(i => {
+      if (i != null) {
+        Pantry.findOrCreate({
+          where: {
+            ingredientID: i.ingredientID,
+            ingredientName: i.ingredientName,
+            userID: req.body.userID
+          }
+        }).then(pantry => {
+          res.send(pantry);
+        });
+      } else {
+        res.status(404).send("Ingredient Not Found");
+      }
+    });
+  } catch (e) {
+    console.log(e);
+    res.send("Error");
+  }
+};
+
 // Helper Functions
 function getIngredientsFromPantry(req) {
-    return Pantry.findAll({
+  return Pantry.findAll({
     where: {
       userID: req.query.userID
     }
-  })
+  });
 }
 
 function getIngredientID(ingredients) {
   let arr = [];
   for (let i = 0; i < ingredients.length; i++) {
-      arr[i] =ingredients[i].ingredientName;
+    arr[i] = ingredients[i].ingredientName;
   }
   return arr;
 }
 
-function getIngredientname(ingredients){
-
-}
+function getIngredientname(ingredients) {}

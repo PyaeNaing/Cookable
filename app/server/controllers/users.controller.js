@@ -65,42 +65,7 @@ let secretOrKey = "cinamonbun";
         res.status(500).send("Error: Please send correct object" + err)
       );
   }),
-  (exports.addIngredienttoPantry = function(req, res) {
-    User.findOne({
-      where: {
-        userID: req.body.userID
-      }
-    })
-      .then(result => {
-        if (result != null) {
-          if (result.pantryID != null) {
-            console.log("Null");
-          }
-          Ingredient.findOne({
-            where: {
-              ingredientName: req.body.ingredientName
-            }
-          })
-            .then(iresult => {
-              if (iresult != null) {
-                res.send(iresult);
-              } else {
-                res.status(404).send("Error: ingredient not found");
-              }
-            })
-            .catch(err => {
-              res.send("Error");
-              console.log(err);
-            });
-        } else {
-          res.status(404).send("Error: User not found");
-        }
-      })
-      .catch(err => {
-        res.send("Error");
-        console.log(err);
-      });
-  }),
+  
   (exports.generateJWT = function() {
     const today = new Date();
     const expirationDate = new Date(today);

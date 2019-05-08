@@ -21,5 +21,6 @@ router.get("/recommendation", Recipe.getRecommendation);
 router.get("/searchByRecipe", Recipe.searchByRecipe);
 router.get("/searchByIngredient", Recipe.searchByIngredient);
 router.get("/getIngredient", IngredientsController.getIngredientfromPantry);
+router.post("/addIngredient", IngredientsController.addIngredienttoPantry);
 
 module.exports = router;
