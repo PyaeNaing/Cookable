@@ -74,7 +74,6 @@ class LoginPage extends Component {
           );
 	      	this.props.handleLoginStatus(true);
           localStorage.setItem("token", response.data.token);
-          console.log(response.data.token);
 	    })
 	    .catch((error) => {
 	      	console.log(error);
