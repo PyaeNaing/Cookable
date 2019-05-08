@@ -104,4 +104,3 @@ function getIngredientID(ingredients) {
   return arr;
 }
 
-function getIngredientname(ingredients) {}
