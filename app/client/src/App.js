@@ -9,7 +9,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 const styles = theme => ({
   progress: {
     flexGrow: 1,
-    paddingTop: theme.spacing.unit * 50,
+    paddingTop: theme.spacing.unit * 20,
+  },
+  gif: {
+    paddingTop: theme.spacing.unit * 30,
   },
 });
 
@@ -105,9 +108,13 @@ class App extends Component {
     );
 
     const renderLoading = (
-      <div className={classes.progress}>
-        <img src={require('./images/cookable.gif')} alt="loading ..." />
-        <LinearProgress variant='determinate' value={this.state.completed}/>
+      <div>
+        <div className={classes.gif}>
+          <img src={require('./images/cookable.gif')} alt="loading ..." />
+        </div>
+        <div className={classes.progress}>
+          <LinearProgress variant='determinate' value={this.state.completed}/>
+        </div>
       </div>
     );
 
