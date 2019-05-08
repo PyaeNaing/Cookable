@@ -93,8 +93,8 @@ exports.searchByIngredient = async function (req, res) {
 }
 
 exports.viewRecipe = function (req, res) {
-  Recipe.hasMany(RecipeImages, {foreignKey: 'recipeID'});
-  RecipeImages.belongsTo(Recipe, {foreignKey: 'recipeID'});
+  Recipe.hasMany(RecipeImages, { foreignKey: 'recipeID' });
+  RecipeImages.belongsTo(Recipe, { foreignKey: 'recipeID' });
 
   Recipe.findOne({
     where: { recipeID: req.params.id }, include: [RecipeImages]
@@ -103,25 +103,26 @@ exports.viewRecipe = function (req, res) {
   }).catch(err => res.status(500).send('Error: ' + err));
 }
 
-exports.getRecipeInstruction = function(req, res){
+exports.getRecipeInstruction = function (req, res) {
 
   Recipe.findOne({
     where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
   }).then(recipe => {
-    if(recipe != null)
-    {
-      instructions.findAll({where: {
-        recipeID: recipe.recipeID
-      }}).then(i => {
+    if (recipe != null) {
+      instructions.findAll({
+        where: {
+          recipeID: recipe.recipeID
+        }
+      }).then(i => {
         res.json(i);
       }).catch(e => {
         console.log(e);
       })
     }
-    else{
+    else {
       res.status(404).send('Cannot find Instruction')
     }
-  }).catch(e =>{
+  }).catch(e => {
     res.send('Error');
     console.log(e)
   });
