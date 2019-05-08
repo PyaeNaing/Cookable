@@ -2,6 +2,7 @@ import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -13,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FolderIcon from '@material-ui/icons/Folder';
+import Dropdown from 'react-bootstrap/Dropdown'
 
 const styles = theme => ({
   main: {
@@ -41,8 +43,14 @@ const styles = theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing.unit,
   },
+  add: {
+    marginTop: theme.spacing.unit * 3,  
+    width: '45%',
+    padding: theme.spacing.unit, 
+  },
   submit: {
     marginTop: theme.spacing.unit * 3,
+    width: '45%',
   },
 });
 
@@ -91,24 +99,24 @@ class CreateRecipePage extends Component{
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
             <Input id="ingredient" name="ingredient" />
-            <Button
-            type="submit"
+           <div> <Button
+            as = "input"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={classes.add}
           >
             Add 
           </Button>
-          <Button
-            type="submit"
+		    <Button
+            as = "input"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            className={classes.add}
           >
-            Edit 
-          </Button>
+            Remove
+          </Button></div>
           </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="cuisine">Cuisine</InputLabel>
@@ -118,9 +126,8 @@ class CreateRecipePage extends Component{
             <InputLabel htmlFor="uploadImage">Upload Image</InputLabel>
             <Input id="uploadImage" name="uploadImage" />
           </FormControl>
-
-          <Button
-            type="submit"
+      <Button
+            as = "input"
             fullWidth
             variant="contained"
             color="primary"
@@ -129,13 +136,13 @@ class CreateRecipePage extends Component{
             Add 
           </Button>
 		  <Button
-            type="submit"
+            as = "input"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
           >
-			Cancel
+			    Cancel
           </Button>
         </form>
       </Paper>
