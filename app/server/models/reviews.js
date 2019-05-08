@@ -23,4 +23,4 @@ const reviews = db.define('reviews', {
 
     })
 
-module.exports = likes;
+module.exports = reviews;

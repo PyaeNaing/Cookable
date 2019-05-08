@@ -1,6 +1,9 @@
 const Recipe = require("../models/recipe");
+const Favorites = require("../models/favorites");
+const Likes = require("../models/likes");
+const Reviews = require("../models/reviews");
 const Sequelize = require("sequelize");
-const recipeImages = require("../models/recipeImages");
+const RecipeImages = require("../models/recipeImages");
 const ingredientList = require("../models/ingredientsListFulls");
 const Op = Sequelize.Op;
 
@@ -82,13 +85,15 @@ exports.searchByIngredient = async function (req, res) {
   } catch (e) { }
 }
 
-exports.viewRecipe = function(req, res)
-{
-  console.log(req.params.id);
+exports.viewRecipe = function (req, res) {
+  Recipe.hasMany(RecipeImages, {foreignKey: 'recipeID'});
+  RecipeImages.belongsTo(Recipe, {foreignKey: 'recipeID'});
 
-  
-
-  res.send(req.params.id);
+  Recipe.findOne({
+    where: { recipeID: req.params.id }, include: [RecipeImages]
+  }).then(recipe => {
+    res.send(recipe);
+  }).catch(err => res.status(500).send('Error: ' + err));
 }
 
 // helper functions
@@ -118,7 +123,7 @@ function getarrayinorder(recipe) {
       temp = arr[i];
       recipe[i].url = 'https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg';
     }
-    else{
+    else {
       recipe.splice(i, 1);
       i--;
     }
@@ -157,7 +162,7 @@ function getRecipe() {
 }
 
 function getImageUrl(arr) {
-  return recipeImages.findAll({
+  return RecipeImages.findAll({
     where: {
       recipeID: arr
     }

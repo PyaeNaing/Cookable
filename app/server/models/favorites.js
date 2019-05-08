@@ -12,7 +12,7 @@ const favorites = db.define('favorites', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    recipes_recipeID: {
+    recipeID: {
         type: Sequelize.INTEGER,
         allowNull: false
     }
