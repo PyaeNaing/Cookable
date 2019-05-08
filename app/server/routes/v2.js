@@ -43,6 +43,4 @@ router.get("/recipe/searchByRecipe", RecipeController.searchByRecipe);
 router.get("/searchByIngredient", RecipeController.searchByIngredient);
 router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
 
-router.get("/")
-
 module.exports = router;
