@@ -17,18 +17,7 @@ router.post("/user/login", UserController.login);
 router.post("/user/create", UserController.createUser);
 router.get("/user/pantry", IngredientsController.getIngredientfromPantry);
 router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
-router.get('/protected', passport.authenticate('jwt', { session: false }), function (req, res) {
-
-    console.log(req.user.userID);
-
-    res.json({
-        msg: 'Congrats! You are seeing this because you are authorized',
-        "userID": req.user.userID,
-        "username": req.user.username,
-        "emailAddress": req.user.emailAddress
-    });
-
-});
+router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.userAuth);
 
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);

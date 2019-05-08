@@ -66,3 +66,12 @@ exports.login = function (req, res) {
       res.status(500).send("Error: Please send correct object" + err)
     );
 };
+
+exports.userAuth = function (req, res) {
+  res.json({
+      msg: 'Congrats! You are seeing this because you are authorized',
+      "userID": req.user.userID,
+      "username": req.user.username,
+      "emailAddress": req.user.emailAddress
+  });
+};
