@@ -15,7 +15,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import Ingredient from './ingredient.js';
 
 const styles = theme => ({
   root: {
@@ -184,32 +183,6 @@ class MainNavBar extends Component {
       console.log(error);
     });
   };
-
-  /*
-  handleAddIngredient = event => {
-    // Use '/api/v1/createIngredient' when is production.
-    // Use '/v1/createIngredient' when on local machine.
-    axios.post('/v1/createIngredient', 
-                {
-                  'ingredientName': this.state.searchInput, 
-                  'ingredientType': 'Food',
-                  'description': 'Filler description'
-                }
-    )
-    .then((response) => {
-      if(response.request.status !== 200) {
-        console.log("Failed to add the ingredient to the database.");
-      }
-      else {
-        console.log("Successfully added ingredient to the database.");
-        console.log(response);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  };
-  */
 
   render() {
     const { 

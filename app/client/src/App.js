@@ -106,6 +106,7 @@ class App extends Component {
 
     const renderLoading = (
       <div className={classes.progress}>
+        <img src={require('./images/cookable.gif')} alt="loading ..." />
         <LinearProgress variant='determinate' value={this.state.completed}/>
       </div>
     );
