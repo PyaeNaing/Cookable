@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -46,11 +46,23 @@ const styles = theme => ({
   },
 });
 
-function CreateRecipePage(props) {
-	const { classes } = props;
-	
-  return (
-    <main className={classes.main}>
+class CreateRecipePage extends Component{
+  constructor(props){
+    super(props); 
+    this.state = {
+      recipeTitle: "",
+      serves: "", 
+      cookingTime: "", 
+      calorieCount: "", 
+      ingredients: "", 
+      cuisine: "", 
+      uploadImage: "", 
+    };
+  }; 
+  render (){
+    const {classes} = this.props; 
+    return (
+      <main className={classes.main}>
       <CssBaseline />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -79,6 +91,24 @@ function CreateRecipePage(props) {
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
             <Input id="ingredient" name="ingredient" />
+            <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Add 
+          </Button>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Edit 
+          </Button>
           </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="cuisine">Cuisine</InputLabel>
@@ -110,16 +140,9 @@ function CreateRecipePage(props) {
         </form>
       </Paper>
     </main>
-  );
-}		
-
-const renderLoginError = (
-	<div>
-		<Paper square={true}>
-			<Typography>You must be logged in to access this feature.</Typography>
-		</Paper>
-	</div>
-);
+    );
+  };
+}
 
 CreateRecipePage.propTypes = {
   classes: PropTypes.object.isRequired,
