@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const pantryHasIngredients =  db.define('pantryHasIngredients', {
+const pantryHasIngredients =  db.define('userHasIngredients', {
 
     pantryID:{
         type: Sequelize.INTEGER,
@@ -10,6 +10,9 @@ const pantryHasIngredients =  db.define('pantryHasIngredients', {
     },
     ingredientID:{
         type: Sequelize.INTEGER
+    },
+    ingredientName: {
+        type: Sequelize.STRING
     },
     userID:{
         type: Sequelize.INTEGER

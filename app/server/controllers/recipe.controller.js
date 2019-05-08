@@ -2,6 +2,7 @@ const Recipe = require("../models/recipe");
 const Sequelize = require("sequelize");
 const recipeImages = require("../models/recipeImages");
 const ingredientList = require("../models/ingredientsListFulls");
+const instructions = require("../models/instructions");
 const Op = Sequelize.Op;
 
 exports.createRecipe = function (req, res) {
@@ -48,7 +49,9 @@ exports.getRecommendation = async function (req, res) {
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
     res.json(recipe);
-  } catch (e) { }
+  } catch (e) {
+    res.send('Error');
+  }
 };
 
 
@@ -62,7 +65,9 @@ exports.searchByRecipe = async function (req, res) {
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
     res.json(recipe);
-  } catch (e) { }
+  } catch (e) {
+    res.send('Error');
+  }
 }
 
 exports.searchByIngredient = async function (req, res) {
@@ -79,11 +84,37 @@ exports.searchByIngredient = async function (req, res) {
     recipe = await combinethem(recipe, recipeurl)
     console.log(arr);
     res.json(recipe);
-  } catch (e) { }
+  } catch (e) {
+    res.send('Error');
+  }
 }
 
-// helper functions
+exports.getRecipeInstruction = function(req, res){
 
+  Recipe.findOne({
+    where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
+  }).then(recipe => {
+    if(recipe != null)
+    {
+      instructions.findAll({where: {
+        recipeID: recipe.recipeID
+      }}).then(i => {
+        res.json(i);
+      }).catch(e => {
+        console.log(e);
+      })
+    }
+    else{
+      res.status(404).send('Cannot find Instruction')
+    }
+  }).catch(e =>{
+    res.send('Error');
+    console.log(e)
+  });
+
+};
+
+// helper functions
 function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
