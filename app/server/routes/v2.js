@@ -36,6 +36,7 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), funct
     });
 
 });
+router.get("/recipe/:id",Recipe.viewRecipe);
 
 //  router.get("/test", Recipe.testSearch);
 

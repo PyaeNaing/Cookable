@@ -82,6 +82,15 @@ exports.searchByIngredient = async function (req, res) {
   } catch (e) { }
 }
 
+exports.viewRecipe = function(req, res)
+{
+  console.log(req.params.id);
+
+  
+
+  res.send(req.params.id);
+}
+
 // helper functions
 
 function getRecipeByName(req) {
