@@ -19,11 +19,16 @@ router.get("/ingredient/list", IngredientsController.ingredientsList);
 router.get("/ingredient/search", IngredientsController.ingredientsSearch);
 router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 router.get("/recipe/search", Recipe.searchRecipe);
+router.get("/recipe/searchByRecipe", Recipe.searchByRecipe);
+router.get("/recipe/searchByIngredient", Recipe.searchByIngredient);
 router.post("/recipe/create", Recipe.createRecipe);
 router.post("/user/pantry", Recipe.searchRecipe);
 router.get("/searchByRecipe", Recipe.searchByRecipe);
 router.get("/searchByIngredient", Recipe.searchByIngredient);
-router.get("/")
+// router.get("/test", Recipe.getRecipeInstruction);
+
+
+
 router.get('/protected', passport.authenticate('jwt', { session: false }), function (req, res) {
 
     console.log(req.user.userID);
