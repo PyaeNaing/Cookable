@@ -13,8 +13,10 @@ router.get("/admin/list", AdminController.adminList);
 router.post("/admin/create", AdminController.adminCreate);
 
 //USERS
-router.post("/user/create", UserController.createUser);
 router.post("/user/login", UserController.login);
+router.post("/user/create", UserController.createUser);
+router.get("/user/pantry", IngredientsController.getIngredientfromPantry);
+router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
 router.get('/protected', passport.authenticate('jwt', { session: false }), function (req, res) {
 
     console.log(req.user.userID);
@@ -37,9 +39,9 @@ router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 router.get("/recipe/:id",RecipeController.viewRecipe);
 router.get("/recipe/search", RecipeController.searchRecipe);
 router.post("/recipe/create", RecipeController.createRecipe);
-router.post("/user/pantry", RecipeController.searchRecipe);
-router.get("/searchByRecipe", RecipeController.searchByRecipe);
+router.get("/recipe/searchByRecipe", RecipeController.searchByRecipe);
 router.get("/searchByIngredient", RecipeController.searchByIngredient);
+router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
 
 router.get("/")
 

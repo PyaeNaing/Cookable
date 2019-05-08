@@ -1,6 +1,5 @@
 const express 			= require('express');
 
-
 const router 			= express.Router();
 
 const AdminController   = require("../controllers/admins.controller");
@@ -20,6 +19,7 @@ router.post("/createRecipe", Recipe.createRecipe);
 router.get("/recommendation", Recipe.getRecommendation);
 router.get("/searchByRecipe", Recipe.searchByRecipe);
 router.get("/searchByIngredient", Recipe.searchByIngredient);
-
+router.get("/getIngredient", IngredientsController.getIngredientfromPantry);
+router.post("/addIngredient", IngredientsController.addIngredienttoPantry);
 
 module.exports = router;
