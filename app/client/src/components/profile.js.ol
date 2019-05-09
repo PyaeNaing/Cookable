@@ -17,26 +17,47 @@ import FormControl from '@material-ui/core/FormControl';
 
 const styles = theme => ({
   root: {
+    display: 'flex',
+    flexWrap: 'wrap',
     flexGrow: 1,
+  },
+  margin: {
+    margin: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   paper: {
     height: 140,
-    width: 100,
+    width: 200,
+    padding: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   control: {
     padding: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
-  pageTitle: {
-
+  button: {
+    padding: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   container: {
     display: "flex",
     flexWrap: "wrap"
   },
   textField: {
-    marginLeft: 25,
-    marginRight: 25,
-    width: 200
+    width: 200,
+    flexBasis: 200,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
 });
 
@@ -44,15 +65,15 @@ class ProfileSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        fName: "",
-        lName: "",
-        gender: "",
-        email: "",
-        username: "",
-        dob: new Date(),
-        oldPassword: "",
-        newPassword: "",
-        confirmNewPassword: ""
+      fName: "",
+      lName: "",
+      gender: "",
+      email: "",
+      username: "",
+      dob: new Date(),
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: ""
     };
   }
   state = {
@@ -82,7 +103,7 @@ class ProfileSettings extends React.Component {
     const { spacing } = this.state;
 
     return (
-        <Grid container className={classes.root} spacing={16}>
+      <Grid container className={classes.root} spacing={16}>
         <Grid item xs={12}>
           <Grid container className={classes.demo} justify="center" spacing={Number(spacing)}>
             <Paper >
@@ -202,7 +223,9 @@ class ProfileSettings extends React.Component {
     );
   }
 }
+
 ProfileSettings.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(styles)(ProfileSettings);
