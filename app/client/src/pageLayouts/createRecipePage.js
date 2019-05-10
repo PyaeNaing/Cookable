@@ -50,7 +50,6 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3,
-    width: '45%',
   },
 });
 
@@ -99,22 +98,22 @@ class CreateRecipePage extends Component{
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
             <Input id="ingredient" name="ingredient" />
-           <div> <Button
+           <div> <Button>
             as = "input"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.add}
-          >
+          
             Add 
           </Button>
-		    <Button
+		    <Button>
             as = "input"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.add}
-          >
+          
             Remove
           </Button></div>
           </FormControl>
