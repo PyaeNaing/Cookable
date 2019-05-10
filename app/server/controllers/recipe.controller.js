@@ -59,6 +59,7 @@ exports.getRecommendation = async function (req, res) {
 
 
 exports.searchByRecipe = async function (req, res) {
+  
   let recipe;
   let arr = [];
   let recipeurl;
@@ -124,6 +125,7 @@ exports.getRecipeInstruction = function (req, res) {
         res.json(i);
       }).catch(e => {
         console.log(e);
+        res.status(500).send('Errror: ' + e);
       })
     }
     else {

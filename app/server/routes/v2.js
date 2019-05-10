@@ -18,6 +18,7 @@ router.post("/user/create", UserController.createUser);
 router.get("/user/pantry", IngredientsController.getIngredientfromPantry);
 router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
 router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.userAuth);
+router.post('/user/profile', UserController.getProfile);
 
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);
@@ -25,11 +26,11 @@ router.get("/ingredient/search", IngredientsController.ingredientsSearch);
 router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 
 //RECIPES
-router.get("/recipe/:id",RecipeController.viewRecipe);
-router.get("/recipe/search", RecipeController.searchRecipe);
-router.post("/recipe/create", RecipeController.createRecipe);
-router.get("/recipe/searchByRecipe", RecipeController.searchByRecipe);
-router.get("/searchByIngredient", RecipeController.searchByIngredient);
-router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
+// router.get("/recipe/:id",RecipeController.viewRecipe);
+ router.get("/recipe/search", RecipeController.searchRecipe);
+ router.post("/recipe/create", RecipeController.createRecipe);
+ router.get("/recipe/searchByRecipe", RecipeController.searchByRecipe);
+ router.get("/recipe/searchByIngredient", RecipeController.searchByIngredient);
+ router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
 
 module.exports = router;
