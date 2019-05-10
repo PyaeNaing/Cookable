@@ -35,10 +35,10 @@ const users = db.define("users", {
   createdAt: {
     type: Sequelize.DATE
   },
-  fname: {
+  fName: {
     type: Sequelize.STRING
   },
-  lname: {
+  lName: {
     type: Sequelize.STRING
   },
   gender: {
