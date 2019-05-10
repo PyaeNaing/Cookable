@@ -60,7 +60,7 @@ class MainPage extends Component {
 
 		// Must lift up profileSubpage state from MainNavBar
 		const renderProfilePage = (
-			<ProfilePage subpage={this.state.profileSubpage} loginStatus={this.props.loginStatus}/>
+			<ProfilePage subpage={this.state.profileSubpage} loginStatus={this.props.loginStatus} user={this.props.user}/>
 		);
 
 		// Must lift up searchResult state from MainNavBar
