@@ -85,9 +85,14 @@ class Pantry extends Component {
 	};
 
 	handlePantryItems = event => {
-		// Use '/api/v1/recommendation' when is production.
-		// Use '/v1/recommendation' when on local machine.
-		axios.get('/v1/recommendation')
+		// Use '/api/v1/getIngredient' when is production.
+		// Use '/v1/getIngredient' when on local machine.
+		//example getIngredient?userID=1012
+		axios.get('/v1/getIngredient',{
+			params: {
+				userId: this.props.user.userId
+			}
+		})
 		.then((response) => {
 			if(response.data.length === 0) {
 				console.log("Pantry could not be retreived.");
