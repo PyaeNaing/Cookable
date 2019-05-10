@@ -87,7 +87,7 @@ class ProfilePage extends Component {
 		const { classes } = this.props;
         //const { currentSubPage } = this.currentSubPage;
         const renderPantry = (
-            <Pantry handleSubPageChange={this.handleSubPageChange} />
+            <Pantry handleSubPageChange={this.handleSubPageChange} user={this.props.user}/>
         );
         const renderFavorites = (
             <Favorites handleSubPageChange={this.handleSubPageChange} />
@@ -96,7 +96,7 @@ class ProfilePage extends Component {
             <MyRecipes handleSubPageChange={this.handleSubPageChange} />
         );
         const renderProfile = (
-            <ProfileSettings handleSubPageChange={this.handleSubPageChange} />
+            <ProfileSettings handleSubPageChange={this.handleSubPageChange} user={this.props.user}/>
         );
 
 		return (
@@ -144,9 +144,9 @@ class ProfilePage extends Component {
               </Drawer>
               <main className={classes.content}>
                 {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
-				{(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
-				{(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }
-				{(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
+				        {(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
+				        {(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }
+				        {(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
               </main>
             </div>
 		);
