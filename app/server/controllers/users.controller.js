@@ -84,11 +84,11 @@ exports.getProfile = function(req, res){
   User.findOne({
     where: {
       userID : req.body.userID
-    }
+    },
+    attributes: { exclude: ['password', 'salt', 'createdAt'] }
   }).then(result => {
-    result.password = '';
-    result.salt = '';
-    result.createdAt = '';
+    
+    console.log()
       res.status(200).json(result)
     }).catch(e => {
       console.log(e);
