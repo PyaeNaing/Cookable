@@ -1,6 +1,9 @@
 const Recipe = require("../models/recipe");
+const Favorites = require("../models/favorites");
+const Likes = require("../models/likes");
+const Reviews = require("../models/reviews");
 const Sequelize = require("sequelize");
-const recipeImages = require("../models/recipeImages");
+const RecipeImages = require("../models/recipeImages");
 const ingredientList = require("../models/ingredientsListFulls");
 const instructions = require("../models/instructions");
 const Op = Sequelize.Op;
@@ -26,18 +29,7 @@ exports.createRecipe = function (req, res) {
     });
 };
 
-exports.searchRecipe = function (req, res) {
-  (limit = 20),
-    Recipe.findOne({
-      where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
-    })
-      .then(recipes => {
-        res.json({ recipe: recipes });
-      })
-      .catch(function (err) {
-        res.send("error");
-      });
-};
+
 
 exports.getRecommendation = async function (req, res) {
   let recipe;
@@ -55,7 +47,21 @@ exports.getRecommendation = async function (req, res) {
 };
 
 
-exports.searchByRecipe = async function (req, res) {
+exports.searchRecipe = async function (req, res) {
+  try{
+  let recipeSearch;
+  let ingredientSearch;
+  recipeSearch = await searchByRecipe(req.query.recipe);
+  ingredientSearch = await searchByIngredient(req.query.recipe);
+  let result = [...new Set([...recipeSearch, ...ingredientSearch])];
+  res.json(result);
+  }
+  catch(e){
+    res.status(200).send('Error: ' + e);
+  }
+};
+
+async function searchByRecipe(req) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -64,13 +70,13 @@ exports.searchByRecipe = async function (req, res) {
     arr = await getarray(recipe);
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
-    res.json(recipe);
+    return recipe;
   } catch (e) {
-    res.send('Error');
+    return e;
   }
 }
 
-exports.searchByIngredient = async function (req, res) {
+ async function searchByIngredient(req) {
   let recipe;
   let ingredientused;
   let arr = [];
@@ -82,32 +88,57 @@ exports.searchByIngredient = async function (req, res) {
     recipe = await getRecipei(arr);
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
-    console.log(arr);
-    res.json(recipe);
+    return recipe;
+    // res.json(recipe);
   } catch (e) {
-    res.send('Error');
+    return e
+    // res.send('Error');
   }
 }
 
-exports.getRecipeInstruction = function(req, res){
+exports.viewRecipe = function (req, res) {
+  Recipe.hasMany(RecipeImages, { foreignKey: 'recipeID' });
+  Recipe.hasMany(Likes, {foreignKey: 'recipeID'});
+  Recipe.hasMany(Favorites, {foreignKey: 'recipeID'});
+  Recipe.hasMany(Reviews, {foreignKey: 'recipeID'});
+  Recipe.hasMany(instructions, {foreignKey: 'recipeID'});
+  Recipe.hasMany(ingredientList, {foreignKey: 'recipeID'});
+
+  RecipeImages.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  Likes.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  Favorites.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  Reviews.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  instructions.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  ingredientList.belongsTo(Recipe, { foreignKey: 'recipeID' });
+
+  Recipe.findOne({
+    where: { recipeID: req.params.id }, include: [RecipeImages, Likes, Favorites, Reviews, instructions, ingredientList] 
+  }).then(recipe => {
+    res.send(recipe);
+  }).catch(err => res.status(500).send('Error: ' + err));
+}
+
+exports.getRecipeInstruction = function (req, res) {
 
   Recipe.findOne({
     where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
   }).then(recipe => {
-    if(recipe != null)
-    {
-      instructions.findAll({where: {
-        recipeID: recipe.recipeID
-      }}).then(i => {
+    if (recipe != null) {
+      instructions.findAll({
+        where: {
+          recipeID: recipe.recipeID
+        }
+      }).then(i => {
         res.json(i);
       }).catch(e => {
         console.log(e);
+        res.status(500).send('Errror: ' + e);
       })
     }
-    else{
+    else {
       res.status(404).send('Cannot find Instruction')
     }
-  }).catch(e =>{
+  }).catch(e => {
     res.send('Error');
     console.log(e)
   });
@@ -118,7 +149,7 @@ exports.getRecipeInstruction = function(req, res){
 function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
-      recipeName: { [Op.like]: '%' + req.query.recipeName + '%' }
+      recipeName: { [Op.like]: '%' + req + '%' }
     }
   });
 }
@@ -126,7 +157,7 @@ function getRecipeByName(req) {
 function getRecipeByIngredient(req) {
   return ingredientList.findAll({
     where: {
-      ingredientsFull: { [Op.like]: '%' + req.query.ingredientName + '%' },
+      ingredientsFull: { [Op.like]: '%' + req + '%' },
     }, raw: true
   })
 }
@@ -140,7 +171,7 @@ function getarrayinorder(recipe) {
       temp = arr[i];
       recipe[i].url = 'https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg';
     }
-    else{
+    else {
       recipe.splice(i, 1);
       i--;
     }
@@ -179,7 +210,7 @@ function getRecipe() {
 }
 
 function getImageUrl(arr) {
-  return recipeImages.findAll({
+  return RecipeImages.findAll({
     where: {
       recipeID: arr
     }

@@ -9,7 +9,7 @@ exports.ingredientsList = function(req, res) {
       res.send(ingridients);
     })
     .catch(function(err) {
-      res.send("error");
+      res.send("Error");
     });
 };
 
@@ -27,7 +27,7 @@ exports.ingredientsSearch = function(req, res) {
         });
       })
       .catch(function(err) {
-        res.send("error");
+        res.send("Error");
       });
 };
 
@@ -104,4 +104,3 @@ function getIngredientID(ingredients) {
   return arr;
 }
 
-function getIngredientname(ingredients) {}

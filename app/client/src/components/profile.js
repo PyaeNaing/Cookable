@@ -13,29 +13,51 @@ import { MenuItem } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import FormControl from '@material-ui/core/FormControl';
 
 const styles = theme => ({
   root: {
+    display: 'flex',
+    flexWrap: 'wrap',
     flexGrow: 1,
+  },
+  margin: {
+    margin: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
   paper: {
     height: 140,
-    width: 100,
+    width: 200,
+    padding: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   control: {
     padding: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
-  pageTitle: {
-
+  button: {
+    padding: theme.spacing.unit,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   container: {
     display: "flex",
     flexWrap: "wrap"
   },
   textField: {
-    marginLeft: 25,
-    marginRight: 25,
-    width: 200
+    width: 200,
+    flexBasis: 200,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
 });
 
@@ -51,6 +73,7 @@ class ProfileSettings extends React.Component {
       dob: new Date(),
       oldPassword: "",
       newPassword: "",
+      confirmNewPassword: ""
     };
   }
   state = {
@@ -68,6 +91,12 @@ class ProfileSettings extends React.Component {
       dob: date,
     });
   };
+  
+  handleRadioChange = (gender) => {
+    this.setState({
+      gender: gender,
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -79,7 +108,7 @@ class ProfileSettings extends React.Component {
           <Grid container className={classes.demo} justify="center" spacing={Number(spacing)}>
             <Paper >
               <Typography style={styles.pageTitle} variant="headline">Profile</Typography>
-              <form style={styles.container}>
+              <form style={styles.form}>
                     <TextField
                       style={styles.textField}
                       id="fName"
@@ -89,6 +118,7 @@ class ProfileSettings extends React.Component {
                       margin="normal"
                       variant="outlined"
                     />
+                   <br />
                     <TextField
                       style={styles.textField}
                       id="lName"
@@ -98,11 +128,23 @@ class ProfileSettings extends React.Component {
                       margin="normal"
                       variant="outlined"
                     />
-                    <MenuItem>
-                      <MenuItem>Male</MenuItem>
-                      <MenuItem>Female</MenuItem>
-                      <MenuItem>Don't want to specify</MenuItem>
-                    </MenuItem>
+                    <br />
+                    <div className={classes.root}>
+                      <FormControl component="fieldset" className={classes.margin}>
+                        <FormLabel component="legend">Gender</FormLabel>
+                          <RadioGroup
+                            aria-label="Gender"
+                            name="gender1"
+                            className={classes.group}
+                            value={this.state.gender}
+                            onChange={this.handleRadioChange}
+                          >
+                            <FormControlLabel value="female" control={<Radio />} label="Female" />
+                            <FormControlLabel value="male" control={<Radio />} label="Male" />
+                            <FormControlLabel value="other" control={<Radio />} label="Other" />
+                          </RadioGroup>
+                      </FormControl>
+                    </div>
                     <TextField
                       style={styles.textField}
                       id="username"
@@ -112,29 +154,32 @@ class ProfileSettings extends React.Component {
                       margin="normal"
                       variant="outlined"
                     />
-                    {/* <TextField
-                      style={styles.textField}
-                      id="dob"
-                      label="Date of Birth"
-                      value={this.state.dob}
-                      onChange={this.handleDateChange}
-                      margin="normal"
-                      variant="outlined"
-                    /> */}
+                    <br /><br />
                     <DatePicker
                       style={styles.textField}
                       selected={this.state.dob}
                       onChange={this.handleDateChange}
                     />
-                    <Button variant="contained" className={classes.button}>
-                    Save Info
-                    </Button>
-                    <Button variant="contained" className={classes.button}>
-                    Return without Saving
-                    </Button>
+                    <br /><br />
+                    <div className={classes.heroButtons}>
+										<Grid container spacing={16} justify="center">
+											<Grid item>
+												<Button variant="contained" color="primary" onClick={() => this.handlePageChange('loginPage')}>
+                        Save Info
+												</Button>
+											</Grid>
+											<Grid item>
+												<Button variant="outlined" color="primary" onClick={() => this.handlePageChange('registerPage')}>
+                        Cancel
+												</Button>
+											</Grid>
+										</Grid>
+                    <br />
+									</div>
                   </form>
             </Paper>
             <Paper >
+              <form style={styles.form}>
               <Typography style={styles.pageTitle} variant="headline">Update Password</Typography>
               <TextField
                       style={styles.textField}
@@ -145,6 +190,7 @@ class ProfileSettings extends React.Component {
                       margin="normal"
                       variant="outlined"
                     />
+              <br />
               <TextField
                       style={styles.textField}
                       id="newPassword"
@@ -153,10 +199,22 @@ class ProfileSettings extends React.Component {
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
-                    />
-              <Button variant="contained" className={classes.button}>
+              />
+              <br />
+              <TextField
+                      style={styles.textField}
+                      id="confirmNewPassword"
+                      label="Confirm New Password"
+                      value={this.state.confirmNewPassword}
+                      onChange={this.handleChange}
+                      margin="normal"
+                      variant="outlined"
+              />
+              <br />
+              <Button variant="contained" className={classes.button} style={styles.button}>
               Update Password
               </Button>
+              </form>
             </Paper>
           </Grid>
         </Grid>

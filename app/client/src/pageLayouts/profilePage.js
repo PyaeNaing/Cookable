@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Typography from '@material-ui/core/Typography';
-//import CommonDrawer from '../components/commonDrawer.js';
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -19,6 +17,7 @@ import Pantry from "../components/pantry.js";
 import Favorites from "../components/favorites.js";
 import ProfileSettings from "../components/profile.js";
 import MyRecipes from "../components/myRecipes.js";
+
 
 const paddingStyleforResponsiveDrawer = {
 	paddingTop: 100,
@@ -55,6 +54,10 @@ const styles = theme => ({
     margin: 10,
     width: 60,
     height: 60
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
   },
   menuItem: {
     '&:focus': {
@@ -108,7 +111,7 @@ class ProfilePage extends Component {
               >
                 <Avatar
                   alt="Profile picture"
-                  src="/static/images/avatar/1.jpg"
+                  src="ProfilePicture.jpg"
                   className={classes.bigAvatar}
                 />
                 <MenuList>
@@ -140,11 +143,10 @@ class ProfilePage extends Component {
                 <Divider />
               </Drawer>
               <main className={classes.content}>
-                {/* <div className={classes.toolbar} /> */}
                 {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
-				        {(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }
-				        {(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
+				{(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
+				{(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }
+				{(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
               </main>
             </div>
 		);
