@@ -75,3 +75,23 @@ exports.userAuth = function (req, res) {
       "emailAddress": req.user.emailAddress
   });
 };
+
+exports.createProfile = function(res, req){
+
+}
+
+exports.getProfile = function(req, res){
+  User.findOne({
+    where: {
+      userID : req.body.userID
+    }
+  }).then(result => {
+    result.password = '';
+    result.salt = '';
+    result.createdAt = '';
+      res.status(200).json(result)
+    }).catch(e => {
+      console.log(e);
+      res.send('Error: ' + e);
+    })
+}
