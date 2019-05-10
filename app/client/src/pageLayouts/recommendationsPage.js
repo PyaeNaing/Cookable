@@ -11,6 +11,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import Recipe from '../components/recipe.js';
 
 const styles = theme => ({
 	appBar: {
@@ -68,6 +69,8 @@ class RecommendationsPage extends Component {
 		super(props);
 		this.state = {
 			recommendations: [],
+			selectedValue: {},
+			open: false,
 		};
 	};
 
@@ -95,7 +98,36 @@ class RecommendationsPage extends Component {
 		});
 	};
 
-	componentWillMount() {
+	handleRecipeRetrieval = (recipeID) => {
+  	axios.get(('/v2/recipe/' + recipeID))
+    .then((response) => {
+      if(response.data.length === 0) {
+      	console.log("Could not retrieve recipe.");
+        console.log(response);
+      }
+      else {
+      	console.log(response);
+        this.setState({ selectedValue: response.data });
+        console.log(this.state.selectedValue);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+
+	handleClickOpen = (recipeID) => {
+    this.handleRecipeRetrieval(recipeID);
+    this.setState({
+      open: true,
+    });
+  };
+
+  handleClose = value => {
+    this.setState({ selectedValue: value, open: false });
+  };
+
+	componentDidMount() {
 		this.handleRecommendations();
 	};
 
@@ -158,11 +190,8 @@ class RecommendationsPage extends Component {
 													</Typography>
 												</CardContent>
 												<CardActions>
-													<Button size="small" color="primary">
+													<Button size="small" color="primary" onClick={() => this.handleClickOpen(recipe.recipeID)}>
 														View
-													</Button>
-													<Button size="small" color="primary">
-														Edit
 													</Button>
 												</CardActions>
 											</Card>
@@ -182,6 +211,11 @@ class RecommendationsPage extends Component {
 						</footer>
 						{/* End footer */}
 					</React.Fragment>
+					<Recipe
+	          selectedValue={this.state.selectedValue}
+	          open={this.state.open}
+	          onClose={this.handleClose}
+        	/>
 			</div>
 		);
 	}
