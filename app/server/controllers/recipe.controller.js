@@ -150,7 +150,7 @@ function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
       recipeName: { [Op.like]: '%' + req + '%' }
-    }
+    }, raw: true
   });
 }
 

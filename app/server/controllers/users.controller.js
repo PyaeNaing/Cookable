@@ -69,29 +69,43 @@ exports.login = function (req, res) {
 
 exports.userAuth = function (req, res) {
   res.json({
-      msg: 'Congrats! You are seeing this because you are authorized',
-      "userID": req.user.userID,
-      "username": req.user.username,
-      "emailAddress": req.user.emailAddress
+    msg: 'Congrats! You are seeing this because you are authorized',
+    "userID": req.user.userID,
+    "username": req.user.username,
+    "emailAddress": req.user.emailAddress
   });
 };
 
-exports.createProfile = function(res, req){
-
-}
-
-exports.getProfile = function(req, res){
+exports.editProfile = function (req, res) {
   User.findOne({
     where: {
-      userID : req.body.userID
+      userID: req.body.userID
     },
     attributes: { exclude: ['password', 'salt', 'createdAt'] }
   }).then(result => {
-    
-    console.log()
-      res.status(200).json(result)
-    }).catch(e => {
-      console.log(e);
-      res.send('Error: ' + e);
-    })
+    result.update(
+      {fName: req.body.fName},
+      {lName: req.body.lName},
+      {dob: req.body.dob},
+      {gender: req.body.lName},
+    )
+    res.status(200).json(result)
+  }).catch(e => {
+    console.log(e);
+    res.send('Error: ' + e);
+  })
+}
+
+exports.getProfile = function (req, res) {
+  User.findOne({
+    where: {
+      userID: req.body.userID
+    },
+    attributes: { exclude: ['password', 'salt', 'createdAt'] }
+  }).then(result => {
+    res.status(200).json(result)
+  }).catch(e => {
+    console.log(e);
+    res.send('Error: ' + e);
+  })
 }
