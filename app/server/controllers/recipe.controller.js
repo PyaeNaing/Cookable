@@ -98,14 +98,18 @@ exports.viewRecipe = function (req, res) {
   Recipe.hasMany(Likes, {foreignKey: 'recipeID'});
   Recipe.hasMany(Favorites, {foreignKey: 'recipeID'});
   Recipe.hasMany(Reviews, {foreignKey: 'recipeID'});
+  Recipe.hasMany(instructions, {foreignKey: 'recipeID'});
+  Recipe.hasMany(ingredientList, {foreignKey: 'recipeID'});
 
   RecipeImages.belongsTo(Recipe, { foreignKey: 'recipeID' });
   Likes.belongsTo(Recipe, { foreignKey: 'recipeID' });
   Favorites.belongsTo(Recipe, { foreignKey: 'recipeID' });
   Reviews.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  instructions.belongsTo(Recipe, { foreignKey: 'recipeID' });
+  ingredientList.belongsTo(Recipe, { foreignKey: 'recipeID' });
 
   Recipe.findOne({
-    where: { recipeID: req.params.id }, include: [RecipeImages, Likes, Favorites, Reviews] 
+    where: { recipeID: req.params.id }, include: [RecipeImages, Likes, Favorites, Reviews, instructions, ingredientList] 
   }).then(recipe => {
     res.send(recipe);
   }).catch(err => res.status(500).send('Error: ' + err));
