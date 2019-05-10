@@ -49,14 +49,12 @@ exports.ingredientsAdd = function(req, res) {
 
 exports.getIngredientfromPantry = async function(req, res) {
   let ingredients;
-  let ingredientName = [];
   try {
     ingredients = await getIngredientsFromPantry(req);
-    ingredientName = await getIngredientID(ingredients);
-    res.send(ingredientName);
+    res.send(ingredients);
   } catch (e) {
     console.log(e);
-    res.send("Error");
+    res.status(404).send("Error: " + e);
   }
 };
 
@@ -96,11 +94,4 @@ function getIngredientsFromPantry(req) {
   });
 }
 
-function getIngredientID(ingredients) {
-  let arr = [];
-  for (let i = 0; i < ingredients.length; i++) {
-    arr[i] = ingredients[i].ingredientName;
-  }
-  return arr;
-}
 
