@@ -163,9 +163,9 @@ class MainNavBar extends Component {
   handleSearch = event => {
     // Use '/api/v1/searchIngredients' when is production.
     // Use '/v1/searchIngredients' when on local machine.
-  	axios.get('/v1/searchIngredients', {
+  	axios.get('/v2/recipe/searchByRecipe', {
   		params: {
-  			s: this.state.searchInput
+  			recipeName: this.state.searchInput
   		}
     })
     .then((response) => {
