@@ -17,8 +17,6 @@ router.post("/createIngredient", IngredientsController.ingredientsAdd);
 router.get("/searchRecipe", Recipe.searchRecipe);
 router.post("/createRecipe", Recipe.createRecipe);
 router.get("/recommendation", Recipe.getRecommendation);
-router.get("/searchByRecipe", Recipe.searchByRecipe);
-router.get("/searchByIngredient", Recipe.searchByIngredient);
 router.get("/getIngredient", IngredientsController.getIngredientfromPantry);
 router.post("/addIngredient", IngredientsController.addIngredienttoPantry);
 

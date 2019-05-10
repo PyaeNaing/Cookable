@@ -28,8 +28,6 @@ router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 //RECIPES
 router.get("/recipe/search", RecipeController.searchRecipe);
 router.post("/recipe/create", RecipeController.createRecipe);
-router.get("/recipe/searchByRecipe", RecipeController.searchByRecipe);
-router.get("/recipe/searchByIngredient", RecipeController.searchByIngredient);
 router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
 
 //Combined routers below

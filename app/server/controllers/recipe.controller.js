@@ -29,18 +29,7 @@ exports.createRecipe = function (req, res) {
     });
 };
 
-exports.searchRecipe = function (req, res) {
-  (limit = 20),
-    Recipe.findOne({
-      where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
-    })
-      .then(recipes => {
-        res.json({ recipe: recipes });
-      })
-      .catch(function (err) {
-        res.send("error");
-      });
-};
+
 
 exports.getRecommendation = async function (req, res) {
   let recipe;
@@ -58,8 +47,21 @@ exports.getRecommendation = async function (req, res) {
 };
 
 
-exports.searchByRecipe = async function (req, res) {
-  
+exports.searchRecipe = async function (req, res) {
+  try{
+  let recipeSearch;
+  let ingredientSearch;
+  recipeSearch = await searchByRecipe(req.query.recipe);
+  ingredientSearch = await searchByIngredient(req.query.recipe);
+  let result = [...new Set([...recipeSearch, ...ingredientSearch])];
+  res.json(result);
+  }
+  catch(e){
+    res.status(200).send('Error: ' + e);
+  }
+};
+
+async function searchByRecipe(req) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -68,13 +70,13 @@ exports.searchByRecipe = async function (req, res) {
     arr = await getarray(recipe);
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
-    res.json(recipe);
+    return recipe;
   } catch (e) {
-    res.send('Error');
+    return e;
   }
 }
 
-exports.searchByIngredient = async function (req, res) {
+ async function searchByIngredient(req) {
   let recipe;
   let ingredientused;
   let arr = [];
@@ -86,10 +88,11 @@ exports.searchByIngredient = async function (req, res) {
     recipe = await getRecipei(arr);
     recipeurl = await getImageUrl(arr);
     recipe = await combinethem(recipe, recipeurl)
-    console.log(arr);
-    res.json(recipe);
+    return recipe;
+    // res.json(recipe);
   } catch (e) {
-    res.send('Error');
+    return e
+    // res.send('Error');
   }
 }
 
@@ -146,7 +149,7 @@ exports.getRecipeInstruction = function (req, res) {
 function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
-      recipeName: { [Op.like]: '%' + req.query.recipeName + '%' }
+      recipeName: { [Op.like]: '%' + req + '%' }
     }
   });
 }
@@ -154,7 +157,7 @@ function getRecipeByName(req) {
 function getRecipeByIngredient(req) {
   return ingredientList.findAll({
     where: {
-      ingredientsFull: { [Op.like]: '%' + req.query.ingredientName + '%' },
+      ingredientsFull: { [Op.like]: '%' + req + '%' },
     }, raw: true
   })
 }
