@@ -9,12 +9,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Select from '@material-ui/core/Select';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FolderIcon from '@material-ui/icons/Folder';
-import Dropdown from 'react-bootstrap/Dropdown'
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = theme => ({
   main: {
@@ -98,28 +98,47 @@ class CreateRecipePage extends Component{
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
             <Input id="ingredient" name="ingredient" />
-           <div> <Button>
+           <div> <Button
             as = "input"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.add}
-          
+          >
             Add 
           </Button>
-		    <Button>
+
+		    <Button
             as = "input"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.add}
-          
+          >
             Remove
           </Button></div>
           </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="cuisine">Cuisine</InputLabel>
             <Input id="cuisine" name="cuisine" />
+           <div>
+           <Select
+            value={this.state.age}
+            onChange={this.handleChange}
+            inputProps={{
+              name: 'age',
+              id: 'age-simple',
+            }}
+          >
+            <MenuItem value="">
+              <em>Select Meal-Type</em>
+            </MenuItem>
+            <MenuItem value={10}>Breakfast</MenuItem>
+            <MenuItem value={20}>Brunch</MenuItem>
+            <MenuItem value={30}>Lunch</MenuItem>
+            <MenuItem value={30}>Dinner</MenuItem>
+          </Select>
+            </div>
           </FormControl>		  
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="uploadImage">Upload Image</InputLabel>
@@ -132,7 +151,7 @@ class CreateRecipePage extends Component{
             color="primary"
             className={classes.submit}
           >
-            Add 
+            Submit 
           </Button>
 		  <Button
             as = "input"
