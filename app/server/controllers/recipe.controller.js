@@ -53,12 +53,24 @@ exports.searchRecipe = async function (req, res) {
   let ingredientSearch;
   recipeSearch = await searchByRecipe(req.query.recipe);
   ingredientSearch = await searchByIngredient(req.query.recipe);
-  let result = [...new Set([...recipeSearch, ...ingredientSearch])];
-  res.json(result);
+  let arr3 = recipeSearch.concat(ingredientSearch).unique();
+  res.status(200).json(arr3);
   }
   catch(e){
     res.status(200).send('Error: ' + e);
   }
+};
+
+Array.prototype.unique = function() {
+  var a = this.concat();
+  for(var i=0; i<a.length; ++i) {
+      for(var j=i+1; j<a.length; ++j) {
+          if(a[i].recipeID === a[j].recipeID)
+              a.splice(j--, 1);
+      }
+  }
+
+  return a;
 };
 
 async function searchByRecipe(req) {
@@ -75,6 +87,7 @@ async function searchByRecipe(req) {
     return e;
   }
 }
+
 
  async function searchByIngredient(req) {
   let recipe;
@@ -150,7 +163,7 @@ function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
       recipeName: { [Op.like]: '%' + req + '%' }
-    }
+    }, raw: true
   });
 }
 

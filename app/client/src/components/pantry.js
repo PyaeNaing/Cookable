@@ -68,7 +68,7 @@ const styles = theme => ({
 	}
 });
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8];
+//const cards = [1, 2, 3, 4, 5, 6, 7, 8];
 
 class Pantry extends Component {
 	
@@ -90,7 +90,7 @@ class Pantry extends Component {
 		//example getIngredient?userID=1012
 		axios.get('/v1/getIngredient',{
 			params: {
-				userId: this.props.user.userId
+				userID: this.props.user.userID
 			}
 		})
 		.then((response) => {
@@ -120,15 +120,13 @@ class Pantry extends Component {
 		return (
 			<div>
 				<div>
-					<Button variant="contained" className={classes.button}>
-                    Add Ingredients
-                    </Button>
+					<Typography style={styles.pageTitle} variant="headline">Pantry</Typography>
 				</div>
 				<div className={classNames(classes.layout, classes.cardGrid)}>
 								{/* End hero unit */}
 								<Grid container spacing={40}>
 									{data.map(pantryItem => (
-										<Grid item key={pantryItem.itemId} sm={6} md={4} lg={3}>
+										<Grid item key={pantryItem.pantryID} sm={6} md={4} lg={3}>
 											<Card className={classes.card}>
 												<CardMedia
 													className={classes.cardMedia}
@@ -137,25 +135,27 @@ class Pantry extends Component {
 												/>
 												<CardContent className={classes.cardContent}>
 													<Typography gutterBottom variant="h5" component="h2">
-														{pantryItem.itemName}
+														{pantryItem.ingredientName}
 													</Typography>
 													<Typography>
-														{pantryItem.description}
+														{pantryItem.ingredientID}
 													</Typography>
 												</CardContent>
-												{/* <CardActions>
+												<CardActions>
 													<Button size="small" color="primary">
-														View
+														Remove
 													</Button>
-													<Button size="small" color="primary">
-														Edit
-													</Button>
-												</CardActions> */}
+												</CardActions>
 											</Card>
 										</Grid>
 									))}
 								</Grid>
 							</div>
+				<div>
+					<Button variant="contained" className={classes.button}>
+                    Add Ingredients
+                    </Button>
+				</div>
 			</div>
 		);
 	}
