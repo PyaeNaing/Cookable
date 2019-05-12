@@ -123,15 +123,9 @@ class CreateRecipePage extends Component{
             <Input id="cuisine" name="cuisine" />
            <div>
            <Select
-            value={this.state.age}
-            onChange={this.handleChange}
-            inputProps={{
-              name: 'age',
-              id: 'age-simple',
-            }}
           >
             <MenuItem value="">
-              <em>Select Meal-Type</em>
+              <em>Snack</em>
             </MenuItem>
             <MenuItem value={10}>Breakfast</MenuItem>
             <MenuItem value={20}>Brunch</MenuItem>
@@ -149,6 +143,7 @@ class CreateRecipePage extends Component{
             fullWidth
             variant="contained"
             color="primary"
+
             className={classes.submit}
           >
             Submit 
