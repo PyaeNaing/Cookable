@@ -14,50 +14,36 @@ import Button from '@material-ui/core/Button';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import FormControl from '@material-ui/core/FormControl';
-import axios from "axios";
-
 
 const styles = theme => ({
   root: {
+    flexGrow: 1,
     display: 'flex',
     flexWrap: 'wrap',
-    flexGrow: 1,
-  },
-  margin: {
-    margin: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
   },
   paper: {
-    height: '100%',
-    width: '25%',
+    height: 140,
+    width: 100,
     padding: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
   },
   control: {
     padding: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
   },
-  button: {
-    padding: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+  pageTitle: {
+
   },
   container: {
     display: "flex",
     flexWrap: "wrap"
   },
   textField: {
+    marginLeft: 25,
+    marginRight: 25,
     width: 200,
-    flexBasis: 200,
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit * 2,
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
   },
@@ -67,15 +53,15 @@ class ProfileSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fName: "",
-      lName: "",
-      gender: "",
-      email: "",
-      username: "",
-      dob: new Date(),
-      oldPassword: "",
-      newPassword: "",
-      confirmNewPassword: ""
+        fName: "",
+        lName: "",
+        gender: "",
+        email: "",
+        username: "",
+        dob: new Date(),
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: ""
     };
   }
   state = {
@@ -99,47 +85,16 @@ class ProfileSettings extends React.Component {
       gender: gender,
     });
   };
-  saveInfo = (userID) => {
-
-  };
-  handleProfile = event => {
-		// Use 'v2/user/profile' when is production.
-		// Use 'v2/user/profile' when on local machine.
-		//example v2/user/profile?userID=1012
-		axios.get('/v2/user/profile',{
-			params: {
-				userID: this.props.user.userID
-			}
-		})
-		.then((response) => {
-			if(response.data.length === 0) {
-				console.log("Profile not found.");
-				console.log(response);
-			}
-			else 
-			{
-				console.log(response);
-				this.setState({ Profile: response.data });
-				console.log(this.state.Profile);
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-  };
-  componentWillMount () {
-    this.handleProfile();
-  };
 
   render() {
     const { classes } = this.props;
     const { spacing } = this.state;
 
     return (
-      <Grid container className={classes.root} spacing={16}>
+        <Grid container className={classes.root} spacing={16}>
         <Grid item xs={12}>
-          <Grid container justify="center" spacing={Number(spacing)}>
-            <Paper className={classes.paper}>
+          <Grid container className={classes.demo} justify="center" spacing={Number(spacing)}>
+            <Paper >
               <Typography style={styles.pageTitle} variant="headline">Profile</Typography>
               <form style={styles.form}>
                     <TextField
@@ -163,11 +118,11 @@ class ProfileSettings extends React.Component {
                     />
                     <br />
                     <div className={classes.root}>
-                      <FormControl component="fieldset" className={classes.margin}>
+                      <FormControl component="fieldset" className={classes.formControl}>
                         <FormLabel component="legend">Gender</FormLabel>
                           <RadioGroup
                             aria-label="Gender"
-                            name="gender"
+                            name="gender1"
                             className={classes.group}
                             value={this.state.gender}
                             onChange={this.handleRadioChange}
@@ -178,11 +133,12 @@ class ProfileSettings extends React.Component {
                           </RadioGroup>
                       </FormControl>
                     </div>
+                    <br />
                     <TextField
                       style={styles.textField}
                       id="username"
-                      label="emailAddress"
-                      value={this.state.emailAddress}
+                      label="Username"
+                      value={this.state.username}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
@@ -197,8 +153,7 @@ class ProfileSettings extends React.Component {
                     <div className={classes.heroButtons}>
 										<Grid container spacing={16} justify="center">
 											<Grid item>
-                        {/* need to figure out props */}
-												<Button variant="contained" color="primary" onClick={() => this.saveInfo(this.user.userID)}>
+												<Button variant="contained" color="primary" onClick={() => this.handlePageChange('loginPage')}>
                         Save Info
 												</Button>
 											</Grid>
@@ -212,7 +167,7 @@ class ProfileSettings extends React.Component {
 									</div>
                   </form>
             </Paper>
-            <Paper className={classes.paper}>
+            <Paper >
               <form style={styles.form}>
               <Typography style={styles.pageTitle} variant="headline">Update Password</Typography>
               <TextField
@@ -256,9 +211,7 @@ class ProfileSettings extends React.Component {
     );
   }
 }
-
 ProfileSettings.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 export default withStyles(styles)(ProfileSettings);

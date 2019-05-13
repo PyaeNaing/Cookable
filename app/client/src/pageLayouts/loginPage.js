@@ -57,15 +57,23 @@ class LoginPage extends Component {
 	}
 
 	handleLogin = event => {
-  // Use '/api/v1/searchIngredients' when is production.
-  // Use '/v1/searchIngredients' when on local machine.
-		axios.post('/api/v1/login', {
+  // Use '/api/v2/user/login' when is production.
+  // Use '/v2/user/login' when on local machine.
+		axios.post('/v2/user/login', {
       		user: this.state.user,
       		password: this.state.password,
 	    })
 	    .then((response) => {
 	      	console.log(response);
+          this.props.handleUser(
+            { 
+              userID: response.data.userID,
+              username: response.data.username,
+              emailAddress: response.data.emailAddress,  
+            }
+          );
 	      	this.props.handleLoginStatus(true);
+          localStorage.setItem("token", response.data.token);
 	    })
 	    .catch((error) => {
 	      	console.log(error);

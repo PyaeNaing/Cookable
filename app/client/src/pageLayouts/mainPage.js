@@ -11,38 +11,43 @@ class MainPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			loginStatus: false,
 			// Change currentPage for testing only, change it back to 'recommendationsPage'
 			currentPage: 'recommendationsPage',
-			profileSubpage: 'settings',
+			profileSubpage: 'profileSettings',
 			loginRegisterSubpage: 'login',
 			searchResult: [],
 		};
 	}
 
 	handleLogin = (status) => {
-		this.setState({ loginStatus: status });
+		this.props.handleLogin(status);
 	}
 
 	handleLogout = (status) => {
-		this.setState({ loginStatus: status });
+		this.props.handleLogout(status);
+	}
+
+	handleUser = (user) => {
+		this.props.handleUser(user);
 	}
 
 	handlePageChange = (page) => {
 		this.setState({ currentPage: page });
-		console.log(this.state.currentPage);
 	}
 
 	handleProfileSubpageChange = (page) => {
 		this.setState({ profileSubpage: page });
-		console.log(this.state.profileSubpage);
+	}
+
+	handleSearchResult = (result) => {
+		this.setState({ searchResult: result });
 	}
 
 	render() {
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
-			<LoginPage handleLoginStatus={this.handleLogin}/>
+			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser}/>
 		);
 
 		const renderRegisterPage = (
@@ -55,26 +60,28 @@ class MainPage extends Component {
 
 		// Must lift up profileSubpage state from MainNavBar
 		const renderProfilePage = (
-			<ProfilePage subpage={this.state.profileSubpage}/>
+			<ProfilePage subpage={this.state.profileSubpage} loginStatus={this.props.loginStatus} user={this.props.user}/>
 		);
 
 		// Must lift up searchResult state from MainNavBar
 		const renderRecipeDisplayPage = (
-			<RecipeDisplayPage searchResult={this.state.searchResult} />
+			<RecipeDisplayPage searchResult={this.state.searchResult}/>
 		);
 
 		const renderCreateRecipePage = (
 			// Change true to this.state.loginStatus
-			<CreateRecipePage isLoggedIn={true} />
+			<CreateRecipePage loginStatus={this.props.loginStatus}/>
 		);
 
 		return (
 			<div>
 				<MainNavBar
-					isLoggedIn={this.state.loginStatus} 
+					isLoggedIn={this.props.loginStatus} 
+					username={this.props.user.username}
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
+					handleSearch={this.handleSearchResult}
 				/>
 				{(this.state.currentPage === 'recommendationsPage') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }
