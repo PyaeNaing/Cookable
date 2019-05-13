@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import Typography from '@material-ui/core/Typography';
-//import CommonDrawer from '../components/commonDrawer.js';
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -19,6 +17,7 @@ import Pantry from "../components/pantry.js";
 import Favorites from "../components/favorites.js";
 import ProfileSettings from "../components/profile.js";
 import MyRecipes from "../components/myRecipes.js";
+
 
 const paddingStyleforResponsiveDrawer = {
 	paddingTop: 100,
@@ -56,6 +55,10 @@ const styles = theme => ({
     width: 60,
     height: 60
   },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
+  },
   menuItem: {
     '&:focus': {
       backgroundColor: theme.palette.primary.main,
@@ -84,7 +87,7 @@ class ProfilePage extends Component {
 		const { classes } = this.props;
         //const { currentSubPage } = this.currentSubPage;
         const renderPantry = (
-            <Pantry handleSubPageChange={this.handleSubPageChange} />
+            <Pantry handleSubPageChange={this.handleSubPageChange} user={this.props.user}/>
         );
         const renderFavorites = (
             <Favorites handleSubPageChange={this.handleSubPageChange} />
@@ -93,7 +96,7 @@ class ProfilePage extends Component {
             <MyRecipes handleSubPageChange={this.handleSubPageChange} />
         );
         const renderProfile = (
-            <ProfileSettings handleSubPageChange={this.handleSubPageChange} />
+            <ProfileSettings handleSubPageChange={this.handleSubPageChange} user={this.props.user}/>
         );
 
 		return (
@@ -108,7 +111,7 @@ class ProfilePage extends Component {
               >
                 <Avatar
                   alt="Profile picture"
-                  src="/static/images/avatar/1.jpg"
+                  src="ProfilePicture.jpg"
                   className={classes.bigAvatar}
                 />
                 <MenuList>
@@ -140,7 +143,6 @@ class ProfilePage extends Component {
                 <Divider />
               </Drawer>
               <main className={classes.content}>
-                {/* <div className={classes.toolbar} /> */}
                 {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
 				        {(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
 				        {(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }

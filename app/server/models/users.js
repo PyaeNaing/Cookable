@@ -1,8 +1,7 @@
-const Sequelize = require('sequelize');
-const db = require('../database');
+const Sequelize = require("sequelize");
+const db = require("../database");
 
-const users = db.define('users', {
-
+const users = db.define("users", {
   userID: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -13,12 +12,12 @@ const users = db.define('users', {
     allowNull: false,
     unique: {
       args: true,
-      msg: 'Username already in use!'
+      msg: "Username already in use!"
     }
   },
   password: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: false
     // allowNull defaults to true
   },
   salt: {
@@ -29,13 +28,25 @@ const users = db.define('users', {
     allowNull: false,
     unique: {
       args: true,
-      msg: 'Email address already in use!'
+      msg: "Email address already in use!"
     }
     // allowNull defaults to true
   },
   createdAt: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATE
+  },
+  fName: {
+    type: Sequelize.STRING
+  },
+  lName: {
+    type: Sequelize.STRING
+  },
+  gender: {
+    type: Sequelize.STRING
+  },
+  dob: {
+    type: Sequelize.DATE
   }
-}, {})
+});
 
 module.exports = users;
