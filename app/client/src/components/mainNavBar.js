@@ -12,12 +12,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Login from './login.js';
 import axios from "axios";
 import Button from '@material-ui/core/Button';
-import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
-// import Ingredient from './ingredient.js';
 
 const styles = theme => ({
   root: {
@@ -48,7 +45,7 @@ const styles = theme => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing.unit * 3,
-      width: 'auto',
+      width: '60%',
     },
   },
   searchIcon: {
@@ -72,11 +69,11 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
+      width: 800,
     },
   },
-  switch: {
-    marginLeft: 50,
+  user: {
+    marginRight: 50,
   },
   sectionDesktop: {
     display: 'none',
@@ -100,12 +97,8 @@ class MainNavBar extends Component {
       profileMenuAnchor: null,
       loginMenuAnchor: null,
       mobileMoreAnchorEl: null,
-      isLoggedIn: this.props.isLoggedIn,
-      isLoggingIn: false,
       searchInput: '',
-      isIngredientRetrieved: false,
       searchStatus: false,
-      searchResults: []
     };
     this.handleSearch = this.handleSearch.bind(this);
     //this.handleAddIngredient = this.handleAddIngredient.bind(this);
@@ -167,20 +160,12 @@ class MainNavBar extends Component {
     }
   };
 
-  handleSearchStatusChange = event => {
-    this.setState({
-      [event.target.id]: event.target.checked
-    });
-
-  console.log(this.state.searchStatus);
-  };
-
   handleSearch = event => {
     // Use '/api/v1/searchIngredients' when is production.
     // Use '/v1/searchIngredients' when on local machine.
-  	axios.get('/api/v1/searchIngredients', {
+  	axios.get('/v2/recipe/search', {
   		params: {
-  			s: this.state.searchInput
+  			recipe: this.state.searchInput
   		}
     })
     .then((response) => {
@@ -190,8 +175,7 @@ class MainNavBar extends Component {
       }
       else {
       	console.log(response);
-        this.setState({ searchResults: response.data.ingredients });
-        this.setState({ isIngredientRetrieved: true });
+        this.props.handleSearch(response.data);
         this.props.handlePageChange("recipeDisplayPage");
       }
     })
@@ -200,42 +184,15 @@ class MainNavBar extends Component {
     });
   };
 
-  /*
-  handleAddIngredient = event => {
-    // Use '/api/v1/createIngredient' when is production.
-    // Use '/v1/createIngredient' when on local machine.
-    axios.post('/v1/createIngredient', 
-                {
-                  'ingredientName': this.state.searchInput, 
-                  'ingredientType': 'Food',
-                  'description': 'Filler description'
-                }
-    )
-    .then((response) => {
-      if(response.request.status !== 200) {
-        console.log("Failed to add the ingredient to the database.");
-      }
-      else {
-        console.log("Successfully added ingredient to the database.");
-        console.log(response);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  };
-  */
-
   render() {
     const { 
       userMenuAnchor, 
       profileMenuAnchor, 
       loginMenuAnchor, 
-      mobileMoreAnchorEl, 
-      isLoggingIn, 
-      /*isIngredientRetrieved*/ } = this.state;
+      mobileMoreAnchorEl, } = this.state;
     const { classes } = this.props;
     const isLoggedIn = this.props.isLoggedIn;
+    const username = this.props.username;
     const isLoginMenuOpen = Boolean(loginMenuAnchor);
     const isUserMenuOpen = Boolean(userMenuAnchor);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);  
@@ -279,28 +236,21 @@ class MainNavBar extends Component {
         <MenuItem onClick={() => this.handleProfileSubpageChange('pantry')}>Pantry</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
-        <MenuItem onClick={() => this.handlePageChange('createRecipePage')}>Create Recipe</MenuItem>
+        <MenuItem onClick={((this.props.isLoggedIn) ? ( () => this.handlePageChange('createRecipePage') ) : (() => this.handlePageChange('loginPage')) )}>Create Recipe</MenuItem>
       </Menu>
     );
 
-    const renderLogin = (
+    const renderUserButton = (
     	<div>
-    		<Login
-
-        />
+    		<IconButton 
+            className={classes.menuButton} 
+            color="inherit" aria-label="Open drawer"
+            onClick={this.handleUserMenuOpen}
+          >
+              <MenuIcon />
+        </IconButton>
     	</div>
     );
-
-    /*
-    const renderIngredient = (
-      <div>
-        <Ingredient
-          ingredientList={this.state.searchResults}
-          query={this.state.searchInput}
-        />
-      </div>
-    );
-    */
 
     const renderMobileMenu = (
       <Menu
@@ -323,13 +273,7 @@ class MainNavBar extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton 
-              className={classes.menuButton} 
-              color="inherit" aria-label="Open drawer"
-              onClick={this.handleUserMenuOpen}
-            >
-              <MenuIcon />
-            </IconButton>
+            {this.props.isLoggedIn ? renderUserButton : undefined}
             <Button 
             	className={classes.title}
             	color="inherit" 
@@ -341,7 +285,7 @@ class MainNavBar extends Component {
                 <SearchIcon />
               </div>
               <InputBase
-                placeholder={(this.state.searchStatus === false) ? "Search by recipe ..." : "Search by ingredient ..."}
+                placeholder='Search by recipe name or ingredient ...'
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
@@ -357,31 +301,12 @@ class MainNavBar extends Component {
                 Search
               </Button>
             </div>
-            {/*<div>
-              <Button onClick={this.handleAddIngredient} color="inherit">
-                Add
-              </Button>
-            </div>*/}
-            <div>
-              <Typography className={classes.switch} color="inherit">
-                Recipe
-              </Typography>
-            </div>
-            <div>
-              <Switch
-                id="searchStatus"
-                checked={this.state.searchStatus}
-                onChange={this.handleSearchStatusChange}
-                value="checkedA"
-                color="default"
-              />
-            </div>
-            <div>
-              <Typography color="inherit">
-                Ingredient
-              </Typography>
-            </div>
             <div className={classes.grow} />
+            <div className={classes.user}>
+              <Typography color="inherit">
+                {isLoggedIn ? ("Logged in as " + username) : "Login Menu"}
+              </Typography>
+            </div>
             <div className={classes.sectionDesktop}>
               <IconButton
                 aria-owns={isProfileMenuOpen ? 'material-appbar' : undefined}
@@ -402,8 +327,6 @@ class MainNavBar extends Component {
         {isLoggedIn ? renderProfileMenu : renderLoginMenu}
         {renderUserMenu}
         {renderMobileMenu}
-        {isLoggingIn ? renderLogin : undefined}
-        {/*isIngredientRetrieved ? renderIngredient : undefined*/}
       </div>
     );
   }
