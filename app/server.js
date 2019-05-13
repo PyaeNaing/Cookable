@@ -12,11 +12,11 @@ const port = process.env.port || 4000;
 
 const app = express();
 
-// for passport
+// Passport
 const passportConfig = require('./server/config/passport');
 app.use(passport.initialize()); 
 
-//Set up json parser
+//Setting up json parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -24,8 +24,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //App uses routes versions
-
-//Route
+  //Route
 const v1 = require("./server/routes/v1");
 const v2 = require("./server/routes/v2");
 

@@ -54,7 +54,7 @@ exports.getIngredientfromPantry = async function(req, res) {
     res.send(ingredients);
   } catch (e) {
     console.log(e);
-    res.status(404).send("Error: " + e);
+    res.send("Error");
   }
 };
 
@@ -93,5 +93,4 @@ function getIngredientsFromPantry(req) {
     }
   });
 }
-
 
