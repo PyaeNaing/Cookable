@@ -67,7 +67,7 @@ exports.login = function (req, res) {
     );
 };
 
-exports.userAuth = function (req, res) {
+exports.authenticateUser = function (req, res) {
   res.json({
     msg: 'Congrats! You are seeing this because you are authorized',
     "userID": req.user.userID,

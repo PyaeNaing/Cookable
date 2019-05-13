@@ -17,9 +17,7 @@ router.post("/user/login", UserController.login);
 router.post("/user/create", UserController.createUser);
 router.get("/user/pantry", IngredientsController.getIngredientfromPantry);
 router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
-router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.userAuth);
-router.post('/user/profile', UserController.getProfile);
-router.post('/user/editProfile', UserController.editProfile);
+router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.authenticateUser);
 
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);
