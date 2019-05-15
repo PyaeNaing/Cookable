@@ -92,20 +92,20 @@ exports.editProfile = function (req, res) {
     res.status(200).json(result)
   }).catch(e => {
     console.log(e);
-    res.send('Error: ' + e);
+    res.status(500).send('Error: ' + e);
   })
 }
 
 exports.getProfile = function (req, res) {
   User.findOne({
     where: {
-      userID: req.body.userID
+      userID: req.query.userID
     },
     attributes: { exclude: ['password', 'salt', 'createdAt'] }
   }).then(result => {
     res.status(200).json(result)
   }).catch(e => {
     console.log(e);
-    res.send('Error: ' + e);
+    res.status(500).send('Error: ' + e);
   })
 }

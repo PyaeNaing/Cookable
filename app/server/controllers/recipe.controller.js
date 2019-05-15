@@ -65,8 +65,8 @@ exports.searchRecipe = async function (req, res) {
   let ingredientSearch;
   recipeSearch = await searchByRecipe(req.query.recipe);
   ingredientSearch = await searchByIngredient(req.query.recipe);
-  let arr3 = recipeSearch.concat(ingredientSearch).unique();
-  res.status(200).json(arr3);
+  let result = recipeSearch.concat(ingredientSearch).unique();
+  res.status(200).json(result);
   }
   catch(e){
     res.status(200).send('Error: ' + e);
@@ -81,7 +81,6 @@ Array.prototype.unique = function() {
               a.splice(j--, 1);
       }
   }
-
   return a;
 };
 

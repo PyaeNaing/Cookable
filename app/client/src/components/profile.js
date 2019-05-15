@@ -67,15 +67,16 @@ class ProfileSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fName: "",
-      lName: "",
-      gender: "",
-      email: "",
-      username: "",
-      dob: new Date(),
-      oldPassword: "",
-      newPassword: "",
-      confirmNewPassword: ""
+      profile: [],
+      // fName: "",
+      // lName: "",
+      // gender: "",
+      // email: "",
+      // username: "",
+      // dob: new Date(),
+      // oldPassword: "",
+      // newPassword: "",
+      // confirmNewPassword: ""
     };
   }
   state = {
@@ -119,8 +120,8 @@ class ProfileSettings extends React.Component {
 			else 
 			{
 				console.log(response);
-				this.setState({ Profile: response.data });
-				console.log(this.state.Profile);
+				this.setState({ profile: response.data });
+				console.log(this.state.profile);
 			}
 		})
 		.catch((error) => {
@@ -146,7 +147,7 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="fName"
                       label="First Name"
-                      value={this.state.fName}
+                      value={this.state.profile.fName}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
@@ -156,7 +157,7 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="lName"
                       label="Last Name"
-                      value={this.state.lName}
+                      value={this.state.profile.lName}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
@@ -169,7 +170,7 @@ class ProfileSettings extends React.Component {
                             aria-label="Gender"
                             name="gender"
                             className={classes.group}
-                            value={this.state.gender}
+                            value={this.state.profile.gender}
                             onChange={this.handleRadioChange}
                           >
                             <FormControlLabel value="female" control={<Radio />} label="Female" />
@@ -182,7 +183,7 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="username"
                       label="emailAddress"
-                      value={this.state.emailAddress}
+                      value={this.state.profile.emailAddress}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
