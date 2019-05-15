@@ -206,8 +206,7 @@ class MainNavBar extends Component {
         open={isProfileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>Profile</MenuItem>
-        <MenuItem onClick={() => this.handleProfileSubpageChange('settings')}>My account</MenuItem>
+        <MenuItem onClick={() => this.handleProfileSubpageChange('profileSettings')}>Profile</MenuItem>
         <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
       </Menu>
     );
