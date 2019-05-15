@@ -102,6 +102,7 @@ class Pantry extends Component {
 			{
 				console.log(response);
 				this.setState({ pantryItems: response.data });
+				console.log('pantry items retrieved');
 				console.log(this.state.pantryItems);
 			}
 		})
