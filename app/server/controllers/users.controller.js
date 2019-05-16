@@ -125,7 +125,30 @@ exports.addFavorite = function (req, res) {
     }
     else {
       favorite.recipeID = req.body.recipeID;
+      favorite.save();
       res.status(201).json(favorite);
+    }
+  }).catch(e => {
+    console.log(e);
+    res.status(500).send('Error: ' + e);
+  })
+}
+
+exports.removeFavorite = function (req, res) {
+
+  Favortie.findOne({
+    where: {
+      userID: req.user.userID,
+      recipeID: req.body.recipeID
+    }
+  }).then((favorite) => {
+    if(favorite)
+    {
+      favorite.destroy();
+      res.json({msg: "Favorite removed"});
+    }
+    else{
+      res.json({msg: "No favorite found."})
     }
   }).catch(e => {
     console.log(e);
