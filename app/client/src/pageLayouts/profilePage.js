@@ -19,10 +19,6 @@ import ProfileSettings from "../components/profile.js";
 import MyRecipes from "../components/myRecipes.js";
 
 
-const paddingStyleforResponsiveDrawer = {
-	paddingTop: 100,
-};
-
 const drawerWidth = 240;
 
 const styles = theme => ({
