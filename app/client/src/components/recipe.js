@@ -41,13 +41,6 @@ const styles = theme => ({
 });
 
 class Recipe extends Component {
-	
-	constructor(props) {
-		super(props);
-		this.state = {
-			expanded: false,
-		};
-	};
 
 	handleClose = () => {
     this.props.onClose(this.props.selectedValue);
