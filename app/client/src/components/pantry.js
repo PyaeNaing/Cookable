@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Paper } from "@material-ui/core";
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -11,6 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import axios from "axios";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
 
 
@@ -84,6 +89,18 @@ class Pantry extends Component {
 		this.props.handlePageChange(page);
 	};
 
+	handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+	};
+	
+	handleAddedClose = () => {
+		this.setState({open: false});
+	};
+
 	handlePantryItems = event => {
 		// Use '/api/v1/getIngredient' when is production.
 		// Use '/v1/getIngredient' when on local machine.
@@ -153,9 +170,39 @@ class Pantry extends Component {
 								</Grid>
 							</div>
 				<div>
-					<Button variant="contained" className={classes.button}>
+					<Button variant="contained" className={classes.button} onClick={this.handleOpen}>
                     Add Ingredients
                     </Button>
+				</div>
+				<div>
+				<Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Add Ingredients</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Start typing name to add ingredient, ingredient would be added if not exists in cookable database.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ingredientName"
+              label="Ingredient Name Search"
+              //type="email"
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleAddedClose} color="primary">
+              Add Ingredient
+            </Button>
+          </DialogActions>
+        </Dialog>
 				</div>
 			</div>
 		);
