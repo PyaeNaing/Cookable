@@ -18,7 +18,7 @@ constructor(props) {
 
   createAdmin = e => {
 
-    axios.post('/v1/createAdmin', {
+    axios.post('/api/v1/createAdmin', {
       id: this.state.id,
         first: this.state.first,
         last: this.state.last,
@@ -34,7 +34,7 @@ constructor(props) {
 
   getAdmins = e => 
   {
-    axios.get("/v1/admins").then(function(res){
+    axios.get("/api/v1/admins").then(function(res){
       console.log(res.data);
     })
   };

@@ -105,7 +105,7 @@ class Pantry extends Component {
 		// Use '/api/v1/getIngredient' when is production.
 		// Use '/v1/getIngredient' when on local machine.
 		//example getIngredient?userID=1012
-		axios.get('/v1/getIngredient',{
+		axios.get('/api/v1/getIngredient',{
 			params: {
 				userID: this.props.user.userID
 			}
