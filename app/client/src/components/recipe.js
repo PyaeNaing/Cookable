@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -44,11 +45,24 @@ class Recipe extends Component {
 
 	handleClose = () => {
     this.props.onClose(this.props.selectedValue);
-    this.setState({ expanded: false });
+  };
+
+  handleAddFavorite = (userID, recipeID) => {
+    // axios.post('/v2/user/addFavorite', {
+    //         userID: userID,
+    //         recipeID: recipeID,
+    //     })
+    //     .then((response) => {
+    //         console.log(response);
+    //     })
+    //     .catch((error) => {
+    //         console.log(error);
+    //     });
+    console.log("handleAddFavorite");
   };
 	
 	render() {
-    const { classes, onClose, selectedValue, ...other } = this.props;
+    const { classes, onClose, selectedValue, userID, ...other } = this.props;
     
     return (
       <Dialog scroll="paper" onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
@@ -61,8 +75,8 @@ class Recipe extends Component {
                 </Avatar>
               }
               action={
-                <IconButton>
-                  <FavoriteIcon />
+                <IconButton onClick={() => this.handleAddFavorite(userID, selectedValue.recipeID)}>
+                  <FavoriteIcon/>
                 </IconButton>
               }
               title={selectedValue.recipeName}
