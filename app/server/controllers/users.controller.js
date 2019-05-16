@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const Ingredient = require("../models/ingredients");
+const Favortie = require("../models/favorites");
 const Sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -84,10 +85,10 @@ exports.editProfile = function (req, res) {
     attributes: { exclude: ['password', 'salt', 'createdAt'] }
   }).then(result => {
     result.update(
-      {fName: req.body.fName},
-      {lName: req.body.lName},
-      {dob: req.body.dob},
-      {gender: req.body.lName},
+      { fName: req.body.fName },
+      { lName: req.body.lName },
+      { dob: req.body.dob },
+      { gender: req.body.lName },
     )
     res.status(200).json(result)
   }).catch(e => {
@@ -104,6 +105,28 @@ exports.getProfile = function (req, res) {
     attributes: { exclude: ['password', 'salt', 'createdAt'] }
   }).then(result => {
     res.status(200).json(result)
+  }).catch(e => {
+    console.log(e);
+    res.status(500).send('Error: ' + e);
+  })
+}
+
+exports.addFavorite = function (req, res) {
+
+  Favortie.findOrCreate({
+    where: {
+      userID: req.user.userID,
+      recipeID: req.body.recipeID
+    }
+  }).then(([favorite, created]) => {
+    console.log(req.body.recipeID);
+    if (!created) {
+      res.json({msg:"Already favorited", created: true});
+    }
+    else {
+      favorite.recipeID = req.body.recipeID;
+      res.status(201).json(favorite);
+    }
   }).catch(e => {
     console.log(e);
     res.status(500).send('Error: ' + e);

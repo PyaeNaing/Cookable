@@ -20,6 +20,7 @@ router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
 router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.authenticateUser);
 router.get('/user/profile', UserController.getProfile);
 router.post('/user/editProfile', UserController.editProfile);
+router.post('/user/favorite/add', passport.authenticate('jwt', { session: false }), UserController.addFavorite);
 
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);
