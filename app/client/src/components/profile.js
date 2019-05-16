@@ -9,7 +9,6 @@ import Radio from '@material-ui/core/Radio';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { MenuItem } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -61,30 +60,40 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
   },
+  // // Selects label that comes right after the autofilled input
+  // input:-webkit-autofill + .mdl-textfield__label {
+  //   // Insert your active label styles
+  //  },
 });
 
 class ProfileSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fName: "",
-      lName: "",
-      gender: "",
-      email: "",
-      username: "",
-      dob: new Date(),
-      oldPassword: "",
-      newPassword: "",
-      confirmNewPassword: ""
+      profile: [],
+      // fName: "",
+      // lName: "",
+      // gender: "",
+      // email: "",
+      // username: "",
+      // dob: new Date(),
+      // oldPassword: "",
+      // newPassword: "",
+      // confirmNewPassword: ""
     };
   }
   state = {
     spacing: '16',
   };
 
-  handleChange = key => (event, value) => {
+  // handleChange = key => (event, value) => {
+  //   this.setState({
+  //     [key]: value,
+  //   });
+  // };
+  handleChange = value => (event, value) => {
     this.setState({
-      [key]: value,
+      [value]: event.target.value,
     });
   };
 
@@ -119,8 +128,8 @@ class ProfileSettings extends React.Component {
 			else 
 			{
 				console.log(response);
-				this.setState({ Profile: response.data });
-				console.log(this.state.Profile);
+				this.setState({ profile: response.data });
+				console.log(this.state.profile);
 			}
 		})
 		.catch((error) => {
@@ -130,6 +139,32 @@ class ProfileSettings extends React.Component {
   componentWillMount () {
     this.handleProfile();
   };
+
+  // /* componentDidMount() {
+  //   // check if there is an autofilled value (e.g. in Chrome):
+  //   const input = this._getInputNode();
+  //   this._autofillTimer = setTimeout(() => {
+  //     if (this.state.hasValue) return; // could have been switched to true during the timer
+  //     let hasValue;
+  //     try {
+  //       hasValue = input.matches(':autofill');
+  //     } catch (err) {
+  //       try {
+  //         hasValue = input.matches(':-webkit-autofill');
+  //       } catch (err) {
+  //         hasValue = false;
+  //       }
+  //     }
+  //     /*eslint-disable react/no-did-mount-set-state */
+  //     this.setState({hasValue});
+  //     /*eslint-enable react/no-did-mount-set-state */
+  //   }, 50); // 10 ms is sometimes too short, and above 100 can feel laggy...
+  // };
+
+  // componentWillUnmount() {
+  //   clearTimeout(this._autofillTimer);
+  // }; */
+
 
   render() {
     const { classes } = this.props;
@@ -146,7 +181,9 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="fName"
                       label="First Name"
-                      value={this.state.fName}
+                      class={styles.input} 
+                      value={this.state.profile.fName}
+                      InputLabelProps={{ shrink: true }}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
@@ -156,7 +193,8 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="lName"
                       label="Last Name"
-                      value={this.state.lName}
+                      value={this.state.profile.lName}
+                      InputLabelProps={{ shrink: true }}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
@@ -169,7 +207,7 @@ class ProfileSettings extends React.Component {
                             aria-label="Gender"
                             name="gender"
                             className={classes.group}
-                            value={this.state.gender}
+                            value={this.state.profile.gender}
                             onChange={this.handleRadioChange}
                           >
                             <FormControlLabel value="female" control={<Radio />} label="Female" />
@@ -182,10 +220,12 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="username"
                       label="emailAddress"
-                      value={this.state.emailAddress}
+                      value={this.state.profile.emailAddress}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
+                      InputProps={{ readOnly: true }}
+                      InputLabelProps={{ shrink: true }}
                     />
                     <br /><br />
                     <DatePicker

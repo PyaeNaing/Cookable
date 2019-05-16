@@ -19,10 +19,6 @@ import ProfileSettings from "../components/profile.js";
 import MyRecipes from "../components/myRecipes.js";
 
 
-const paddingStyleforResponsiveDrawer = {
-	paddingTop: 100,
-};
-
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -71,32 +67,33 @@ const styles = theme => ({
 
 class ProfilePage extends Component {
 	
-    constructor(props) {
-		super(props);
-		this.state = {
-        currentSubPage : 'pantry',
-      };
-    }
+    // constructor(props) {
+		// super(props);
+		// // this.state = {
+    // //     currentSubPage : 'pantry',
+    // //   };
+    // }
 
     handleSubPageChange = (page) => {
-        this.setState({ currentSubPage: page });
-        console.log(this.state.currentSubPage);
+        //this.setState({ currentSubPage: page });
+        this.props.handleSubPageChange(page);
+        ///console.log(this.state.currentSubPage);
     };
 	
 	render() {
-		const { classes } = this.props;
+		const { classes, subPage } = this.props;
         //const { currentSubPage } = this.currentSubPage;
         const renderPantry = (
-            <Pantry handleSubPageChange={this.handleSubPageChange} user={this.props.user}/>
+            <Pantry handleSubPageChange={this.handleSubPageChange} user={this.props.user} />
         );
         const renderFavorites = (
-            <Favorites handleSubPageChange={this.handleSubPageChange} />
+            <Favorites handleSubPageChange={this.handleSubPageChange} user={this.props.user} />
         );
         const renderMyRecipes = (
-            <MyRecipes handleSubPageChange={this.handleSubPageChange} />
+            <MyRecipes handleSubPageChange={this.handleSubPageChange} user={this.props.user} />
         );
         const renderProfile = (
-            <ProfileSettings handleSubPageChange={this.handleSubPageChange} user={this.props.user}/>
+            <ProfileSettings handleSubPageChange={this.handleSubPageChange} user={this.props.user} />
         );
 
 		return (
@@ -143,10 +140,10 @@ class ProfilePage extends Component {
                 <Divider />
               </Drawer>
               <main className={classes.content}>
-                {(this.state.currentSubPage === 'pantry') ? renderPantry : undefined }
-				        {(this.state.currentSubPage === 'myRecipes') ? renderMyRecipes : undefined }
-				        {(this.state.currentSubPage === 'favorites') ? renderFavorites : undefined }
-				        {(this.state.currentSubPage === 'profileSettings') ? renderProfile : undefined }
+                {(subPage === 'pantry') ? renderPantry : undefined }
+				        {(subPage === 'myRecipes') ? renderMyRecipes : undefined }
+				        {(subPage === 'favorites') ? renderFavorites : undefined }
+				        {(subPage === 'profileSettings') ? renderProfile : undefined }
               </main>
             </div>
 		);
