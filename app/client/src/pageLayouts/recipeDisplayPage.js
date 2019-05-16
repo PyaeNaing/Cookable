@@ -72,7 +72,7 @@ class RecipeDisplayPage extends Component {
 	};
 	
 	handleRecipeRetrieval = (recipeID) => {
-  	axios.get(('/v2/recipe/' + recipeID))
+  	axios.get(('/api/v2/recipe/' + recipeID))
     .then((response) => {
       if(response.data.length === 0) {
       	console.log("Could not retrieve recipe.");

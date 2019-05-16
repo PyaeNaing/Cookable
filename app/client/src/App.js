@@ -77,7 +77,7 @@ class App extends Component {
     };
 
     if(token) {
-      axios.get('/v2/protected', {
+      axios.get('/api/v2/protected', {
             headers:  headers,
         })
         .then((response) => {

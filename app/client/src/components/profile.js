@@ -115,7 +115,7 @@ class ProfileSettings extends React.Component {
 		// Use 'v2/user/profile' when is production.
 		// Use 'v2/user/profile' when on local machine.
 		//example v2/user/profile?userID=1012
-		axios.get('/v2/user/profile',{
+		axios.get('/api/v2/user/profile',{
 			params: {
 				userID: this.props.user.userID
 			}
