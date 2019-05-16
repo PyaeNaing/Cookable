@@ -97,7 +97,8 @@ class Favorites extends Component {
 		axios.post('/v2/user/favorites/removeFavorite',{
 			params: {
 				userID: userID,
-				recipeID: recipeID
+				recipeID: recipeID,
+				token: localStorage.token
 			}
 		})
 		.then((response) => {
@@ -159,7 +160,7 @@ class Favorites extends Component {
 			{
 				console.log(response);
 				this.setState({ favorites: response.data });
-				console.log('pantry items retrieved');
+				console.log("Favorites retrieved");
 				console.log(this.state.favorites);
 			}
 		})
