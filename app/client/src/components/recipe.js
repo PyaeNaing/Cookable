@@ -53,10 +53,6 @@ class Recipe extends Component {
     this.props.onClose(this.props.selectedValue);
     this.setState({ expanded: false });
   };
-
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
 	
 	render() {
     const { classes, onClose, selectedValue, ...other } = this.props;
