@@ -207,12 +207,12 @@ exports.pantrySearchRecipe = function (req, res) {
         for (let y = 0; y < promises[1].length; y++) {
           if(promises[0][x].dataValues.recipeID == promises[1][y].dataValues.recipeID && promises[0][x].dataValues.count == promises[1][y].dataValues.count)
           {
-            console.log(promises[0][x].dataValues.recipeID);
+            results.push(promises[0][x].dataValues.recipeID);
           }
         }
       }
 
-      res.send(promises[0]);
+      res.send(results);
     }).catch(err => res.status(500).send("Error: " + err))
 };
 
