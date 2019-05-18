@@ -25,7 +25,6 @@ router.post('/user/favorite/remove', passport.authenticate('jwt', { session: fal
 router.get('/user/favorites', RecipeController.getFavorite);
 router.get('/user/myRecipes', RecipeController.getUserRecipe);
 
-
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);
 router.get("/ingredient/search", IngredientsController.ingredientsSearch);
@@ -35,9 +34,9 @@ router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 router.get("/recipe/search", RecipeController.searchRecipe);
 router.post("/recipe/create", RecipeController.createRecipe);
 router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
+router.post("/recipe/search/pantry", RecipeController.pantrySearchRecipe);
 
 //Combined routers below
 router.get("/recipe/:id", RecipeController.viewRecipe);
-
 
 module.exports = router;
