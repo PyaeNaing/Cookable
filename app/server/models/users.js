@@ -46,6 +46,9 @@ const users = db.define("users", {
   },
   dob: {
     type: Sequelize.DATE
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN
   }
 });
 
