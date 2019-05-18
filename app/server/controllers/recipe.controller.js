@@ -10,7 +10,7 @@ const defaultImageUrl =
   "https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg";
 const Op = Sequelize.Op;
 
-exports.createRecipe = function(req, res) {
+exports.createRecipe = function (req, res) {
   Recipe.create({
     recipeName: req.body.recipeName,
     description: req.body.description,
@@ -31,7 +31,7 @@ exports.createRecipe = function(req, res) {
     });
 };
 
-exports.getFavorite = function(req, res) {
+exports.getFavorite = function (req, res) {
 
   let arr = [];
   Favorites.findAll({
@@ -39,14 +39,16 @@ exports.getFavorite = function(req, res) {
       userID: req.query.userID
     }
   }).then(r => {
-    for(let i = 0; i < r.length; i++){
+    for (let i = 0; i < r.length; i++) {
       arr[i] = r[i].recipeID;
     }
     console.log(arr);
     Recipe.findAll(
-      {where: {
-        recipeID: arr
-      }}
+      {
+        where: {
+          recipeID: arr
+        }
+      }
     ).then(async recipe => {
       let arr2 = await getarray(recipe);
       let recipeurl = await getImageUrl(arr2);
@@ -58,10 +60,10 @@ exports.getFavorite = function(req, res) {
   })
 };
 
-exports.getUserRecipe = function (req, res){
+exports.getUserRecipe = function (req, res) {
   Recipe.findAll({
-    where : {
-      userID : req.query.userID
+    where: {
+      userID: req.query.userID
     }
   }).then(async recipe => {
     let arr2 = await getarray(recipe);
@@ -71,7 +73,7 @@ exports.getUserRecipe = function (req, res){
   })
 }
 
-exports.getRecommendation = async function(req, res) {
+exports.getRecommendation = async function (req, res) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -86,7 +88,7 @@ exports.getRecommendation = async function(req, res) {
   }
 };
 
-exports.searchRecipe = async function(req, res) {
+exports.searchRecipe = async function (req, res) {
   try {
     let recipeSearch;
     let ingredientSearch;
@@ -99,7 +101,7 @@ exports.searchRecipe = async function(req, res) {
   }
 };
 
-Array.prototype.unique = function() {
+Array.prototype.unique = function () {
   var a = this.concat();
   for (var i = 0; i < a.length; ++i) {
     for (var j = i + 1; j < a.length; ++j) {
@@ -142,7 +144,7 @@ async function searchByIngredient(req) {
   }
 }
 
-exports.viewRecipe = function(req, res) {
+exports.viewRecipe = function (req, res) {
   Recipe.hasMany(RecipeImages, { foreignKey: "recipeID" });
   Recipe.hasMany(Likes, { foreignKey: "recipeID" });
   Recipe.hasMany(Favorites, { foreignKey: "recipeID" });
@@ -174,7 +176,47 @@ exports.viewRecipe = function(req, res) {
     .catch(err => res.status(500).send("Error: " + err));
 };
 
-exports.getRecipeInstruction = function(req, res) {
+exports.pantrySearchRecipe = function (req, res) {
+  let searchArray = "";
+  req.body.forEach(element => {
+    searchArray = searchArray + element + "|";
+  });
+  searchArray = searchArray.substring(0, searchArray.length - 1);
+  console.log("Here " + searchArray);
+
+
+  const ingredientMatchCount = ingredientList.findAll({
+    group: ['recipeID'],
+    attributes: ['recipeID', [Sequelize.fn('COUNT', 'recipeID'), 'count']],
+    where: {
+      ingredientsFull: { [Op.regexp]: searchArray }
+    }
+  });
+
+  const allCount = ingredientList.findAll(
+    {
+      group: ['recipeID'],
+      attributes: ['recipeID', [Sequelize.fn('COUNT', 'recipeID'), 'count']],
+    }
+  )
+
+  Promise
+    .all([ingredientMatchCount, allCount]).then(promises => {
+      let results = [];
+      for (let x = 0; x < promises[0].length; x++) {
+        for (let y = 0; y < promises[1].length; y++) {
+          if(promises[0][x].dataValues.recipeID == promises[1][y].dataValues.recipeID && promises[0][x].dataValues.count == promises[1][y].dataValues.count)
+          {
+            results.push(promises[0][x].dataValues.recipeID);
+          }
+        }
+      }
+
+      res.send(results);
+    }).catch(err => res.status(500).send("Error: " + err))
+};
+
+exports.getRecipeInstruction = function (req, res) {
   Recipe.findOne({
     where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
   })
