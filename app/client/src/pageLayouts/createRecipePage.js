@@ -67,7 +67,7 @@ class CreateRecipePage extends Component{
   }; 
   CreateRecipePage = e => {
 
-    axios.request('/v1/createAdmin', {
+    axios.request('/v2/user/myRecipes', {
       id: this.state.id,
         recipeTitle: this.state.id,
         description: this.state.id, 
@@ -88,7 +88,7 @@ class CreateRecipePage extends Component{
 
   getCreateRecipePage = e => 
   {
-    axios.get("/v1/admins").then(function(res){
+    axios.get("/v2/user/myRecipes").then(function(res){
       console.log(res.data);
     })
   };
