@@ -57,7 +57,7 @@ class CreateRecipePage extends Component{
     super(props); 
     this.state = {
       recipeTitle: "",
-      serves: "", 
+      description: "", 
       cookingTime: "", 
       calorieCount: "", 
       ingredients: "", 
@@ -65,7 +65,33 @@ class CreateRecipePage extends Component{
       uploadImage: "", 
     };
   }; 
+  CreateRecipePage = e => {
 
+    axios.request('/v1/createAdmin', {
+      id: this.state.id,
+        recipeTitle: this.state.id,
+        description: this.state.id, 
+        cookingTime: this.state.id, 
+        calorieCount: this.state.id, 
+        ingredients: this.state.id, 
+        cuisine: this.state.id, 
+        uploadImage: this.state.id, 
+
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
+
+  getCreateRecipePage = e => 
+  {
+    axios.get("/v1/admins").then(function(res){
+      console.log(res.data);
+    })
+  };
   
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -93,13 +119,13 @@ class CreateRecipePage extends Component{
             <Input id="recipeTitle" name="recipeTitle"  autoFocus />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="serves">Serves</InputLabel>
-            <Input name="serves" type="serves" id="serves" autoComplete="current-password" 
-                     value={this.state.serves}
+            <InputLabel htmlFor="description">Description</InputLabel>
+            <Input name="description" type="description" id="description" autoComplete="current-password" 
+                     value={this.state.description}
                      onChange={this.handleChange}
                      inputProps={{
-                       name:'serves',
-                       id: 'serves', 
+                       name:'description',
+                       id: 'description', 
                      }}
             />
           </FormControl>
