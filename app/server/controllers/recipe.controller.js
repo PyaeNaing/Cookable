@@ -182,8 +182,6 @@ exports.pantrySearchRecipe = function (req, res) {
     searchArray = searchArray + element + "|";
   });
   searchArray = searchArray.substring(0, searchArray.length - 1);
-  console.log("Here " + searchArray);
-
 
   const ingredientMatchCount = ingredientList.findAll({
     group: ['recipeID'],
@@ -205,14 +203,44 @@ exports.pantrySearchRecipe = function (req, res) {
       let results = [];
       for (let x = 0; x < promises[0].length; x++) {
         for (let y = 0; y < promises[1].length; y++) {
-          if(promises[0][x].dataValues.recipeID == promises[1][y].dataValues.recipeID && promises[0][x].dataValues.count == promises[1][y].dataValues.count)
-          {
+          if (promises[0][x].dataValues.recipeID == promises[1][y].dataValues.recipeID && promises[0][x].dataValues.count == promises[1][y].dataValues.count) {
             results.push(promises[0][x].dataValues.recipeID);
           }
         }
       }
 
-      res.send(results);
+      const recipeImages = Recipe.findAll({
+        where: {
+          recipeID: { [Op.or]: results }
+        }
+      })
+
+      const recipeInfo = RecipeImages.findAll({
+        where: {
+          recipeID: { [Op.or]: results }
+        }
+      })
+
+      Promise.all([recipeImages, recipeInfo]).then(prom => {
+        let rez = [];
+        let alreadyIn = false;
+
+        for (let x = 0; x < prom[0].length; x++) {
+
+          for (let y = 0; y < prom[1].length; y++) {
+            if (prom[0][x].dataValues.recipeID === prom[1][y].dataValues.recipeID) {
+              rez.push(Object.assign(prom[0][x].dataValues, prom[1][y].dataValues));
+              alreadyIn = true;
+            }
+          }
+          if (!alreadyIn) { rez.push(Object.assign(prom[0][x].dataValues, { "recipeImageDir": defaultImageUrl })); }
+          alreadyIn = false;
+        }
+
+        res.send(rez);
+
+      }).catch(err => res.status(500).send("Error: " + err))
+
     }).catch(err => res.status(500).send("Error: " + err))
 };
 
