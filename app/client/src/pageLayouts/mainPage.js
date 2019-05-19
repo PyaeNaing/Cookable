@@ -12,7 +12,7 @@ class MainPage extends Component {
 		super(props);
 		this.state = {
 			// Change currentPage for testing only, change it back to 'recommendationsPage'
-			currentPage: 'createRecipePage',
+			currentPage: 'recommendationsPage',
 			profileSubpage: '',
 			loginRegisterSubpage: 'login',
 			searchResult: [],
