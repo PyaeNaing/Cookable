@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipe");
+const User = require("../models/users");
 const Favorites = require("../models/favorites");
 const Likes = require("../models/likes");
 const Reviews = require("../models/reviews");
@@ -10,7 +11,7 @@ const defaultImageUrl =
   "https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg";
 const Op = Sequelize.Op;
 
-exports.createRecipe = function (req, res) {
+exports.createRecipe = function(req, res) {
   Recipe.create({
     recipeName: req.body.recipeName,
     description: req.body.description,
@@ -31,36 +32,35 @@ exports.createRecipe = function (req, res) {
     });
 };
 
-exports.getFavorite = function (req, res) {
-
+exports.getFavorite = function(req, res) {
   let arr = [];
   Favorites.findAll({
     where: {
       userID: req.query.userID
     }
-  }).then(r => {
-    for (let i = 0; i < r.length; i++) {
-      arr[i] = r[i].recipeID;
-    }
-    console.log(arr);
-    Recipe.findAll(
-      {
+  })
+    .then(r => {
+      for (let i = 0; i < r.length; i++) {
+        arr[i] = r[i].recipeID;
+      }
+      console.log(arr);
+      Recipe.findAll({
         where: {
           recipeID: arr
         }
-      }
-    ).then(async recipe => {
-      let arr2 = await getarray(recipe);
-      let recipeurl = await getImageUrl(arr2);
-      recipe = await combinethem(recipe, recipeurl);
-      res.json(recipe);
+      }).then(async recipe => {
+        let arr2 = await getarray(recipe);
+        let recipeurl = await getImageUrl(arr2);
+        recipe = await combinethem(recipe, recipeurl);
+        res.json(recipe);
+      });
     })
-  }).catch(e => {
-    res.send("Error: " + e);
-  })
+    .catch(e => {
+      res.send("Error: " + e);
+    });
 };
 
-exports.getUserRecipe = function (req, res) {
+exports.getUserRecipe = function(req, res) {
   Recipe.findAll({
     where: {
       userID: req.query.userID
@@ -70,10 +70,10 @@ exports.getUserRecipe = function (req, res) {
     let recipeurl = await getImageUrl(arr2);
     recipe = await combinethem(recipe, recipeurl);
     res.json(recipe);
-  })
-}
+  });
+};
 
-exports.getRecommendation = async function (req, res) {
+exports.getRecommendation = async function(req, res) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -88,7 +88,7 @@ exports.getRecommendation = async function (req, res) {
   }
 };
 
-exports.searchRecipe = async function (req, res) {
+exports.searchRecipe = async function(req, res) {
   try {
     let recipeSearch;
     let ingredientSearch;
@@ -101,7 +101,7 @@ exports.searchRecipe = async function (req, res) {
   }
 };
 
-Array.prototype.unique = function () {
+Array.prototype.unique = function() {
   var a = this.concat();
   for (var i = 0; i < a.length; ++i) {
     for (var j = i + 1; j < a.length; ++j) {
@@ -144,7 +144,7 @@ async function searchByIngredient(req) {
   }
 }
 
-exports.viewRecipe = function (req, res) {
+exports.viewRecipe = function(req, res) {
   Recipe.hasMany(RecipeImages, { foreignKey: "recipeID" });
   Recipe.hasMany(Likes, { foreignKey: "recipeID" });
   Recipe.hasMany(Favorites, { foreignKey: "recipeID" });
@@ -176,7 +176,7 @@ exports.viewRecipe = function (req, res) {
     .catch(err => res.status(500).send("Error: " + err));
 };
 
-exports.pantrySearchRecipe = function (req, res) {
+exports.pantrySearchRecipe = function(req, res) {
   let searchArray = "";
   req.body.forEach(element => {
     searchArray = searchArray + element + "|";
@@ -184,22 +184,20 @@ exports.pantrySearchRecipe = function (req, res) {
   searchArray = searchArray.substring(0, searchArray.length - 1);
 
   const ingredientMatchCount = ingredientList.findAll({
-    group: ['recipeID'],
-    attributes: ['recipeID', [Sequelize.fn('COUNT', 'recipeID'), 'count']],
+    group: ["recipeID"],
+    attributes: ["recipeID", [Sequelize.fn("COUNT", "recipeID"), "count"]],
     where: {
       ingredientsFull: { [Op.regexp]: searchArray }
     }
   });
 
-  const allCount = ingredientList.findAll(
-    {
-      group: ['recipeID'],
-      attributes: ['recipeID', [Sequelize.fn('COUNT', 'recipeID'), 'count']],
-    }
-  )
+  const allCount = ingredientList.findAll({
+    group: ["recipeID"],
+    attributes: ["recipeID", [Sequelize.fn("COUNT", "recipeID"), "count"]]
+  });
 
-  Promise
-    .all([ingredientMatchCount, allCount]).then(promises => {
+  Promise.all([ingredientMatchCount, allCount])
+    .then(promises => {
       let results = [];
       for (let x = 0; x < promises[0].length; x++) {
         for (let y = 0; y < promises[1].length; y++) {
@@ -244,7 +242,7 @@ exports.pantrySearchRecipe = function (req, res) {
     }).catch(err => res.status(500).send("Error: " + err))
 };
 
-exports.getRecipeInstruction = function (req, res) {
+exports.getRecipeInstruction = function(req, res) {
   Recipe.findOne({
     where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
   })
@@ -270,6 +268,71 @@ exports.getRecipeInstruction = function (req, res) {
     .catch(e => {
       res.send("Error");
       console.log(e);
+    });
+};
+
+exports.deleteRecipe = function(req, res) {
+  User.findOne({
+    where: {
+      userID: req.body.userID
+    }
+  })
+    .then(user => {
+      if (user.isAdmin) {
+        Recipe.findOne({
+          where: {
+            recipeID: req.body.recipeID
+          }
+        }).then(recipe => {
+          if (recipe) {
+            RecipeImages.destroy({
+              where: {
+                recipeID: req.body.recipeID
+              }
+            });
+            ingredientList.destroy({
+              where: {
+                recipeID: req.body.recipeID
+              }
+            });
+
+            instructions.destroy({
+              where: {
+                recipeID: req.body.recipeID
+              }
+            });
+
+            Favorites.destroy({
+              where: {
+                recipeID: req.body.recipeID
+              }
+            });
+
+            Likes.destroy({
+              where: {
+                recipeID: req.body.recipeID
+              }
+            });
+
+            Reviews.destroy({
+              where: {
+                recipeID: req.body.recipeID
+              }
+            });
+
+            recipe.destroy();
+
+            res.json({ msg: "Recipe removed" });
+          } else {
+            res.send({ msg: "Recipe not found" });
+          }
+        });
+      } else {
+        res.json({ msg: "Error: User is not Admin" });
+      }
+    })
+    .catch(e => {
+      res.send("Error: " + e);
     });
 };
 
@@ -353,3 +416,56 @@ function getRecipei(arr) {
     }
   });
 }
+/*Recipe.findOne({
+        where:{
+          recipeID: req.body.recipeID
+        }
+      }).then(recipe => {
+        if(recipe){
+          recipe.destroy();
+        }
+        else {
+          res.json({msg: "Recipe could not be found"});
+        }
+
+        ingredientList.findAll({
+          where: {
+            recipeID: req.body.recipeID
+          }
+        }).then(result => {
+          result.destroy();
+        })
+
+        instructions.findAll({
+          where: {
+            recipeID: req.body.recipeID
+          }
+        }).then(result => {
+          result.destroy();
+        })
+        
+        Favorites.findAll({
+          where: {
+            recipeID: req.body.recipeID
+          }
+        }).then(result => {
+          result.destroy();
+        })
+
+        Likes.findAll({
+          where: {
+            recipeID: req.body.recipeID
+          }
+        }).then(result => {
+          result.destroy();
+        })
+
+        Reviews.findAll({
+          where: {
+            recipeID: req.body.recipeID
+          }
+        }).then(result => {
+          result.destroy();
+        })
+           res.json({msg: "Recipe removed"});
+      })*/

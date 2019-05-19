@@ -11,6 +11,7 @@ const RecipeController = require("../controllers/recipe.controller");
 //ADMIN
 router.get("/admin/list", AdminController.adminList);
 router.post("/admin/create", AdminController.adminCreate);
+router.post("/admin/deleteRecipe", RecipeController.deleteRecipe);
 
 //USERS
 router.post("/user/login", UserController.login);
