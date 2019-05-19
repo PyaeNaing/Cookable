@@ -126,7 +126,7 @@ class CreateRecipePage extends Component{
           </Button></div>
           </FormControl>
           <FormControl className={classes.formControl} required fullWidth>
-          <InputLabel htmlFor="cuisine">cuisine</InputLabel>
+          <InputLabel htmlFor="cuisine">Cuisine</InputLabel>
           <Select
             value={this.state.cuisine}
             onChange={this.handleChange}
