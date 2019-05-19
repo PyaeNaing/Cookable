@@ -65,6 +65,8 @@ class CreateRecipePage extends Component{
       uploadImage: "", 
     };
   }; 
+
+  
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -92,19 +94,46 @@ class CreateRecipePage extends Component{
           </FormControl>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="serves">Serves</InputLabel>
-            <Input name="serves" type="serves" id="serves" autoComplete="current-password" />
+            <Input name="serves" type="serves" id="serves" autoComplete="current-password" 
+                     value={this.state.serves}
+                     onChange={this.handleChange}
+                     inputProps={{
+                       name:'serves',
+                       id: 'serves', 
+                     }}
+            />
           </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="cookingTime">Cooking Time</InputLabel>
-            <Input id="cookingTime" name="cookingTime"  />
+            <Input id="cookingTime" name="cookingTime" 
+                     value={this.state.cookingTime}
+                     onChange={this.handleChange}
+                     inputProps={{
+                     name: 'cookingTime',
+                     id: 'cookingTime',
+                       }}
+             />
           </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="calorieCount">Calorie Count</InputLabel>
-            <Input id="calorieCount" name="calorieCount"  />
+            <Input id="calorieCount" name="calorieCount" 
+                    value={this.state.calorieCount}
+                    onChange={this.handleChange}
+                    inputProps={{
+                    name: 'calorieCount',
+                    id: 'calorieCount',
+                      }}
+            />
           </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
-            <Input id="ingredient" name="ingredient" />
+            <Input id="ingredient" name="ingredient" 
+                          value={this.state.ingredient}
+                          onChange={this.handleChange}
+                          inputProps={{
+                          name: 'ingredient',
+                          id: 'ingredient',
+                        }}/>
            <div> <Button
             as = "input"
             fullWidth
@@ -147,7 +176,14 @@ class CreateRecipePage extends Component{
         </FormControl>
 		  <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="uploadImage">Upload Image</InputLabel>
-            <Input id="uploadImage" name="uploadImage" />
+            <Input id="uploadImage" name="uploadImage"
+                        value={this.state.uploadImage}
+                        onChange={this.handleChange}
+                        inputProps={{
+                        name: 'uploadImage',
+                        id: 'uploadImage',
+                            }}
+            />
           </FormControl>
       <Button
             as = "input"
