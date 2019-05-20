@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Response from '../components/response.js';
 
 const styles = theme => ({
   main: {
@@ -53,6 +54,9 @@ class LoginPage extends Component {
 		this.state = {
 			user: "",
 			password: "",
+      open: false,
+      response: '',
+      responseTitle: '',
 		};
 	}
 
@@ -64,21 +68,39 @@ class LoginPage extends Component {
       		password: this.state.password,
 	    })
 	    .then((response) => {
-	      	console.log(response);
+        console.log(response);
+        if(response.data === "User does not exist") {
+          this.handleResponse("We're sorry, but the user that you have provided does not exist. Please try again.", "User does not exist")
+        }
+        else if(response.data === "Incorrect Password") {
+          this.handleResponse("We're sorry, but the password you provided for the given username is incorrect. Please try again.", "Incorrect Password")
+        }
+        else {
           this.props.handleUser(
             { 
               userID: response.data.userID,
               username: response.data.username,
-              emailAddress: response.data.emailAddress,  
+              emailAddress: response.data.emailAddress,
+              isAdmin: response.data.isAdmin,
             }
           );
 	      	this.props.handleLoginStatus(true);
           localStorage.setItem("token", response.data.token);
+          this.props.handlePageChange("recommendationsPage");
+        }
 	    })
 	    .catch((error) => {
 	      	console.log(error);
 	    });
 	}
+
+  handleResponse = (response, responseTitle) => {
+    this.setState({ open: true, response: response, responseTitle: responseTitle });
+  }
+
+  handleResponseClose = () => {
+    this.setState({ open: false, response: '', responseTitle: '' });
+  }
 	
 	handleChange = event => {
 		this.setState({
@@ -89,46 +111,53 @@ class LoginPage extends Component {
 	render() {
 		const { classes } = this.props;
 
-
 		return (
-			<main className={classes.main}>
-      			<CssBaseline />
-      			<Paper className={classes.paper}>
-        			<Avatar className={classes.avatar}>
-          				<LockOutlinedIcon />
-        			</Avatar>
-        			<Typography component="h1" variant="h5">
+      <div>
+  			<main className={classes.main}>
+    			<CssBaseline />
+    			<Paper className={classes.paper}>
+      			<Avatar className={classes.avatar}>
+        				<LockOutlinedIcon />
+      			</Avatar>
+      			<Typography component="h1" variant="h5">
+        				Sign in
+      			</Typography>
+      			<form className={classes.form}>
+        				<FormControl margin="normal" required fullWidth>
+          				<InputLabel htmlFor="user">Username or Email Address</InputLabel>
+          				<Input id="user" name="user" onChange={this.handleChange} autoComplete="user" autoFocus />
+        				</FormControl>
+        				<FormControl margin="normal" required fullWidth>
+          				<InputLabel htmlFor="password">Password</InputLabel>
+          				<Input name="password" type="password" id="password" onChange={this.handleChange} autoComplete="current-password" />
+        				</FormControl>
+        				<FormControlLabel
+          				control={<Checkbox value="remember" color="primary" />}
+          				label="Remember me"
+        				/>
+        				{/*
+        				 type="submit"
+        				 add keyPress 'enter' functionality to Sign in button
+        			 	*/}
+        				<Button
+          				fullWidth
+          				variant="contained"
+          				color="primary"
+          				className={classes.submit}
+          				onClick={this.handleLogin}
+        				>
           				Sign in
-        			</Typography>
-        			<form className={classes.form}>
-          				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="user">Username or Email Address</InputLabel>
-            				<Input id="user" name="user" onChange={this.handleChange} autoComplete="user" autoFocus />
-          				</FormControl>
-          				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="password">Password</InputLabel>
-            				<Input name="password" type="password" id="password" onChange={this.handleChange} autoComplete="current-password" />
-          				</FormControl>
-          				<FormControlLabel
-            				control={<Checkbox value="remember" color="primary" />}
-            				label="Remember me"
-          				/>
-          				{/*
-          				 type="submit"
-          				 add keyPress 'enter' functionality to Sign in button
-          			 	*/}
-          				<Button
-            				fullWidth
-            				variant="contained"
-            				color="primary"
-            				className={classes.submit}
-            				onClick={this.handleLogin}
-          				>
-            				Sign in
-          				</Button>
-        			</form>
-      			</Paper>
+        				</Button>
+      			</form>
+    			</Paper>
     		</main>
+        <Response 
+          open={this.state.open}
+          onClose={this.handleResponseClose}
+          response={this.state.response}
+          responseTitle={this.state.responseTitle}
+        />
+      </div>
 		);
 	};
 }

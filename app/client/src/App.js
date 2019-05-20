@@ -29,6 +29,7 @@ class App extends Component {
         userID: '',
         username: '',
         emailAddress: '',
+        isAdmin: false,
       }
     };
   }
@@ -60,7 +61,15 @@ class App extends Component {
   }
 
   handleLogout = (status) => {
-    this.setState({ loginStatus: status })
+    this.setState({ 
+      loginStatus: status,
+      user: {
+        userID: '',
+        username: '',
+        emailAddress: '',
+        isAdmin: false,
+      }             
+    });
     localStorage.removeItem("token");
   }
 
