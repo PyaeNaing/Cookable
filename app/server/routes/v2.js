@@ -11,6 +11,7 @@ const RecipeController = require("../controllers/recipe.controller");
 //ADMIN
 router.get("/admin/list", AdminController.adminList);
 router.post("/admin/create", AdminController.adminCreate);
+router.post("/admin/deleteRecipe", RecipeController.deleteRecipe);
 
 //USERS
 router.post("/user/login", UserController.login);
@@ -20,6 +21,10 @@ router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
 router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.authenticateUser);
 router.get('/user/profile', UserController.getProfile);
 router.post('/user/editProfile', UserController.editProfile);
+router.post('/user/favorite/add', passport.authenticate('jwt', { session: false }), UserController.addFavorite);
+router.post('/user/favorite/remove', passport.authenticate('jwt', { session: false }), UserController.removeFavorite);
+router.get('/user/favorites', RecipeController.getFavorite);
+router.get('/user/myRecipes', RecipeController.getUserRecipe);
 
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);
@@ -30,9 +35,9 @@ router.post("/ingredient/add", IngredientsController.ingredientsAdd);
 router.get("/recipe/search", RecipeController.searchRecipe);
 router.post("/recipe/create", RecipeController.createRecipe);
 router.get("/recipe/instructions", RecipeController.getRecipeInstruction);
+router.post("/recipe/search/pantry", RecipeController.pantrySearchRecipe);
 
 //Combined routers below
 router.get("/recipe/:id", RecipeController.viewRecipe);
-
 
 module.exports = router;

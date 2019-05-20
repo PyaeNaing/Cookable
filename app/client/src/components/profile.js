@@ -10,7 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import FormControl from '@material-ui/core/FormControl';
 import axios from "axios";
@@ -60,6 +59,10 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
   },
+  // // Selects label that comes right after the autofilled input
+  // input:-webkit-autofill + .mdl-textfield__label {
+  //   // Insert your active label styles
+  //  },
 });
 
 class ProfileSettings extends React.Component {
@@ -77,16 +80,29 @@ class ProfileSettings extends React.Component {
       // newPassword: "",
       // confirmNewPassword: ""
     };
+    this.handleChange = this.handleChange.bind(this);
   }
   state = {
     spacing: '16',
   };
 
+  
+  // handleChange = key => (event, value) => {
+  //   this.setState({
+  //     [key]: value,
+  //   });
+  // };
   handleChange = key => (event, value) => {
     this.setState({
-      [key]: value,
+      [value]: event.target.value,
     });
   };
+
+  handleInputChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
 
   handleDateChange = (date) => {
     this.setState({
@@ -95,8 +111,9 @@ class ProfileSettings extends React.Component {
   };
   
   handleRadioChange = (gender) => {
+    console.log("RadioChangeinit");
     this.setState({
-      gender: gender,
+      radio: gender,
     });
   };
   saveInfo = (userID) => {
@@ -131,6 +148,7 @@ class ProfileSettings extends React.Component {
     this.handleProfile();
   };
 
+
   render() {
     const { classes } = this.props;
     const { spacing } = this.state;
@@ -146,7 +164,9 @@ class ProfileSettings extends React.Component {
                       style={styles.textField}
                       id="fName"
                       label="First Name"
+                      class={styles.input} 
                       value={this.state.profile.fName}
+                      InputLabelProps={{ shrink: true }}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
@@ -157,26 +177,29 @@ class ProfileSettings extends React.Component {
                       id="lName"
                       label="Last Name"
                       value={this.state.profile.lName}
+                      InputLabelProps={{ shrink: true }}
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
                     />
                     <br />
                     <div className={classes.root}>
-                      <FormControl component="fieldset" className={classes.margin}>
-                        <FormLabel component="legend">Gender</FormLabel>
-                          <RadioGroup
-                            aria-label="Gender"
-                            name="gender"
-                            className={classes.group}
-                            value={this.state.profile.gender}
-                            onChange={this.handleRadioChange}
-                          >
-                            <FormControlLabel value="female" control={<Radio />} label="Female" />
-                            <FormControlLabel value="male" control={<Radio />} label="Male" />
-                            <FormControlLabel value="other" control={<Radio />} label="Other" />
-                          </RadioGroup>
-                      </FormControl>
+                      <form onSubmit={this.handleSubmit}>
+                        <FormControl component="fieldset" className={classes.margin}>
+                          <FormLabel component="legend">Gender</FormLabel>
+                            <RadioGroup
+                              aria-label="Gender"
+                              name="gender"
+                              className={classes.group}
+                              value={this.state.profile.gender}
+                              onChange={this.handleRadioChange}
+                            >
+                              <FormControlLabel value="female" control={<Radio checked={this.state.profile.gender === 'female'} />} label="Female" />
+                              <FormControlLabel value="male" control={<Radio checked={this.state.profile.gender === 'male'} />} label="Male" />
+                              <FormControlLabel value="other" control={<Radio checked={this.state.profile.gender === 'female'} />} label="Other" />
+                            </RadioGroup>
+                        </FormControl>
+                      </form>
                     </div>
                     <TextField
                       style={styles.textField}
@@ -186,14 +209,26 @@ class ProfileSettings extends React.Component {
                       onChange={this.handleChange}
                       margin="normal"
                       variant="outlined"
+                      InputProps={{ readOnly: true }}
+                      InputLabelProps={{ shrink: true }}
                     />
-                    <br /><br />
-                    <DatePicker
-                      style={styles.textField}
-                      selected={this.state.dob}
-                      onChange={this.handleDateChange}
-                    />
-                    <br /><br />
+                    <br />
+                    <form className={classes.container} noValidate>
+                      <TextField
+                        id="date"
+                        style={styles.TextField}
+                        value={this.state.profile.dob}
+                        //onChange={this.handleDateChange}
+                        label="Birthday"
+                        type="date"
+                        defaultValue="2017-05-24"
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    </form>
+                   <br />
                     <div className={classes.heroButtons}>
 										<Grid container spacing={16} justify="center">
 											<Grid item>
