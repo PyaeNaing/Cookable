@@ -51,6 +51,7 @@ class Recipe extends Component {
     // axios.post('/v2/user/addFavorite', {
     //         userID: userID,
     //         recipeID: recipeID,
+    //         token: localStorage.token,
     //     })
     //     .then((response) => {
     //         console.log(response);
