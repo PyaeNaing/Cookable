@@ -44,24 +44,31 @@ exports.login = function (req, res) {
     }
   })
     .then(result => {
-      console.log(result.salt);
-      let hash = crypto
-        .pbkdf2Sync(req.body.password, result.salt, 10000, 512, "sha512")
-        .toString();
+      if (result != null) {
 
-      if (result != null && result.password === hash) {
-        let payload = { sub: result.userID };
-        let token = jwt.sign(payload, secretOrKey);
-        res.json({
-          userID: result.userID,
-          username: result.username,
-          emailAddress: result.emailAddress,
-          createdAt: result.createdAt,
-          isAdmin: result.isAdmin,
-          token: token
-        });
+        let hash = crypto
+          .pbkdf2Sync(req.body.password, result.salt, 10000, 512, "sha512")
+          .toString();
+
+        if (result.password === hash) {
+          let payload = { sub: result.userID };
+          let token = jwt.sign(payload, secretOrKey);
+          res.json({
+            userID: result.userID,
+            username: result.username,
+            emailAddress: result.emailAddress,
+            createdAt: result.createdAt,
+            isAdmin: result.isAdmin,
+            token: token
+          });
+        }
+        else
+        {
+          res.send("Incorrect Password");
+        }
+
       } else {
-        res.send("False");
+        res.send("User does not exist");
       }
     })
     .catch(err =>
@@ -123,7 +130,7 @@ exports.addFavorite = function (req, res) {
   }).then(([favorite, created]) => {
     console.log(req.body.recipeID);
     if (!created) {
-      res.json({msg:"Already favorited", created: true});
+      res.json({ msg: "Already favorited", created: true });
     }
     else {
       favorite.recipeID = req.body.recipeID;
@@ -144,13 +151,12 @@ exports.removeFavorite = function (req, res) {
       recipeID: req.body.recipeID
     }
   }).then((favorite) => {
-    if(favorite)
-    {
+    if (favorite) {
       favorite.destroy();
-      res.json({msg: "Favorite removed"});
+      res.json({ msg: "Favorite removed" });
     }
-    else{
-      res.json({msg: "No favorite found."})
+    else {
+      res.json({ msg: "No favorite found." })
     }
   }).catch(e => {
     console.log(e);
