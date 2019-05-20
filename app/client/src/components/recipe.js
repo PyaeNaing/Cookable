@@ -80,7 +80,7 @@ class Recipe extends Component {
                 this.handleResponse("Recipe was successfully added to your favorites.", "Success!");
               }
               else if(response.statusText === "OK") {
-                this.handleResponse("Looks like it's already in your favorites!", "Woops");
+                this.handleResponse("Looks like it's already in your favorites.", "Whoops!");
               }
           })
           .catch((error) => {
@@ -104,7 +104,7 @@ class Recipe extends Component {
               this.handleResponse("Recipe was successfully removed.", "Success!");
             }
             else {
-              this.handleResponse("Recipe could not be removed.", "Error");
+              this.handleResponse("Recipe could not be removed.", "Error!");
             }
         })
         .catch((error) => {
