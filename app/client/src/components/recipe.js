@@ -100,7 +100,7 @@ class Recipe extends Component {
         })
         .then((response) => {
             console.log(response);
-            if(response.data.msg === "Recipe Removed") {
+            if(response.data.msg === "Recipe removed") {
               this.handleResponse("Recipe was successfully removed.", "Success!");
             }
             else {
