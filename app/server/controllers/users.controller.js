@@ -57,6 +57,7 @@ exports.login = function (req, res) {
           username: result.username,
           emailAddress: result.emailAddress,
           createdAt: result.createdAt,
+          isAdmin: result.isAdmin,
           token: token
         });
       } else {
