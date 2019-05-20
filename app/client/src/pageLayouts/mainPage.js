@@ -24,6 +24,7 @@ class MainPage extends Component {
 	}
 
 	handleLogout = (status) => {
+		this.setState({ currentPage: 'recommendationsPage' });
 		this.props.handleLogout(status);
 	}
 
@@ -55,7 +56,7 @@ class MainPage extends Component {
 		);
 
 		const renderRecommendationsPage = (
-			<RecommendationsPage userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
+			<RecommendationsPage loginStatus={this.props.loginStatus} userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		// Must lift up profileSubpage state from MainNavBar
