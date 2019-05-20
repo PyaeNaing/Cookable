@@ -69,7 +69,8 @@ class LoginPage extends Component {
             { 
               userID: response.data.userID,
               username: response.data.username,
-              emailAddress: response.data.emailAddress,  
+              emailAddress: response.data.emailAddress,
+              isAdmin: response.data.isAdmin,
             }
           );
 	      	this.props.handleLoginStatus(true);

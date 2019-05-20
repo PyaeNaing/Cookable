@@ -55,7 +55,7 @@ class MainPage extends Component {
 		);
 
 		const renderRecommendationsPage = (
-			<RecommendationsPage userID={this.props.user.userID} handlePageChange={this.handlePageChange}/>
+			<RecommendationsPage userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		// Must lift up profileSubpage state from MainNavBar
@@ -65,7 +65,7 @@ class MainPage extends Component {
 
 		// Must lift up searchResult state from MainNavBar
 		const renderRecipeDisplayPage = (
-			<RecipeDisplayPage userID={this.props.user.userID} searchResult={this.state.searchResult}/>
+			<RecipeDisplayPage userID={this.props.user.userID} searchResult={this.state.searchResult} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		const renderCreateRecipePage = (

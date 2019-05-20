@@ -166,6 +166,7 @@ class RecipeDisplayPage extends Component {
 	          open={this.state.open}
 	          onClose={this.handleClose}
 	          userID={this.props.userID}
+	          isAdmin={this.props.isAdmin}
         	/>
 			</div>
 		);

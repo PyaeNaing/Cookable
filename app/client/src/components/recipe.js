@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import blue from '@material-ui/core/colors/blue';
 import Card from '@material-ui/core/Card';
@@ -61,9 +62,30 @@ class Recipe extends Component {
         });
     console.log("handleAddFavorite");
   };
+
+  handleAdminDeleteRecipe = (userID, recipeID) => {
+    axios.post('/v2/admin/deleteRecipe', {
+            userID: userID,
+            recipeID: recipeID,
+            token: localStorage.token,
+        })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    console.log("handleAdminDeleteRecipe");
+  };
 	
 	render() {
-    const { classes, onClose, selectedValue, userID, ...other } = this.props;
+    const { classes, onClose, selectedValue, userID, isAdmin, ...other } = this.props;
+
+    const renderAdminDeleteButton = (
+      <Button onClick={() => this.handleAdminDeleteRecipe(userID, selectedValue.recipeID)} variant="contained" color="primary">
+        Delete
+      </Button>
+    );
     
     return (
       <Dialog scroll="paper" onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
@@ -121,6 +143,7 @@ class Recipe extends Component {
                 </ol>) :
                 undefined
               }
+              {(isAdmin) ? renderAdminDeleteButton : undefined}
             </CardContent>
           </Card>
         </DialogContent>
