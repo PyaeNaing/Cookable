@@ -65,7 +65,7 @@ class CreateRecipePage extends Component{
       uploadImage: "", 
     };
   }; 
-  CreateRecipePage = e => {
+    createRecipe = e => {
 
     axios.request('/v2/user/myRecipes', {
       id: this.state.id,
@@ -86,7 +86,7 @@ class CreateRecipePage extends Component{
     });
   };
 
-  getCreateRecipePage = e => 
+  getCreateRecipe = e => 
   {
     axios.get("/v2/user/myRecipes").then(function(res){
       console.log(res.data);
@@ -227,6 +227,7 @@ class CreateRecipePage extends Component{
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={this.createRecipe}
           >
 			    Cancel
           </Button>
