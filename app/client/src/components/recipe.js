@@ -77,10 +77,10 @@ class Recipe extends Component {
           .then((response) => {
               console.log(response);
               if(response.statusText === "Created") {
-                this.handleResponse("Recipe was successfully added to your favorites.", "Success");
+                this.handleResponse("Recipe was successfully added to your favorites.", "Success!");
               }
               else if(response.statusText === "OK") {
-                this.handleResponse("You have already favorited this recipe.", "Error");
+                this.handleResponse("Looks like it's already in your favorites!", "Woops");
               }
           })
           .catch((error) => {
@@ -101,10 +101,10 @@ class Recipe extends Component {
         .then((response) => {
             console.log(response);
             if(response.data.msg === "Recipe Removed") {
-              this.handleResponse("Recipe was successfully removed.", "Success");
+              this.handleResponse("Recipe was successfully removed.", "Success!");
             }
             else {
-              this.handleResponse("Error: recipe could not be removed.", "Error");
+              this.handleResponse("Recipe could not be removed.", "Error");
             }
         })
         .catch((error) => {
@@ -118,7 +118,7 @@ class Recipe extends Component {
   };
 
   handleResponseClose = () => {
-    this.setState({ open: false, response: '' });
+    this.setState({ open: false, response: '', responseTitle: '' });
   };
 	
 	render() {
