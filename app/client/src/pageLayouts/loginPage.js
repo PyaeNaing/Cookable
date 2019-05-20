@@ -96,11 +96,11 @@ class LoginPage extends Component {
 
   handleResponse = (response, responseTitle) => {
     this.setState({ open: true, response: response, responseTitle: responseTitle });
-  };
+  }
 
   handleResponseClose = () => {
     this.setState({ open: false, response: '', responseTitle: '' });
-  };
+  }
 	
 	handleChange = event => {
 		this.setState({

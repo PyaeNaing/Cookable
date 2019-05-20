@@ -52,7 +52,7 @@ class MainPage extends Component {
 		);
 
 		const renderRegisterPage = (
-			<RegisterPage />
+			<RegisterPage handlePageChange={this.handlePageChange}/>
 		);
 
 		const renderRecommendationsPage = (

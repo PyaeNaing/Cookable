@@ -8,8 +8,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 class Response extends Component {
 	
+  handlePageChange = (page) => {
+    this.props.handlePageChange("loginPage");
+  }
+
 	render() {
 		const { response, responseTitle, open, onClose } = this.props;
+
+    const renderLoginButton = (
+      <Button onClick={() => this.handlePageChange("loginPage")} color="primary" autofocus>
+        Login
+      </Button>
+    );
 
 		return (
 			<div>
@@ -25,6 +35,7 @@ class Response extends Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
+            {(responseTitle === "Registration Complete!") ? renderLoginButton : undefined}
             <Button onClick={onClose} color="primary" autoFocus>
               Close
             </Button>
