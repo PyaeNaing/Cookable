@@ -48,17 +48,17 @@ class Recipe extends Component {
   };
 
   handleAddFavorite = (userID, recipeID) => {
-    // axios.post('/v2/user/addFavorite', {
-    //         userID: userID,
-    //         recipeID: recipeID,
-    //         token: localStorage.token,
-    //     })
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //     });
+    axios.post('/v2/user/favorite/add', {
+            userID: userID,
+            recipeID: recipeID,
+            token: localStorage.token,
+        })
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     console.log("handleAddFavorite");
   };
 	
