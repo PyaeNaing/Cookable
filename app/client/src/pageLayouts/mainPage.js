@@ -48,7 +48,7 @@ class MainPage extends Component {
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
-			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser}/>
+			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser} handlePageChange={this.handlePageChange}/>
 		);
 
 		const renderRegisterPage = (
