@@ -165,6 +165,7 @@ class RecipeDisplayPage extends Component {
 	          selectedValue={this.state.selectedValue}
 	          open={this.state.open}
 	          onClose={this.handleClose}
+	          userID={this.props.userID}
         	/>
 			</div>
 		);

@@ -57,6 +57,7 @@ exports.login = function (req, res) {
           username: result.username,
           emailAddress: result.emailAddress,
           createdAt: result.createdAt,
+          isAdmin: result.isAdmin,
           token: token
         });
       } else {
@@ -73,7 +74,8 @@ exports.authenticateUser = function (req, res) {
     msg: 'Congrats! You are seeing this because you are authorized',
     "userID": req.user.userID,
     "username": req.user.username,
-    "emailAddress": req.user.emailAddress
+    "emailAddress": req.user.emailAddress,
+    "isAdmin": req.user.isAdmin
   });
 };
 
