@@ -56,7 +56,7 @@ class MainPage extends Component {
 		);
 
 		const renderRecommendationsPage = (
-			<RecommendationsPage loginStatus={this.props.loginStatus} userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
+			<RecommendationsPage loginStatus={this.props.loginStatus} username={this.props.user.username} userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		// Must lift up profileSubpage state from MainNavBar
