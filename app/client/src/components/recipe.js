@@ -56,7 +56,7 @@ class Recipe extends Component {
   }
 
 	handleClose = () => {
-    this.props.onClose({});
+    this.props.onClose(this.props.selectedValue);
   };
 
   handleAddFavorite = (userID, recipeID) => {
