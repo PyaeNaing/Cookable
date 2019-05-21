@@ -11,13 +11,14 @@ const RecipeController = require("../controllers/recipe.controller");
 //ADMIN
 router.get("/admin/list", AdminController.adminList);
 router.post("/admin/create", AdminController.adminCreate);
-router.post("/admin/deleteRecipe", RecipeController.deleteRecipe);
+router.post("/admin/deleteRecipe", passport.authenticate('jwt', { session: false }), RecipeController.deleteRecipe);
 
 //USERS
 router.post("/user/login", UserController.login);
 router.post("/user/create", UserController.createUser);
 router.get("/user/pantry", IngredientsController.getIngredientfromPantry);
 router.post("/user/addtoPantry", IngredientsController.addIngredienttoPantry);
+router.post("/user/removefromPantry", IngredientsController.removeIngredientfromPantry);
 router.get('/protected', passport.authenticate('jwt', { session: false }), UserController.authenticateUser);
 router.get('/user/profile', UserController.getProfile);
 router.post('/user/editProfile', UserController.editProfile);
