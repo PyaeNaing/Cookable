@@ -24,6 +24,7 @@ class MainPage extends Component {
 	}
 
 	handleLogout = (status) => {
+		this.setState({ currentPage: 'recommendationsPage' });
 		this.props.handleLogout(status);
 	}
 
@@ -47,15 +48,15 @@ class MainPage extends Component {
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
-			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser}/>
+			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser} handlePageChange={this.handlePageChange}/>
 		);
 
 		const renderRegisterPage = (
-			<RegisterPage />
+			<RegisterPage handlePageChange={this.handlePageChange}/>
 		);
 
 		const renderRecommendationsPage = (
-			<RecommendationsPage handlePageChange={this.handlePageChange}/>
+			<RecommendationsPage loginStatus={this.props.loginStatus} username={this.props.user.username} userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		// Must lift up profileSubpage state from MainNavBar
@@ -65,7 +66,7 @@ class MainPage extends Component {
 
 		// Must lift up searchResult state from MainNavBar
 		const renderRecipeDisplayPage = (
-			<RecipeDisplayPage searchResult={this.state.searchResult}/>
+			<RecipeDisplayPage userID={this.props.user.userID} searchResult={this.state.searchResult} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		const renderCreateRecipePage = (

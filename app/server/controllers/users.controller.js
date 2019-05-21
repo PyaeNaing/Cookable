@@ -44,23 +44,30 @@ exports.login = function (req, res) {
     }
   })
     .then(result => {
-      console.log(result.salt);
-      let hash = crypto
-        .pbkdf2Sync(req.body.password, result.salt, 10000, 512, "sha512")
-        .toString();
+      if (result != null) {
 
-      if (result != null && result.password === hash) {
-        let payload = { sub: result.userID };
-        let token = jwt.sign(payload, secretOrKey);
-        res.json({
-          userID: result.userID,
-          username: result.username,
-          emailAddress: result.emailAddress,
-          createdAt: result.createdAt,
-          token: token
-        });
+        let hash = crypto
+          .pbkdf2Sync(req.body.password, result.salt, 10000, 512, "sha512")
+          .toString();
+
+        if (result.password === hash) {
+          let payload = { sub: result.userID };
+          let token = jwt.sign(payload, secretOrKey);
+          res.json({
+            userID: result.userID,
+            username: result.username,
+            emailAddress: result.emailAddress,
+            createdAt: result.createdAt,
+            isAdmin: result.isAdmin,
+            token: token
+          });
+        }
+        else {
+          res.send("Incorrect Password");
+        }
+
       } else {
-        res.send("False");
+        res.send("User does not exist");
       }
     })
     .catch(err =>
@@ -73,7 +80,8 @@ exports.authenticateUser = function (req, res) {
     msg: 'Congrats! You are seeing this because you are authorized',
     "userID": req.user.userID,
     "username": req.user.username,
-    "emailAddress": req.user.emailAddress
+    "emailAddress": req.user.emailAddress,
+    "isAdmin": req.user.isAdmin
   });
 };
 
@@ -121,7 +129,7 @@ exports.addFavorite = function (req, res) {
   }).then(([favorite, created]) => {
     console.log(req.body.recipeID);
     if (!created) {
-      res.json({msg:"Already favorited", created: true});
+      res.json({ msg: "Already favorited", created: true });
     }
     else {
       favorite.recipeID = req.body.recipeID;
@@ -142,16 +150,40 @@ exports.removeFavorite = function (req, res) {
       recipeID: req.body.recipeID
     }
   }).then((favorite) => {
-    if(favorite)
-    {
+    if (favorite) {
       favorite.destroy();
-      res.json({msg: "Favorite removed"});
+      res.json({ msg: "Favorite removed" });
     }
-    else{
-      res.json({msg: "No favorite found."})
+    else {
+      res.json({ msg: "No favorite found." })
     }
   }).catch(e => {
     console.log(e);
     res.status(500).send('Error: ' + e);
   })
+}
+
+exports.resetPassword = function (req, res) {
+
+  User.findOne({
+    where: {
+      userID: req.user.userID
+    }
+  }).then((user) => {
+
+    if(!user)
+    {
+      res.status(404).send("User not found!");
+    }
+
+    let newhash = crypto.pbkdf2Sync(req.body.password, user.salt, 10000, 512, "sha512").toString();
+    user.password = newhash;
+    user.save();
+    res.status(200).json({msg: "Password succesfully changed"});
+
+  }).catch(e => {
+    console.log(e);
+    res.status(500).send('Server Error: ' + e);
+  })
+
 }
