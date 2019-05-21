@@ -56,26 +56,26 @@ class CreateRecipePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipeTitle: "",
+      recipeName: "",
       description: "",
       cookingTime: "",
-      calorieCount: "",
+      instructions: "",
       ingredients: "",
       cuisine: "",
-      uploadImage: "",
+      imageURL: "",
     };
   };
   createRecipe = e => {
 
     axios.post('/v2/recipe/create', {
-      id: this.state.id,
-      recipeTitle: this.state.id,
+      id: this.props.userID,
+      recipeName: this.state.id,
       description: this.state.id,
       cookingTime: this.state.id,
-      calorieCount: this.state.id,
+      instructions: this.state.id,
       ingredients: this.state.id,
       cuisine: this.state.id,
-      uploadImage: this.state.id,
+      imageURL: this.state.id,
 
     })
       .then(function (response) {
@@ -88,6 +88,8 @@ class CreateRecipePage extends Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+    console.log(this.state); 
+    console.log(event.target.name);
   };
 
   handleSubmit = event => {
@@ -105,21 +107,20 @@ class CreateRecipePage extends Component {
           </Avatar>
           <Typography component="h1" variant="h5">
             Add A New Recipe
-        </Typography>
+          </Typography>
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="recipe">Recipe Title</InputLabel>
-              <Input id="recipeTitle" name="recipeTitle" autoFocus />
+              <InputLabel htmlFor="recipeName">Recipe Name</InputLabel>
+              <Input id="recipeName" name="recipeName" autoFocus                 value={this.state.description}
+                value={this.state.recipeName}
+                onChange={this.handleChange}
+              />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="description">Description</InputLabel>
               <Input name="description" type="description" id="description" autoComplete="current-password"
                 value={this.state.description}
                 onChange={this.handleChange}
-                inputProps={{
-                  name: 'description',
-                  id: 'description',
-                }}
               />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
@@ -134,74 +135,62 @@ class CreateRecipePage extends Component {
               />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="calorieCount">Calorie Count</InputLabel>
-              <Input id="calorieCount" name="calorieCount"
-                value={this.state.calorieCount}
+              <InputLabel htmlFor="instructions">Instructions</InputLabel>
+              <Input id="instructions" name="instructions"
+                value={this.state.instructions}
                 onChange={this.handleChange}
-                inputProps={{
-                  name: 'calorieCount',
-                  id: 'calorieCount',
-                }}
               />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
-              <Input id="ingredient" name="ingredient"
-                value={this.state.ingredient}
-                onChange={this.handleChange}
-                inputProps={{
-                  name: 'ingredient',
-                  id: 'ingredient',
-                }} />
               <div> <Button
                 as="input"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.add}
+                onClick={this.createRecipe}
               >
                 Add
           </Button>
-
-                <Button
-                  as="input"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.add}
-                >
-                  Remove
+              </div>
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
+              <Input id="ingredient" name="ingredient"
+                value={this.state.ingredient}
+                onChange={this.handleChange} 
+              />
+              <div> <Button
+                as="input"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.add}
+                onClick={this.createRecipe}
+              >
+                Add
           </Button></div>
             </FormControl>
             <FormControl className={classes.formControl} required fullWidth>
               <InputLabel htmlFor="cuisine">Cuisine</InputLabel>
               <Select
+               input={<Input id="cuisine" name="cuisine"/>}
                 value={this.state.cuisine}
                 onChange={this.handleChange}
-                inputProps={{
-                  name: 'cuisine',
-                  id: 'cuisine',
-                }}
               >
                 <MenuItem value="">
-                  <em>Meal Type</em>
+                  <em>None</em>
                 </MenuItem>
-                <MenuItem value={10}>Snack</MenuItem>
-                <MenuItem value={20}>Breakfast</MenuItem>
-                <MenuItem value={30}>Brunch</MenuItem>
-                <MenuItem value={40}>Lunch</MenuItem>
-                <MenuItem value={50}>Dinner</MenuItem>
+                <MenuItem value="Snack">Snack</MenuItem>
+                <MenuItem value="Breakfast">Breakfast</MenuItem>
+                <MenuItem value="Brunch">Brunch</MenuItem>
+                <MenuItem value="Lunch">Lunch</MenuItem>
+                <MenuItem value="Dinner">Dinner</MenuItem>
               </Select>
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="uploadImage">Upload Image</InputLabel>
-              <Input id="uploadImage" name="uploadImage"
-                value={this.state.uploadImage}
+              <InputLabel htmlFor="imageURL">Upload Image</InputLabel>
+              <Input id="imageURL" name="imageURL"
+                value={this.state.imageURL}
                 onChange={this.handleChange}
-                inputProps={{
-                  name: 'uploadImage',
-                  id: 'uploadImage',
-                }}
               />
             </FormControl>
             <Button

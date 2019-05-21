@@ -87,38 +87,47 @@ class Favorites extends Component {
 	};
 
 	handleClickRemoveFromFavorites = (userID, recipeID) => {
-		//this.handleFavoriteRemoval(userID, recipeID);
-		// this.setState({
-		// 	open: false,
-		// });
-		// Use '/api//v2/user/favorites' when is production.
-		// Use '/v2/user/favorites3' when on local machine.
-		//example favorites?userID=1012
-		axios.post('/v2/user/favorites/removeFavorite',{
-			params: {
-				userID: userID,
-				recipeID: recipeID,
-				token: localStorage.token
-			}
-		})
-		.then((response) => {
-			if(response.data.length === 0) {
-				console.log("Favorite item could not be removed.");
-				console.log(response);
-			}
-			else 
-			{
-				console.log(response);
-				this.setState({ favorites: response.data });
-				console.log('pantry item deleted');
-				console.log(this.state.favorites);
-				this.handleFavorites(userID);
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-	};
+		const token = localStorage.token;
+		const headers = {
+	'Authorization': 'Bearer ' + token,
+		};
+		if (token) {
+				//this.handleFavoriteRemoval(userID, recipeID);
+				// this.setState({
+				//     open: false,
+				// });
+				// Use '/api//v2/user/favorites' when is production.
+				// Use '/v2/user/favorites' when on local machine.
+				//example favorites?userID=1012
+				axios.post('/v2/user/favorite/remove',{
+								userID: userID,
+								recipeID: recipeID,
+						},
+						{
+							headers: headers
+						})
+				.then((response) => {
+						if(response.data.length === 0) {
+								console.log("Favorite item could not be removed.");
+								console.log(response);
+						}
+						else
+						{
+								console.log(response);
+								let favorites = [...this.state.favorites];
+								favorites.splice(recipeID, 1);
+								this.setState({ favorites: favorites });
+								console.log('Favorite item deleted');
+								console.log(this.state.favorites);
+								this.handleFavorites(userID);
+						}
+				})
+				.catch((error) => {
+						console.log(headers);
+						console.log(error);
+				});
+		}
+};
 
 	handleClose = value => {
 		this.setState({ selectedValue: value, open: false });

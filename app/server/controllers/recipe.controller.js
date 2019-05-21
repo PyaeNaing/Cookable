@@ -11,28 +11,54 @@ const defaultImageUrl =
   "https://www.creativefabrica.com/wp-content/uploads/2018/09/Crossed-spoon-and-fork-logo-by-yahyaanasatokillah-580x387.jpg";
 const Op = Sequelize.Op;
 
-exports.createRecipe = function(req, res) {
+exports.createRecipe = function (req, res) {
+
+  if (req.body.id == null || req.body.recipeName == null || req.body.description == null || req.body.cuisine == null || req.body.cookingTime == null || req.body.instructions == null || req.body.ingredients == null || req.body.imageUrl == null) {
+    res.status(400).send("Incomplete request. Please send full requirements.");
+  }
+
   Recipe.create({
     recipeName: req.body.recipeName,
     description: req.body.description,
     cuisine: req.body.cuisine,
-    calorieCount: req.body.calorieCount,
     cookingTime: req.body.cookingTime,
-    authorName: req.body.authorName,
-    userID: req.body.userID,
-    isUserCreated: req.body.isUserCreated
+    userID: req.body.id
   })
     .then(recipe => {
-      console.log(recipe.get({ plain: true }));
-      res.send(recipe.get({ plain: true }));
+
+      //Get bulk create ready
+      // {recipeID, ingredientsIndex, ingredientsFull} {recipeID, stepNumber, instruction}
+      let ingredientsArray = [];
+      let instructionsArray = [];
+
+      for (let x = 0; x < req.body.ingredients.length; x++) {
+        let index = x + 1;
+        ingredientsArray.push({ recipeID: recipe.recipeID, ingredientsIndex: index, ingredientsFull: req.body.ingredients[x] });
+      }
+
+      for (let x = 0; x < req.body.instructions.length; x++) {
+        let step = x + 1;
+        instructionsArray.push({ recipeID: recipe.recipeID, stepNumber: step, instruction: req.body.instructions[x] });
+      }
+
+      //Create instruction and ingredients array and image
+      const addImageUrl = RecipeImages.create({ recipeID: recipe.recipeID, recipeImageDir: req.body.imageUrl });
+      const addIngredientsList = ingredientList.bulkCreate(ingredientsArray);
+      const addInstructions = instructions.bulkCreate(instructionsArray);
+
+      Promise.all([addImageUrl, addIngredientsList, addInstructions]).then(rec => {
+
+        res.send(recipe.get({ plain: true }));
+
+      });
     })
     .catch(err => {
-      res.send("Error");
+      res.status(500).send("Server Error: " + err);
       console.log(err);
     });
 };
 
-exports.getFavorite = function(req, res) {
+exports.getFavorite = function (req, res) {
   let arr = [];
   Favorites.findAll({
     where: {
@@ -60,7 +86,7 @@ exports.getFavorite = function(req, res) {
     });
 };
 
-exports.getUserRecipe = function(req, res) {
+exports.getUserRecipe = function (req, res) {
   Recipe.findAll({
     where: {
       userID: req.query.userID
@@ -73,7 +99,7 @@ exports.getUserRecipe = function(req, res) {
   });
 };
 
-exports.getRecommendation = async function(req, res) {
+exports.getRecommendation = async function (req, res) {
   let recipe;
   let arr = [];
   let recipeurl;
@@ -88,7 +114,7 @@ exports.getRecommendation = async function(req, res) {
   }
 };
 
-exports.searchRecipe = async function(req, res) {
+exports.searchRecipe = async function (req, res) {
   try {
     let recipeSearch;
     let ingredientSearch;
@@ -101,7 +127,7 @@ exports.searchRecipe = async function(req, res) {
   }
 };
 
-Array.prototype.unique = function() {
+Array.prototype.unique = function () {
   var a = this.concat();
   for (var i = 0; i < a.length; ++i) {
     for (var j = i + 1; j < a.length; ++j) {
@@ -144,7 +170,7 @@ async function searchByIngredient(req) {
   }
 }
 
-exports.viewRecipe = function(req, res) {
+exports.viewRecipe = function (req, res) {
   Recipe.hasMany(RecipeImages, { foreignKey: "recipeID" });
   Recipe.hasMany(Likes, { foreignKey: "recipeID" });
   Recipe.hasMany(Favorites, { foreignKey: "recipeID" });
@@ -176,7 +202,9 @@ exports.viewRecipe = function(req, res) {
     .catch(err => res.status(500).send("Error: " + err));
 };
 
-exports.pantrySearchRecipe = function(req, res) {
+
+//Pantry search, in general calls instances of multiple sequalize and regex to get a list of ingredients that includes a user's ingredients.
+exports.pantrySearchRecipe = function (req, res) {
   let searchArray = "";
   req.body.forEach(element => {
     searchArray = searchArray + element + "|";
@@ -242,7 +270,7 @@ exports.pantrySearchRecipe = function(req, res) {
     }).catch(err => res.status(500).send("Error: " + err))
 };
 
-exports.getRecipeInstruction = function(req, res) {
+exports.getRecipeInstruction = function (req, res) {
   Recipe.findOne({
     where: { recipeName: { [Op.like]: "%" + req.query.recipeName + "%" } }
   })
@@ -271,7 +299,7 @@ exports.getRecipeInstruction = function(req, res) {
     });
 };
 
-exports.deleteRecipe = function(req, res) {
+exports.adminDeleteRecipe = function (req, res) {
   User.findOne({
     where: {
       userID: req.body.userID
@@ -279,54 +307,7 @@ exports.deleteRecipe = function(req, res) {
   })
     .then(user => {
       if (user.isAdmin) {
-        Recipe.findOne({
-          where: {
-            recipeID: req.body.recipeID
-          }
-        }).then(recipe => {
-          if (recipe) {
-            RecipeImages.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-            ingredientList.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            instructions.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            Favorites.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            Likes.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            Reviews.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            recipe.destroy();
-
-            res.json({ msg: "Recipe removed" });
-          } else {
-            res.send({ msg: "Recipe not found" });
-          }
-        });
+        deleteRecipe(req, res, user.isAdmin);
       } else {
         res.json({ msg: "Error: User is not Admin" });
       }
@@ -336,7 +317,68 @@ exports.deleteRecipe = function(req, res) {
     });
 };
 
+exports.userDeleteRecipe = function (req, res) {
+  deleteRecipe(req, res, false);
+};
+
 // helper functions
+
+function deleteRecipe(req, res, isAdmin) {
+  Recipe.findOne({
+    where: {
+      recipeID: req.body.recipeID
+    }
+  }).then(recipe => {
+    if(!isAdmin && !recipe.userID === req.body.userID)
+    {
+      res.status(401).send("User is not authorized");
+    }
+
+    if (recipe) {
+      RecipeImages.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+      ingredientList.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      instructions.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      Favorites.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      Likes.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      Reviews.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      recipe.destroy();
+
+      res.json({ msg: "Recipe removed" });
+    } else {
+      res.send({ msg: "Recipe not found" });
+    }
+  });
+}
+
 function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
@@ -416,4 +458,3 @@ function getRecipei(arr) {
     }
   });
 }
-  

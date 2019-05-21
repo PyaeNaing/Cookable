@@ -82,6 +82,7 @@ class Pantry extends Component {
 		super(props);
 		this.state = {
 			pantryItems: [],
+			open: false
 		};
 	};
 
@@ -148,16 +149,16 @@ class Pantry extends Component {
 											<Card className={classes.card}>
 												<CardMedia
 													className={classes.cardMedia}
-													image={pantryItem.url} // eslint-disable-line max-len
+													image="https://static.thenounproject.com/png/489212-200.png" // eslint-disable-line max-len
 													title="Image title"
 												/>
 												<CardContent className={classes.cardContent}>
 													<Typography gutterBottom variant="h5" component="h2">
 														{pantryItem.ingredientName}
 													</Typography>
-													<Typography>
+													{/* <Typography>
 														{pantryItem.ingredientID}
-													</Typography>
+													</Typography> */}
 												</CardContent>
 												<CardActions>
 													<Button size="small" color="primary">
