@@ -133,8 +133,11 @@ class LoginPage extends Component {
         				</FormControl>
         				<FormControlLabel
           				control={<Checkbox value="remember" color="primary" />}
-          				label="Remember me"
+          				label="Accept Privacy Policy"
         				/>
+                <Button onClick={this.handlePrivacyPolicyDisplay} color="primary" autoFocus>
+                  Privacy Policy
+                </Button>
         				{/*
         				 type="submit"
         				 add keyPress 'enter' functionality to Sign in button
