@@ -11,7 +11,7 @@ const RecipeController = require("../controllers/recipe.controller");
 //ADMIN
 router.get("/admin/list", AdminController.adminList);
 router.post("/admin/create", AdminController.adminCreate);
-router.post("/admin/deleteRecipe", passport.authenticate('jwt', { session: false }), RecipeController.deleteRecipe);
+router.post("/admin/deleteRecipe", passport.authenticate('jwt', { session: false }), RecipeController.adminDeleteRecipe);
 
 //USERS
 router.post("/user/login", UserController.login);
@@ -27,6 +27,7 @@ router.post('/user/favorite/remove', passport.authenticate('jwt', { session: fal
 router.get('/user/favorites', RecipeController.getFavorite);
 router.get('/user/myRecipes', RecipeController.getUserRecipe);
 router.post('/user/password/reset', passport.authenticate('jwt', { session: false }), UserController.resetPassword);
+router.post("/user/deleteRecipe", passport.authenticate('jwt', { session: false }), RecipeController.userDeleteRecipe);
 
 //INGREDIENTS
 router.get("/ingredient/list", IngredientsController.ingredientsList);
