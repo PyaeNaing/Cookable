@@ -329,7 +329,7 @@ function deleteRecipe(req, res, isAdmin) {
       recipeID: req.body.recipeID
     }
   }).then(recipe => {
-    if(!isAdmin && !recipe.userID === req.body.userID)
+    if(!isAdmin && !recipe.userID === req.user.userID)
     {
       res.status(401).send("User is not authorized");
     }
