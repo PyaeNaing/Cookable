@@ -156,9 +156,9 @@ class Pantry extends Component {
 													<Typography gutterBottom variant="h5" component="h2">
 														{pantryItem.ingredientName}
 													</Typography>
-													<Typography>
+													{/* <Typography>
 														{pantryItem.ingredientID}
-													</Typography>
+													</Typography> */}
 												</CardContent>
 												<CardActions>
 													<Button size="small" color="primary">

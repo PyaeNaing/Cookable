@@ -108,7 +108,7 @@ class ProfilePage extends Component {
               >
                 <Avatar
                   alt="Profile picture"
-                  src="ProfilePicture.jpg"
+                  src="https://cdn.europosters.eu/image/750/badges/superman-logo-i2701.jpg"
                   className={classes.bigAvatar}
                 />
                 <MenuList>
