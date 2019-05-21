@@ -71,7 +71,7 @@ class MainPage extends Component {
 
 		const renderCreateRecipePage = (
 			// Change true to this.state.loginStatus
-			<CreateRecipePage loginStatus={this.props.loginStatus}/>
+			<CreateRecipePage userID={this.props.user.userID} loginStatus={this.props.loginStatus}/>
 		);
 
 		return (
