@@ -79,6 +79,7 @@ class MainPage extends Component {
 				<MainNavBar
 					isLoggedIn={this.props.loginStatus} 
 					username={this.props.user.username}
+					isAdmin={this.props.user.isAdmin}
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
