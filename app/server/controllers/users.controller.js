@@ -62,8 +62,7 @@ exports.login = function (req, res) {
             token: token
           });
         }
-        else
-        {
+        else {
           res.send("Incorrect Password");
         }
 
@@ -162,4 +161,29 @@ exports.removeFavorite = function (req, res) {
     console.log(e);
     res.status(500).send('Error: ' + e);
   })
+}
+
+exports.resetPassword = function (req, res) {
+
+  User.findOne({
+    where: {
+      userID: req.user.userID
+    }
+  }).then((user) => {
+
+    if(!user)
+    {
+      res.status(404).send("User not found!");
+    }
+
+    let newhash = crypto.pbkdf2Sync(req.body.password, user.salt, 10000, 512, "sha512").toString();
+    user.password = newhash;
+    user.save();
+    res.status(200).json({msg: "Password succesfully changed"});
+
+  }).catch(e => {
+    console.log(e);
+    res.status(500).send('Server Error: ' + e);
+  })
+
 }
