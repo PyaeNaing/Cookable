@@ -31,16 +31,14 @@ exports.createRecipe = function (req, res) {
       let ingredientsArray = [];
       let instructionsArray = [];
 
-      for(let x = 0; x < req.body.ingredients.length; x++)
-      {
-        let index = x+1;
-        ingredientsArray.push({recipeID: recipe.recipeID, ingredientsIndex: index, ingredientsFull: req.body.ingredients[x]});
+      for (let x = 0; x < req.body.ingredients.length; x++) {
+        let index = x + 1;
+        ingredientsArray.push({ recipeID: recipe.recipeID, ingredientsIndex: index, ingredientsFull: req.body.ingredients[x] });
       }
 
-      for(let x = 0; x < req.body.instructions.length; x++)
-      {
-        let step = x+1;
-        instructionsArray.push({recipeID: recipe.recipeID, stepNumber: step, instruction: req.body.instructions[x]});
+      for (let x = 0; x < req.body.instructions.length; x++) {
+        let step = x + 1;
+        instructionsArray.push({ recipeID: recipe.recipeID, stepNumber: step, instruction: req.body.instructions[x] });
       }
 
       //Create instruction and ingredients array and image
@@ -49,7 +47,7 @@ exports.createRecipe = function (req, res) {
       const addInstructions = instructions.bulkCreate(instructionsArray);
 
       Promise.all([addImageUrl, addIngredientsList, addInstructions]).then(rec => {
-        
+
         res.send(recipe.get({ plain: true }));
 
       });
@@ -204,6 +202,8 @@ exports.viewRecipe = function (req, res) {
     .catch(err => res.status(500).send("Error: " + err));
 };
 
+
+//Pantry search, in general calls instances of multiple sequalize and regex to get a list of ingredients that includes a user's ingredients.
 exports.pantrySearchRecipe = function (req, res) {
   let searchArray = "";
   req.body.forEach(element => {
@@ -299,7 +299,7 @@ exports.getRecipeInstruction = function (req, res) {
     });
 };
 
-exports.deleteRecipe = function (req, res) {
+exports.adminDeleteRecipe = function (req, res) {
   User.findOne({
     where: {
       userID: req.body.userID
@@ -307,54 +307,7 @@ exports.deleteRecipe = function (req, res) {
   })
     .then(user => {
       if (user.isAdmin) {
-        Recipe.findOne({
-          where: {
-            recipeID: req.body.recipeID
-          }
-        }).then(recipe => {
-          if (recipe) {
-            RecipeImages.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-            ingredientList.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            instructions.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            Favorites.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            Likes.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            Reviews.destroy({
-              where: {
-                recipeID: req.body.recipeID
-              }
-            });
-
-            recipe.destroy();
-
-            res.json({ msg: "Recipe removed" });
-          } else {
-            res.send({ msg: "Recipe not found" });
-          }
-        });
+        deleteRecipe(req, res, user.isAdmin);
       } else {
         res.json({ msg: "Error: User is not Admin" });
       }
@@ -364,7 +317,68 @@ exports.deleteRecipe = function (req, res) {
     });
 };
 
+exports.userDeleteRecipe = function (req, res) {
+  deleteRecipe(req, res, false);
+};
+
 // helper functions
+
+function deleteRecipe(req, res, isAdmin) {
+  Recipe.findOne({
+    where: {
+      recipeID: req.body.recipeID
+    }
+  }).then(recipe => {
+    if(!isAdmin && !recipe.userID === req.body.userID)
+    {
+      res.status(401).send("User is not authorized");
+    }
+
+    if (recipe) {
+      RecipeImages.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+      ingredientList.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      instructions.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      Favorites.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      Likes.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      Reviews.destroy({
+        where: {
+          recipeID: req.body.recipeID
+        }
+      });
+
+      recipe.destroy();
+
+      res.json({ msg: "Recipe removed" });
+    } else {
+      res.send({ msg: "Recipe not found" });
+    }
+  });
+}
+
 function getRecipeByName(req) {
   return Recipe.findAll({
     where: {
