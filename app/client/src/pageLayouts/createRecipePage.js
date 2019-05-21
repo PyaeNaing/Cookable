@@ -68,7 +68,7 @@ class CreateRecipePage extends Component {
   createRecipe = e => {
 
     axios.post('/v2/recipe/create', {
-      id: this.state.id,
+      id: this.props.userID, 
       recipeTitle: this.state.id,
       description: this.state.id,
       cookingTime: this.state.id,
@@ -145,7 +145,7 @@ class CreateRecipePage extends Component {
               />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
+              <InputLabel htmlFor="ingredients">Iangredients</InputLabel>
               <Input id="ingredient" name="ingredient"
                 value={this.state.ingredient}
                 onChange={this.handleChange}
