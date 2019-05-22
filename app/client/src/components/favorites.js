@@ -89,7 +89,7 @@ class Favorites extends Component {
 	handleClickRemoveFromFavorites = (userID, recipeID) => {
 		const token = localStorage.token;
 		const headers = {
-	'Authorization': 'Bearer ' + token,
+			'Authorization': 'Bearer ' + token,
 		};
 		if (token) {
 				//this.handleFavoriteRemoval(userID, recipeID);

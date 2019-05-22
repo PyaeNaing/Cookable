@@ -128,6 +128,49 @@ class Pantry extends Component {
 			console.log(error);
 		});
 	};
+
+	handleClickRemoveFromPantry = (userID, ingredientID) => {
+		const token = localStorage.token;
+		const headers = {
+	'Authorization': 'Bearer ' + token,
+		};
+		if (token) {
+				//this.handleFavoriteRemoval(userID, recipeID);
+				// this.setState({
+				//     open: false,
+				// });
+				// Use '/api//v2/user/removefromPantry' when is production.
+				// Use '/v2/user/removefromPantry' when on local machine.
+				//example removefromPantry?userID=1012
+				axios.post('/v2/user/removefromPantry',{
+								userID: userID,
+								ingredientID: ingredientID,
+						},
+						{
+							headers: headers
+						})
+				.then((response) => {
+						if(response.data.length === 0) {
+								console.log("Favorite item could not be removed.");
+								console.log(response);
+						}
+						else
+						{
+								console.log(response);
+								let pantryItems = [...this.state.pantryItems];
+								pantryItems.splice(ingredientID, 1);
+								this.setState({ pantryItems: pantryItems });
+								console.log('Favorite item deleted');
+								console.log(this.state.pantryItems);
+								this.handlePantryItems(userID);
+						}
+				})
+				.catch((error) => {
+						console.log(headers);
+						console.log(error);
+				});
+		}
+	}
 	
 	componentWillMount() {
 		this.handlePantryItems();
@@ -156,12 +199,9 @@ class Pantry extends Component {
 													<Typography gutterBottom variant="h5" component="h2">
 														{pantryItem.ingredientName}
 													</Typography>
-													{/* <Typography>
-														{pantryItem.ingredientID}
-													</Typography> */}
 												</CardContent>
 												<CardActions>
-													<Button size="small" color="primary">
+												<Button size="small" color="primary" onClick={() => this.handleClickRemoveFromPantry(this.props.user.userID ,pantryItem.ingredientID)}>
 														Remove
 													</Button>
 												</CardActions>
