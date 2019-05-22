@@ -73,7 +73,7 @@ class CreateRecipePage extends Component {
   };
   handleCreateRecipe = e => {
     if (this.state.recipeName.length === 0) {
-      this.handleResponse("It seems you have not provided a recipe name. Please provide a vlide recipe name and try again.", "No recipe name");
+      this.handleResponse("It seems you have not provided a recipe name. Please provide a valid recipe name and try again.", "No recipe name");
     }
     else if ((this.state.description.length === 0)) {
       this.handleResponse("It seems you have not provided a recipe description. Please provide a valid recipe description and try again", "No description")
@@ -109,7 +109,7 @@ class CreateRecipePage extends Component {
         .then((response) => {
           console.log(response);
           this.handleResponse("Your recipe was successfully created! Thank you for adding your personal recipe to Cookable!", "Recipe Creation Complete!");
-          this.setState({recipeName: '', description: '', cookingTime: '', instructions: [], ingredients: [], cuisine: '', imageURL: ''})
+          this.setState({recipeName: '', description: '', cookingTime: '', instructions: [], ingredients: [], cuisine: '', imageURL: ''}); 
         })
 
         .catch((error) => {
@@ -127,14 +127,18 @@ class CreateRecipePage extends Component {
   handleInstructionsAdd = event => {
     const instructionValue = this.state.instructionValue;
     const instructions = Array.from(this.state.instructions);
-    instructions.push(instructionValue);
+    if(instructionValue.length > 0){
+      instructions.push(instructionValue);
+    }
     this.setState({ instructions: instructions, instructionValue: "" });
   }
 
   handleIngredientsAdd = event => {
     const ingredientValue = this.state.ingredientValue
     const ingredients = Array.from(this.state.ingredients);
-    ingredients.push(ingredientValue);
+    if (ingredientValue.length > 0){
+      ingredients.push(ingredientValue);
+    }
     this.setState({ ingredients: ingredients, ingredientValue: "" });
   }
 
@@ -195,6 +199,18 @@ class CreateRecipePage extends Component {
                 value={this.state.instructionValue}
                 onChange={this.handleChange}
               />
+              {(this.state.instructions && this.state.instructions.length > 0) ?
+                  (<ol>
+                    {this.state.instructions.map(step => (
+                      <li>
+                        <Typography component="p">
+                          {step}
+                        </Typography>
+                      </li>
+                    ))}
+                  </ol>) :
+                  undefined
+                }
               <div> <Button
                 as="input"
                 fullWidth
@@ -213,6 +229,18 @@ class CreateRecipePage extends Component {
                 value={this.state.ingredientValue}
                 onChange={this.handleChange}
               />
+              {(this.state.ingredients && this.state.ingredients.length > 0) ?
+                  (<ul>
+                    {this.state.ingredients.map(ingredient => (
+                      <li>
+                        <Typography component="p">
+                          {ingredient}
+                        </Typography>
+                      </li>
+                    ))}
+                  </ul>) :
+                  undefined
+                }
               <div> <Button
                 as="input"
                 fullWidth
