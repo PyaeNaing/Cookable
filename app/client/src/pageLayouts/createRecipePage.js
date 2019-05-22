@@ -94,8 +94,8 @@ class CreateRecipePage extends Component {
       this.handleResponse("It seems you have not provided a valid image URL. Please provide a valid URL ending in jpg and try again", "No image")
     }
     else {
-
       axios.post('/v2/recipe/create', {
+      
         id: this.props.userID,
         recipeName: this.state.recipeName,
         description: this.state.description,
@@ -103,9 +103,10 @@ class CreateRecipePage extends Component {
         instructions: this.state.instructions,
         ingredients: this.state.ingredients,
         cuisine: this.state.cuisine,
-        imageURL: this.state.imageURL,
+        imageUrl: this.state.imageURL,
 
-      })
+      },
+      )
         .then((response) => {
           console.log(response);
           this.handleResponse("Your recipe was successfully created! Thank you for adding your personal recipe to Cookable!", "Recipe Creation Complete!");
@@ -114,6 +115,7 @@ class CreateRecipePage extends Component {
 
         .catch((error) => {
           console.log(error);
+          this.handleResponse("Sorry but your recipe could not be created.","ERROR: Could not create recipe"); 
         });
     }
   };
