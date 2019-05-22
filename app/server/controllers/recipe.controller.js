@@ -13,8 +13,12 @@ const Op = Sequelize.Op;
 
 exports.createRecipe = function (req, res) {
 
-  if (req.body.id == null || req.body.recipeName == null || req.body.description == null || req.body.cuisine == null || req.body.cookingTime == null || req.body.instructions == null || req.body.ingredients == null || req.body.imageUrl == null) {
-    res.status(400).send("Incomplete request. Please send full requirements.");
+  try {
+    if (req.body.id == null || req.body.recipeName == null || req.body.description == null || req.body.cuisine == null || req.body.cookingTime == null || req.body.instructions == null || req.body.ingredients == null || req.body.imageUrl == null) {
+      res.status(400).send("Incomplete request. Please send full requirements.");
+    }
+  } catch (err) {
+    res.status(400).send("Incorrect body received: " + err);
   }
 
   Recipe.create({
