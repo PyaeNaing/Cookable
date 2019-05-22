@@ -15,7 +15,7 @@ class MainPage extends Component {
 			currentPage: 'recommendationsPage',
 			profileSubpage: '',
 			loginRegisterSubpage: 'login',
-			searchResult: [],
+			searchInput: '',
 		};
 	}
 
@@ -24,6 +24,7 @@ class MainPage extends Component {
 	}
 
 	handleLogout = (status) => {
+		this.setState({ currentPage: 'recommendationsPage' });
 		this.props.handleLogout(status);
 	}
 
@@ -39,23 +40,23 @@ class MainPage extends Component {
 		this.setState({ profileSubpage: page });
 	}
 
-	handleSearchResult = (result) => {
-		this.setState({ searchResult: result });
+	handleSearch = (searchInput) => {
+		this.setState({ searchInput: searchInput });
 	}
 
 	render() {
 
 		// Must lift up loginRegisterSubpage state from MainNavBar
 		const renderLoginPage = (
-			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser}/>
+			<LoginPage handleLoginStatus={this.handleLogin} handleUser={this.handleUser} handlePageChange={this.handlePageChange}/>
 		);
 
 		const renderRegisterPage = (
-			<RegisterPage />
+			<RegisterPage handlePageChange={this.handlePageChange}/>
 		);
 
 		const renderRecommendationsPage = (
-			<RecommendationsPage handlePageChange={this.handlePageChange}/>
+			<RecommendationsPage loginStatus={this.props.loginStatus} username={this.props.user.username} userID={this.props.user.userID} handlePageChange={this.handlePageChange} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		// Must lift up profileSubpage state from MainNavBar
@@ -65,12 +66,12 @@ class MainPage extends Component {
 
 		// Must lift up searchResult state from MainNavBar
 		const renderRecipeDisplayPage = (
-			<RecipeDisplayPage searchResult={this.state.searchResult}/>
+			<RecipeDisplayPage userID={this.props.user.userID} searchInput={this.state.searchInput} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		const renderCreateRecipePage = (
 			// Change true to this.state.loginStatus
-			<CreateRecipePage loginStatus={this.props.loginStatus}/>
+			<CreateRecipePage userID={this.props.user.userID} loginStatus={this.props.loginStatus}/>
 		);
 
 		return (
@@ -78,10 +79,11 @@ class MainPage extends Component {
 				<MainNavBar
 					isLoggedIn={this.props.loginStatus} 
 					username={this.props.user.username}
+					isAdmin={this.props.user.isAdmin}
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
-					handleSearch={this.handleSearchResult}
+					handleSearch={this.handleSearch}
 				/>
 				{(this.state.currentPage === 'recommendationsPage') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }

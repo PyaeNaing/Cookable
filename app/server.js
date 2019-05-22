@@ -38,5 +38,5 @@ module.exports = app;
 
 // Uncaught
 process.on('unhandledRejection', error => {
-  console.error('Uncaught Error', pe(error));
+  console.log('Uncaught Error', error);
 });

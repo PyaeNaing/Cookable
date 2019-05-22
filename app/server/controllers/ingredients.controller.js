@@ -85,6 +85,31 @@ exports.addIngredienttoPantry = function(req, res) {
   }
 };
 
+exports.removeIngredientfromPantry = function(req, res) {
+  try{
+    Pantry.findOne({
+      where: {
+        ingredientID: req.body.ingredientID,
+        userID: req.body.userID
+      }
+    }).then((result) => {
+      if (result){
+        result.destroy();
+        res.send('Ingredient has been removed from Pantry');
+      }
+      else{
+        res.send('Cannot find ingredient');
+      }
+    }).catch(e => {
+      res.send('Error: '+ e);
+    })
+  }
+  catch(e){
+    res.send('Error: '+ e);
+  }
+
+}
+
 // Helper Functions
 function getIngredientsFromPantry(req) {
   return Pantry.findAll({

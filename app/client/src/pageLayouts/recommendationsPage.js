@@ -75,12 +75,12 @@ class RecommendationsPage extends Component {
 	};
 
 	handlePageChange = (page) => {
-    this.props.handlePageChange(page);
+	this.props.handlePageChange(page);
   };
 
 	handleRecommendations = event => {
-	// Use '/api/v1/recommendation' when is production.
-	// Use '/v1/recommendation' when on local machine.
+		// Use '/api/v1/recommendation' when is production.
+		// Use '/v1/recommendation' when on local machine.
 		axios.get('/v1/recommendation')
 		.then((response) => {
 			if(response.data.length === 0) {
@@ -99,32 +99,33 @@ class RecommendationsPage extends Component {
 	};
 
 	handleRecipeRetrieval = (recipeID) => {
-  	axios.get(('/v2/recipe/' + recipeID))
-    .then((response) => {
-      if(response.data.length === 0) {
-      	console.log("Could not retrieve recipe.");
-        console.log(response);
-      }
-      else {
-      	console.log(response);
-        this.setState({ selectedValue: response.data });
-        console.log(this.state.selectedValue);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+		axios.get(('/v2/recipe/' + recipeID))
+		.then((response) => {
+		  if(response.data.length === 0) {
+				console.log("Could not retrieve recipe.");
+				console.log(response);
+		  }
+		  else {
+				console.log(response);
+				this.setState({ selectedValue: response.data });
+				console.log(this.state.selectedValue);
+		  }
+		})
+		.catch((error) => {
+		  console.log(error);
+		});
   };
 
 	handleClickOpen = (recipeID) => {
-    this.handleRecipeRetrieval(recipeID);
-    this.setState({
-      open: true,
-    });
+		this.handleRecipeRetrieval(recipeID);
+		this.setState({
+		  open: true,
+		});
   };
 
   handleClose = value => {
-    this.setState({ selectedValue: value, open: false });
+		this.setState({ selectedValue: value, open: false });
+		this.handleRecommendations();
   };
 
 	componentDidMount() {
@@ -132,90 +133,104 @@ class RecommendationsPage extends Component {
 	};
 
 	render() {
-		const { classes } = this.props;
+		const { classes, loginStatus, username } = this.props;
 		const data = this.state.recommendations;
+
+		const renderLoginInfo = (
+			<div>
+				<Typography variant="h6" align="center" color="textSecondary" paragraph>
+					Here at Cookable our aim is to provide you with recipes. If you are new to
+					Cookable, please feel free to create an account to gain access to member only
+					features!
+				</Typography>
+				<div className={classes.heroButtons}>
+					<Grid container spacing={16} justify="center">
+						<Grid item>
+							<Button variant="contained" color="primary" onClick={() => this.handlePageChange('loginPage')}>
+								Login
+							</Button>
+						</Grid>
+						<Grid item>
+							<Button variant="outlined" color="primary" onClick={() => this.handlePageChange('registerPage')}>
+								Create Account
+							</Button>
+						</Grid>
+					</Grid>
+				</div>
+			</div>
+		);
+
+		const renderUserInfo = (
+			<Typography variant="h6" align="center" color="textSecondary" paragraph>
+				Thanks for logging in {username}!
+			</Typography>
+		);
 
 		return (
 			<div>
 				<React.Fragment>
-						<CssBaseline />
-						<main>
-							{/* Hero unit */}
-							<div className={classes.heroUnit}>
-								<div className={classes.heroContent}>
-									<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-										Welcome to Cookable!
-									</Typography>
-									<Typography variant="h6" align="center" color="textSecondary" paragraph>
-										Here at Cookable our aim is to provide you with recipes. If you are new to
-										Cookable, please feel free to create an account to gain access to member only
-										features!
-									</Typography>
-									<div className={classes.heroButtons}>
-										<Grid container spacing={16} justify="center">
-											<Grid item>
-												<Button variant="contained" color="primary" onClick={() => this.handlePageChange('loginPage')}>
-													Login
-												</Button>
-											</Grid>
-											<Grid item>
-												<Button variant="outlined" color="primary" onClick={() => this.handlePageChange('registerPage')}>
-													Create Account
-												</Button>
-											</Grid>
-										</Grid>
-									</div>
-									<Typography variant="h6" align="center" color="textSecondary" paragraph>
-										Here are some recommended recipes to get you started!
-									</Typography>
-								</div>
+					<CssBaseline />
+					<main>
+						{/* Hero unit */}
+						<div className={classes.heroUnit}>
+							<div className={classes.heroContent}>
+								<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+									Welcome to Cookable!
+								</Typography>
+								{(!loginStatus) ? renderLoginInfo : renderUserInfo}
+								<Typography variant="h6" align="center" color="textSecondary" paragraph>
+									Here are some recommended recipes to get you started!
+								</Typography>
 							</div>
-							<div className={classNames(classes.layout, classes.cardGrid)}>
-								{/* End hero unit */}
-								<Grid container spacing={40}>
-									{data.map(recipe => (
-										<Grid item key={recipe.recipeID} sm={6} md={4} lg={3}>
-											<Card className={classes.card}>
-												<CardMedia
-													className={classes.cardMedia}
-													image={recipe.url}
-													title="Image title"
-												/>
-												<CardContent className={classes.cardContent}>
-													<Typography gutterBottom variant="h5" component="h2">
-														{recipe.recipeName}
-													</Typography>
-													<Typography>
-														{recipe.description}
-													</Typography>
-												</CardContent>
-												<CardActions>
-													<Button size="small" color="primary" onClick={() => this.handleClickOpen(recipe.recipeID)}>
-														View
-													</Button>
-												</CardActions>
-											</Card>
-										</Grid>
-									))}
-								</Grid>
-							</div>
-						</main>
-						{/* Footer */}
-						<footer className={classes.footer}>
-							<Typography variant="h6" align="center" gutterBottom>
-								Cookable
-							</Typography>
-							<Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-								Copyright cookable.com
-							</Typography>
-						</footer>
-						{/* End footer */}
-					</React.Fragment>
-					<Recipe
-	          selectedValue={this.state.selectedValue}
-	          open={this.state.open}
-	          onClose={this.handleClose}
-        	/>
+						</div>
+						<div className={classNames(classes.layout, classes.cardGrid)}>
+							{/* End hero unit */}
+							<Grid container spacing={40}>
+								{data.map(recipe => (
+									<Grid item key={recipe.recipeID} sm={6} md={4} lg={3}>
+										<Card className={classes.card}>
+											<CardMedia
+												className={classes.cardMedia}
+												image={recipe.url}
+												title="Image title"
+											/>
+											<CardContent className={classes.cardContent}>
+												<Typography gutterBottom variant="h5" component="h2">
+													{recipe.recipeName}
+												</Typography>
+												<Typography>
+													{recipe.description}
+												</Typography>
+											</CardContent>
+											<CardActions>
+												<Button size="small" color="primary" onClick={() => this.handleClickOpen(recipe.recipeID)}>
+													View
+												</Button>
+											</CardActions>
+										</Card>
+									</Grid>
+								))}
+							</Grid>
+						</div>
+					</main>
+					{/* Footer */}
+					<footer className={classes.footer}>
+						<Typography variant="h6" align="center" gutterBottom>
+							Cookable
+						</Typography>
+						<Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+							Copyright cookable.com
+						</Typography>
+					</footer>
+					{/* End footer */}
+				</React.Fragment>
+				<Recipe
+					selectedValue={this.state.selectedValue}
+					open={this.state.open}
+					onClose={this.handleClose}
+					userID={this.props.userID}
+					isAdmin={this.props.isAdmin}
+				/>
 			</div>
 		);
 	}

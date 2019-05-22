@@ -13,6 +13,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Response from '../components/response.js';
+import PrivacyPolicy from '../components/privacyPolicy.js';
 
 const styles = theme => ({
   main: {
@@ -55,30 +57,68 @@ class RegisterPage extends Component {
 			email: "",
 			password: "",
 			confirmPassword: "",
+      open: false,
+      response: '',
+      responseTitle: '',
+      privacyOpen: false,
 		};
 	}
 
 	handleCreateUser = event => {
-		if (this.state.password === this.state.confirmPassword) {
+    if(this.state.email.length === 0) {
+      this.handleResponse("It seems you haven't provided an email address. Please provide a valid email address and submit the form again.", "No email");
+    }
+    else if(!(this.validateEmail(this.state.email))) {
+      this.handleResponse("The email address that you have provided is invalid. Please provide a valid email address and submit the form again.", "Invalid email");
+    }
+    else if(this.state.username.length === 0) {
+      this.handleResponse("It seems you haven't provided a username. Please provide a username and submit the form again.", "No username");
+    }
+    else if(this.state.password.length === 0) {
+      this.handleResponse("It seems you haven't provided a password. Please provide and password and submit the form again.", "No password");
+    }
+		else if(this.state.password !== this.state.confirmPassword) {
+      this.handleResponse("The passwords that you have provided do not match. Please re-enter the password and submit the form again.", "Passwords do not match");
+		}
+    else {
       // Use '/api/v2/user/create' when is production.
       // Use '/v2/user/create' when on local machine.
-			axios.post('/v2/user/create', {
-	      		username: this.state.username,
-	      		email: this.state.email,
-	      		password: this.state.password,
-	      		confirmPassword: this.state.confirmPassword,
-		    })
-		    .then((response) => {
-		      	console.log(response);
-		    })
-		    .catch((error) => {
-		      	console.log(error);
-		    });
-		}
-		else {
-			console.log("Your passwords do not match. Please re-enter your password.")
-		}
+      axios.post('/v2/user/create', {
+              username: this.state.username,
+              email: this.state.email,
+              password: this.state.password,
+              confirmPassword: this.state.confirmPassword,
+          })
+          .then((response) => {
+              console.log(response);
+              this.handleResponse("Your account was successfully created! Thank you for joining Cookable!", "Registration Complete!");
+          })
+          .catch((error) => {
+              console.log(error);
+          });
+    }
 	}
+
+  validateEmail = (email) => {
+    const mailFormat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return mailFormat.test(String(email).toLowerCase());
+  }
+
+  handleResponse = (response, responseTitle) => {
+    this.setState({ open: true, response: response, responseTitle: responseTitle });
+  }
+
+  handleResponseClose = () => {
+    this.setState({ open: false, response: '', responseTitle: '' });
+  }
+
+  handlePrivacyPolicy = () => {
+    this.setState({ privacyOpen: true });
+  }
+
+  handlePrivacyPolicyClose = () => {
+    this.setState({ privacyOpen: false });
+  }
 	
 	handleChange = event => {
 		this.setState({
@@ -90,52 +130,64 @@ class RegisterPage extends Component {
 		const { classes } = this.props;
 
 		return (
-			<main className={classes.main}>
-      			<CssBaseline />
-      			<Paper className={classes.paper}>
-        			<Avatar className={classes.avatar}>
-          				<LockOutlinedIcon />
-        			</Avatar>
-        			<Typography component="h1" variant="h5">
-          				Register
-        			</Typography>
-        			<form className={classes.form}>
-          				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="email">Email Address</InputLabel>
-            				<Input id="email" name="email" autoComplete="email" onChange={this.handleChange} autoFocus />
-          				</FormControl>
-          				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="username">Username</InputLabel>
-            				<Input id="username" name="username" autoComplete="username" onChange={this.handleChange} />
-          				</FormControl>
-          				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="password">Password</InputLabel>
-            				<Input name="password" type="password" id="password" onChange={this.handleChange} autoComplete="current-password" />
-          				</FormControl>
-          				<FormControl margin="normal" required fullWidth>
-            				<InputLabel htmlFor="password">Confirm Password</InputLabel>
-            				<Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleChange} autoComplete="current-password" />
-          				</FormControl>
-          				<FormControlLabel
-            				control={<Checkbox value="terms" color="primary" />}
-            				label="I accept the Terms of Service."
-          				/>
-          				{/*
-          				 type="submit"
-          				 add keyPress 'enter' functionality to Sign in button
-          			 	*/}
-          				<Button
-            				fullWidth
-            				variant="contained"
-            				color="primary"
-            				className={classes.submit}
-            				onClick={this.handleCreateUser}
-          				>
-            				Create Account
-          				</Button>
-        			</form>
-      			</Paper>
+      <div>
+        <main className={classes.main}>
+    			<CssBaseline />
+    			<Paper className={classes.paper}>
+      			<Avatar className={classes.avatar}>
+        				<LockOutlinedIcon />
+      			</Avatar>
+      			<Typography component="h1" variant="h5">
+        				Register
+      			</Typography>
+      			<form className={classes.form}>
+      				<FormControl margin="normal" required fullWidth>
+        				<InputLabel htmlFor="email">Email Address</InputLabel>
+        				<Input id="email" name="email" autoComplete="email" onChange={this.handleChange} autoFocus />
+      				</FormControl>
+      				<FormControl margin="normal" required fullWidth>
+        				<InputLabel htmlFor="username">Username</InputLabel>
+        				<Input id="username" name="username" autoComplete="username" onChange={this.handleChange} />
+      				</FormControl>
+      				<FormControl margin="normal" required fullWidth>
+        				<InputLabel htmlFor="password">Password</InputLabel>
+        				<Input name="password" type="password" id="password" onChange={this.handleChange} autoComplete="current-password" />
+      				</FormControl>
+      				<FormControl margin="normal" required fullWidth>
+        				<InputLabel htmlFor="password">Confirm Password</InputLabel>
+        				<Input name="confirmPassword" type="password" id="confirmPassword" onChange={this.handleChange} autoComplete="current-password" />
+      				</FormControl>
+      				<FormControlLabel
+        				control={<Checkbox value="terms" color="primary" />}
+        				label="I accept the Terms of Service."
+      				/>
+              <Button onClick={this.handlePrivacyPolicy} color="primary" autoFocus>
+                Privacy Policy
+              </Button>
+      				<Button
+        				fullWidth
+        				variant="contained"
+        				color="primary"
+        				className={classes.submit}
+        				onClick={this.handleCreateUser}
+      				>
+        				Create Account
+      				</Button>
+      			</form>
+    			</Paper>
     		</main>
+        <Response 
+          open={this.state.open}
+          onClose={this.handleResponseClose}
+          response={this.state.response}
+          responseTitle={this.state.responseTitle}
+          handlePageChange={this.props.handlePageChange}
+        />
+        <PrivacyPolicy
+          open={this.state.privacyOpen}
+          onClose={this.handlePrivacyPolicyClose}
+        />
+      </div>
 		);
 	};
 }
