@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Recipe from '../components/recipe.js';
+import Response from '../components/response.js';
 
 const styles = theme => ({
 	appBar: {
@@ -69,6 +70,9 @@ class RecipeDisplayPage extends Component {
 			searchResult: [],
 			selectedValue: {},
 			open: false,
+			responseOpen: false,
+			response: '',
+      		responseTitle: '',
 		};
 	}
 
@@ -82,7 +86,7 @@ class RecipeDisplayPage extends Component {
 		})
 		.then((response) => {
 			if(response.data.length === 0) {
-				console.log("No recipes exist for specified ingredient.");
+				this.handleResponse("We're sorry, but there doesn't seem to be any recipes that match your search. Please try again.", "Recipe doesn't exist!")
 				console.log(response);
 			}
 			else {
@@ -123,15 +127,23 @@ class RecipeDisplayPage extends Component {
 		this.handleSearch(this.props.searchInput);
 	}
 
+	handleResponse = (response, responseTitle) => {
+	    this.setState({ responseOpen: true, response: response, responseTitle: responseTitle });
+	}
+
+  	handleResponseClose = () => {
+	    this.setState({ responseOpen: false, response: '', responseTitle: '' });
+	}
+
 	componentWillMount() {
 		console.log(this.props.searchInput);
 		this.handleSearch(this.props.searchInput);
 	}
 
 	componentDidUpdate(prevProps) {
-	  if (this.props.searchInput !== prevProps.searchInput) {
-	    this.handleSearch(this.props.searchInput);
-	  }
+		if (this.props.searchInput !== prevProps.searchInput) {
+			this.handleSearch(this.props.searchInput);
+		}
 	}
 
 	render() {
@@ -202,6 +214,12 @@ class RecipeDisplayPage extends Component {
 					userID={this.props.userID}
 					isAdmin={this.props.isAdmin}
 				/>
+				<Response 
+		          	open={this.state.responseOpen}
+		          	onClose={this.handleResponseClose}
+		          	response={this.state.response}
+		          	responseTitle={this.state.responseTitle}
+		        />
 			</div>
 		);
 	}
