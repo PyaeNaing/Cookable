@@ -13,6 +13,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import FolderIcon from '@material-ui/icons/Folder';
 import MenuItem from '@material-ui/core/MenuItem';
 import axios from "axios";
+import Response from '../components/response.js';
 
 const styles = theme => ({
   main: {
@@ -59,38 +60,91 @@ class CreateRecipePage extends Component {
       recipeName: "",
       description: "",
       cookingTime: "",
-      instructions: "",
-      ingredients: "",
+      instructions: [],
+      ingredients: [],
       cuisine: "",
       imageURL: "",
+      instructionValue: "",
+      ingredientValue: "",
+      response:'',
+      open: false, 
+      responseTitle: '',  
     };
   };
-  createRecipe = e => {
+  handleCreateRecipe = e => {
+    if (this.state.recipeName.length === 0) {
+      this.handleResponse("It seems you have not provided a recipe name. Please provide a vlide recipe name and try again.", "No recipe name");
+    }
+    else if ((this.state.description.length === 0)) {
+      this.handleResponse("It seems you have not provided a recipe description. Please provide a valid recipe description and try again", "No description")
+    }
+    else if ((this.state.cookingTime.length === 0)) {
+      this.handleResponse("It seems you have not provided a cooking time. Please provide a valid cooking time and try again", "No cooking time")
+    }
+    else if ((this.state.instructions.length === 0)) {
+      this.handleResponse("It seems you have not provided instructions. Please provide a valid set of instrucions and try again", "No instructions")
+    }
+    else if ((this.state.ingredients.length === 0)) {
+      this.handleResponse("It seems you have not provided a ingredient(s). Please provide a valid ingredient(s) and try again", "No ingredients")
+    }
+    else if ((this.state.cuisine.length === 0)) {
+      this.handleResponse("It seems you have not provided a cuisine type. Please provide a valid cuisine type and try again", "No cuisine type")
+    }
+    else if ((this.state.imageURL.length === 0)) {
+      this.handleResponse("It seems you have not provided a valid image URL. Please provide a valid URL ending in jpg and try again", "No image")
+    }
+    else {
 
-    axios.post('/v2/recipe/create', {
-      id: this.props.userID,
-      recipeName: this.state.id,
-      description: this.state.id,
-      cookingTime: this.state.id,
-      instructions: this.state.id,
-      ingredients: this.state.id,
-      cuisine: this.state.id,
-      imageURL: this.state.id,
+      axios.post('/v2/recipe/create', {
+        id: this.props.userID,
+        recipeName: this.state.recipeName,
+        description: this.state.description,
+        cookingTime: this.state.cookingTime,
+        instructions: this.state.instructions,
+        ingredients: this.state.ingredients,
+        cuisine: this.state.cuisine,
+        imageURL: this.state.imageURL,
 
-    })
-      .then(function (response) {
-        console.log(response);
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+          this.handleResponse("Your recipe was successfully created! Thank you for adding your personal recipe to Cookable!", "Recipe Creation Complete!");
+          this.setState({recipeName: '', description: '', cookingTime: '', instructions: [], ingredients: [], cuisine: '', imageURL: ''})
+        })
+
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    console.log(this.state); 
+    console.log(this.state);
     console.log(event.target.name);
   };
+
+  handleInstructionsAdd = event => {
+    const instructionValue = this.state.instructionValue;
+    const instructions = Array.from(this.state.instructions);
+    instructions.push(instructionValue);
+    this.setState({ instructions: instructions, instructionValue: "" });
+  }
+
+  handleIngredientsAdd = event => {
+    const ingredientValue = this.state.ingredientValue
+    const ingredients = Array.from(this.state.ingredients);
+    ingredients.push(ingredientValue);
+    this.setState({ ingredients: ingredients, ingredientValue: "" });
+  }
+
+  handleResponse = (response, responseTitle) => {
+    this.setState({ open: true, response: response, responseTitle: responseTitle });
+  }
+
+  handleResponseClose = () => {
+    this.setState({ open: false, response: '', });
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -99,6 +153,7 @@ class CreateRecipePage extends Component {
   render() {
     const { classes } = this.props;
     return (
+      <div>
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>
@@ -111,7 +166,7 @@ class CreateRecipePage extends Component {
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="recipeName">Recipe Name</InputLabel>
-              <Input id="recipeName" name="recipeName" autoFocus                 value={this.state.description}
+              <Input id="recipeName" name="recipeName" autoFocus value={this.state.description}
                 value={this.state.recipeName}
                 onChange={this.handleChange}
               />
@@ -136,8 +191,8 @@ class CreateRecipePage extends Component {
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="instructions">Instructions</InputLabel>
-              <Input id="instructions" name="instructions"
-                value={this.state.instructions}
+              <Input id="instructionValue" name="instructionValue"
+                value={this.state.instructionValue}
                 onChange={this.handleChange}
               />
               <div> <Button
@@ -146,7 +201,7 @@ class CreateRecipePage extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.add}
-                onClick={this.createRecipe}
+                onClick={this.handleInstructionsAdd}
               >
                 Add
           </Button>
@@ -154,9 +209,9 @@ class CreateRecipePage extends Component {
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="ingredients">Ingredients</InputLabel>
-              <Input id="ingredient" name="ingredient"
-                value={this.state.ingredient}
-                onChange={this.handleChange} 
+              <Input id="ingredientValue" name="ingredientValue"
+                value={this.state.ingredientValue}
+                onChange={this.handleChange}
               />
               <div> <Button
                 as="input"
@@ -164,7 +219,7 @@ class CreateRecipePage extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.add}
-                onClick={this.createRecipe}
+                onClick={this.handleIngredientsAdd}
               >
                 Add
           </Button></div>
@@ -172,7 +227,7 @@ class CreateRecipePage extends Component {
             <FormControl className={classes.formControl} required fullWidth>
               <InputLabel htmlFor="cuisine">Cuisine</InputLabel>
               <Select
-               input={<Input id="cuisine" name="cuisine"/>}
+                input={<Input id="cuisine" name="cuisine" />}
                 value={this.state.cuisine}
                 onChange={this.handleChange}
               >
@@ -200,7 +255,7 @@ class CreateRecipePage extends Component {
               color="primary"
 
               className={classes.submit}
-              onClick={this.createRecipe}
+              onClick={this.handleCreateRecipe}
             >
               Submit
           </Button>
@@ -215,7 +270,14 @@ class CreateRecipePage extends Component {
           </Button>
           </form>
         </Paper>
-      </main>
+      </main> 
+      <Response
+        open={this.state.open}
+        onClose={this.handleResponseClose}
+        response={this.state.response}
+        responseTitle={this.state.responseTitle}
+      />
+      </div>
     );
   };
 }
