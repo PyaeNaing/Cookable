@@ -125,6 +125,7 @@ class RecommendationsPage extends Component {
 
   handleClose = value => {
     this.setState({ selectedValue: value, open: false });
+    this.handleRecommendations();
   };
 
 	componentDidMount() {
