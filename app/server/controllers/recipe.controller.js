@@ -50,7 +50,10 @@ exports.createRecipe = function (req, res) {
 
         res.send(recipe.get({ plain: true }));
 
-      });
+      }).catch(err => {
+        res.status(500).send("Server Error: " + err);
+        console.log(err);
+      });;
     })
     .catch(err => {
       res.status(500).send("Server Error: " + err);
@@ -329,8 +332,7 @@ function deleteRecipe(req, res, isAdmin) {
       recipeID: req.body.recipeID
     }
   }).then(recipe => {
-    if(!isAdmin && !recipe.userID === req.user.userID)
-    {
+    if (!isAdmin && !recipe.userID === req.user.userID) {
       res.status(401).send("User is not authorized");
     }
 
