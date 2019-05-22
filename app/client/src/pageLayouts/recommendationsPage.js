@@ -75,12 +75,12 @@ class RecommendationsPage extends Component {
 	};
 
 	handlePageChange = (page) => {
-    this.props.handlePageChange(page);
+	this.props.handlePageChange(page);
   };
 
 	handleRecommendations = event => {
-	// Use '/api/v1/recommendation' when is production.
-	// Use '/v1/recommendation' when on local machine.
+		// Use '/api/v1/recommendation' when is production.
+		// Use '/v1/recommendation' when on local machine.
 		axios.get('/v1/recommendation')
 		.then((response) => {
 			if(response.data.length === 0) {
@@ -99,33 +99,33 @@ class RecommendationsPage extends Component {
 	};
 
 	handleRecipeRetrieval = (recipeID) => {
-  	axios.get(('/v2/recipe/' + recipeID))
-    .then((response) => {
-      if(response.data.length === 0) {
-      	console.log("Could not retrieve recipe.");
-        console.log(response);
-      }
-      else {
-      	console.log(response);
-        this.setState({ selectedValue: response.data });
-        console.log(this.state.selectedValue);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+		axios.get(('/v2/recipe/' + recipeID))
+		.then((response) => {
+		  if(response.data.length === 0) {
+				console.log("Could not retrieve recipe.");
+				console.log(response);
+		  }
+		  else {
+				console.log(response);
+				this.setState({ selectedValue: response.data });
+				console.log(this.state.selectedValue);
+		  }
+		})
+		.catch((error) => {
+		  console.log(error);
+		});
   };
 
 	handleClickOpen = (recipeID) => {
-    this.handleRecipeRetrieval(recipeID);
-    this.setState({
-      open: true,
-    });
+		this.handleRecipeRetrieval(recipeID);
+		this.setState({
+		  open: true,
+		});
   };
 
   handleClose = value => {
-    this.setState({ selectedValue: value, open: false });
-    this.handleRecommendations();
+		this.setState({ selectedValue: value, open: false });
+		this.handleRecommendations();
   };
 
 	componentDidMount() {
@@ -225,12 +225,12 @@ class RecommendationsPage extends Component {
 					{/* End footer */}
 				</React.Fragment>
 				<Recipe
-			        selectedValue={this.state.selectedValue}
-			        open={this.state.open}
-			        onClose={this.handleClose}
-			        userID={this.props.userID}
-			        isAdmin={this.props.isAdmin}
-	        	/>
+					selectedValue={this.state.selectedValue}
+					open={this.state.open}
+					onClose={this.handleClose}
+					userID={this.props.userID}
+					isAdmin={this.props.isAdmin}
+				/>
 			</div>
 		);
 	}

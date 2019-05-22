@@ -12,7 +12,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import axios from "axios";
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
@@ -98,10 +97,8 @@ class MainNavBar extends Component {
       loginMenuAnchor: null,
       mobileMoreAnchorEl: null,
       searchInput: '',
-      searchStatus: false,
     };
     this.handleSearch = this.handleSearch.bind(this);
-    //this.handleAddIngredient = this.handleAddIngredient.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   };
 
@@ -161,27 +158,8 @@ class MainNavBar extends Component {
   };
 
   handleSearch = event => {
-    // Use '/api/v1/searchIngredients' when is production.
-    // Use '/v1/searchIngredients' when on local machine.
-  	axios.get('/v2/recipe/search', {
-  		params: {
-  			recipe: this.state.searchInput
-  		}
-    })
-    .then((response) => {
-      if(response.data.length === 0) {
-      	console.log("No recipes exist for specified ingredient.");
-        console.log(response);
-      }
-      else {
-      	console.log(response);
-        this.props.handleSearch(response.data);
-        this.props.handlePageChange("recipeDisplayPage");
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    this.props.handleSearch(this.state.searchInput);
+    this.props.handlePageChange("recipeDisplayPage");
   };
 
   render() {

@@ -15,7 +15,7 @@ class MainPage extends Component {
 			currentPage: 'recommendationsPage',
 			profileSubpage: '',
 			loginRegisterSubpage: 'login',
-			searchResult: [],
+			searchInput: '',
 		};
 	}
 
@@ -40,8 +40,8 @@ class MainPage extends Component {
 		this.setState({ profileSubpage: page });
 	}
 
-	handleSearchResult = (result) => {
-		this.setState({ searchResult: result });
+	handleSearch = (searchInput) => {
+		this.setState({ searchInput: searchInput });
 	}
 
 	render() {
@@ -66,7 +66,7 @@ class MainPage extends Component {
 
 		// Must lift up searchResult state from MainNavBar
 		const renderRecipeDisplayPage = (
-			<RecipeDisplayPage userID={this.props.user.userID} searchResult={this.state.searchResult} isAdmin={this.props.user.isAdmin}/>
+			<RecipeDisplayPage userID={this.props.user.userID} searchInput={this.state.searchInput} isAdmin={this.props.user.isAdmin}/>
 		);
 
 		const renderCreateRecipePage = (
@@ -83,7 +83,7 @@ class MainPage extends Component {
 					handleLogout={this.handleLogout}
 					handlePageChange={this.handlePageChange}
 					handleProfileSubpageChange={this.handleProfileSubpageChange}
-					handleSearch={this.handleSearchResult}
+					handleSearch={this.handleSearch}
 				/>
 				{(this.state.currentPage === 'recommendationsPage') ? renderRecommendationsPage : undefined }
 				{(this.state.currentPage === 'loginPage') ? renderLoginPage : undefined }

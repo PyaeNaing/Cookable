@@ -100,24 +100,24 @@ class Recipe extends Component {
     };
 
     axios.post('/v2/admin/deleteRecipe', {
-            userID: userID,
-            recipeID: recipeID,
-        },
-        {
-          headers: headers,
-        })
-        .then((response) => {
-            console.log(response);
-            if(response.data.msg === "Recipe removed") {
-              this.handleResponse("Recipe was successfully removed.", "Success!");
-            }
-            else {
-              this.handleResponse("Recipe could not be removed.", "Error!");
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        userID: userID,
+        recipeID: recipeID,
+    },
+    {
+      headers: headers,
+    })
+    .then((response) => {
+        console.log(response);
+        if(response.data.msg === "Recipe removed") {
+          this.handleResponse("Recipe was successfully removed.", "Success!");
+        }
+        else {
+          this.handleResponse("Recipe could not be removed.", "Error!");
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    });
     console.log("handleAdminDeleteRecipe");
   };
 
