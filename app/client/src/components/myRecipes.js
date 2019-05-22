@@ -85,7 +85,7 @@ class MyRecipes extends Component {
 	};
 
 	handleRecipeRetrieval = (recipeID) => {
-		axios.get(('/v2/recipe/' + recipeID))
+		axios.get(('/api/v2/recipe/' + recipeID))
 	  .then((response) => {
 		if(response.data.length === 0) {
 			console.log("Could not retrieve recipe.");
@@ -106,7 +106,7 @@ class MyRecipes extends Component {
 		// Use '/api/v2/user/myRecipes' when is production.
 		// Use '/v2/user/myRecipes' when on local machine.
 		//example myRecipes?userID=1012
-		axios.get('/v2/user/myRecipes',{
+		axios.get('/api/v2/user/myRecipes',{
 			params: {
 				userID: this.props.user.userID
 			}

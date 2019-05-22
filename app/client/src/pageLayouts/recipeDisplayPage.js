@@ -100,6 +100,7 @@ class RecipeDisplayPage extends Component {
 	}
 	
 	handleRecipeRetrieval = (recipeID) => {
+<<<<<<< HEAD
 		axios.get(('/v2/recipe/' + recipeID))
 		.then((response) => {
 			if(response.data.length === 0) {
@@ -116,6 +117,24 @@ class RecipeDisplayPage extends Component {
 			console.log(error);
 		});
 	}
+=======
+  	axios.get(('/api/v2/recipe/' + recipeID))
+    .then((response) => {
+      if(response.data.length === 0) {
+      	console.log("Could not retrieve recipe.");
+        console.log(response);
+      }
+      else {
+      	console.log(response);
+        this.setState({ selectedValue: response.data });
+        console.log(this.state.selectedValue);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  };
+>>>>>>> master
 
 	handleClickOpen = (recipeID) => {
 		this.handleRecipeRetrieval(recipeID);

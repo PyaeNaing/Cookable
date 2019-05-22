@@ -83,6 +83,7 @@ class RegisterPage extends Component {
     else {
       // Use '/api/v2/user/create' when is production.
       // Use '/v2/user/create' when on local machine.
+<<<<<<< HEAD
       axios.post('/v2/user/create', {
               username: this.state.username,
               email: this.state.email,
@@ -97,6 +98,24 @@ class RegisterPage extends Component {
               console.log(error);
           });
     }
+=======
+			axios.post('/api/v2/user/create', {
+	      		username: this.state.username,
+	      		email: this.state.email,
+	      		password: this.state.password,
+	      		confirmPassword: this.state.confirmPassword,
+		    })
+		    .then((response) => {
+		      	console.log(response);
+		    })
+		    .catch((error) => {
+		      	console.log(error);
+		    });
+		}
+		else {
+			console.log("Your passwords do not match. Please re-enter your password.")
+		}
+>>>>>>> master
 	}
 
   validateEmail = (email) => {

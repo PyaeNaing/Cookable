@@ -158,8 +158,32 @@ class MainNavBar extends Component {
   };
 
   handleSearch = event => {
+<<<<<<< HEAD
     this.props.handleSearch(this.state.searchInput);
     this.props.handlePageChange("recipeDisplayPage");
+=======
+    // Use '/api/v1/searchIngredients' when is production.
+    // Use '/v1/searchIngredients' when on local machine.
+  	axios.get('/api/v2/recipe/search', {
+  		params: {
+  			recipe: this.state.searchInput
+  		}
+    })
+    .then((response) => {
+      if(response.data.length === 0) {
+      	console.log("No recipes exist for specified ingredient.");
+        console.log(response);
+      }
+      else {
+      	console.log(response);
+        this.props.handleSearch(response.data);
+        this.props.handlePageChange("recipeDisplayPage");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+>>>>>>> master
   };
 
   render() {
