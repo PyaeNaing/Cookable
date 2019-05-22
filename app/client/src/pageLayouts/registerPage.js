@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Response from '../components/response.js';
+import PrivacyPolicy from '../components/privacyPolicy.js';
 
 const styles = theme => ({
   main: {
@@ -59,6 +60,7 @@ class RegisterPage extends Component {
       open: false,
       response: '',
       responseTitle: '',
+      privacyOpen: false,
 		};
 	}
 
@@ -109,6 +111,14 @@ class RegisterPage extends Component {
   handleResponseClose = () => {
     this.setState({ open: false, response: '', responseTitle: '' });
   }
+
+  handlePrivacyPolicy = () => {
+    this.setState({ privacyOpen: true });
+  }
+
+  handlePrivacyPolicyClose = () => {
+    this.setState({ privacyOpen: false });
+  }
 	
 	handleChange = event => {
 		this.setState({
@@ -151,10 +161,9 @@ class RegisterPage extends Component {
         				control={<Checkbox value="terms" color="primary" />}
         				label="I accept the Terms of Service."
       				/>
-      				{/*
-      				 type="submit"
-      				 add keyPress 'enter' functionality to Sign in button
-      			 	*/}
+              <Button onClick={this.handlePrivacyPolicy} color="primary" autoFocus>
+                Privacy Policy
+              </Button>
       				<Button
         				fullWidth
         				variant="contained"
@@ -173,6 +182,10 @@ class RegisterPage extends Component {
           response={this.state.response}
           responseTitle={this.state.responseTitle}
           handlePageChange={this.props.handlePageChange}
+        />
+        <PrivacyPolicy
+          open={this.state.privacyOpen}
+          onClose={this.handlePrivacyPolicyClose}
         />
       </div>
 		);

@@ -190,7 +190,7 @@ class MainNavBar extends Component {
       profileMenuAnchor, 
       loginMenuAnchor, 
       mobileMoreAnchorEl, } = this.state;
-    const { classes } = this.props;
+    const { classes, isAdmin } = this.props;
     const isLoggedIn = this.props.isLoggedIn;
     const username = this.props.username;
     const isLoginMenuOpen = Boolean(loginMenuAnchor);
@@ -235,7 +235,7 @@ class MainNavBar extends Component {
         <MenuItem onClick={() => this.handleProfileSubpageChange('pantry')}>Pantry</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('myRecipes')}>My Recipes</MenuItem>
         <MenuItem onClick={() => this.handleProfileSubpageChange('favorites')}>Favorites</MenuItem>
-        <MenuItem onClick={((this.props.isLoggedIn) ? ( () => this.handlePageChange('createRecipePage') ) : (() => this.handlePageChange('loginPage')) )}>Create Recipe</MenuItem>
+        <MenuItem onClick={() => this.handlePageChange('createRecipePage')}>Create Recipe</MenuItem>
       </Menu>
     );
 
@@ -302,6 +302,9 @@ class MainNavBar extends Component {
             </div>
             <div className={classes.grow} />
             <div className={classes.user}>
+              <Typography color="inherit">
+                {isAdmin ? ("ADMIN ") : undefined}
+              </Typography>
               <Typography color="inherit">
                 {isLoggedIn ? ("Logged in as " + username) : "Login Menu"}
               </Typography>

@@ -56,7 +56,7 @@ class Recipe extends Component {
   }
 
 	handleClose = () => {
-    this.props.onClose({});
+    this.props.onClose(this.props.selectedValue);
   };
 
   handleAddFavorite = (userID, recipeID) => {
@@ -93,10 +93,18 @@ class Recipe extends Component {
   };
 
   handleAdminDeleteRecipe = (userID, recipeID) => {
+    const token = localStorage.token;
+
+    const headers = {
+      'Authorization': 'Bearer ' + token,
+    };
+
     axios.post('/v2/admin/deleteRecipe', {
             userID: userID,
             recipeID: recipeID,
-            token: localStorage.token,
+        },
+        {
+          headers: headers,
         })
         .then((response) => {
             console.log(response);
