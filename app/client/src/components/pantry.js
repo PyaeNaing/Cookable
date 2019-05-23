@@ -130,6 +130,10 @@ class Pantry extends Component {
     this.setState({ open: false });
 	};
 
+	handleRecipeClose = () => {
+		this.setState({ openRecipe: false });
+	};
+
 	handleClickCloseListofRecipes = () => {
 		this.setState({ openRecipes: false});
 	};
@@ -407,7 +411,7 @@ class Pantry extends Component {
 				<Recipe
 	          selectedValue={this.state.selectedValue}
 	          open={this.state.openRecipe}
-	          onClose={this.handleClose}
+	          onClose={this.handleRecipeClose}
         	/>
 			</div>
 		);
