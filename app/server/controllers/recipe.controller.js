@@ -212,10 +212,10 @@ exports.viewRecipe = function (req, res) {
 
 //Pantry search, in general calls instances of multiple sequalize and regex to get a list of ingredients that includes a user's ingredients.
 exports.pantrySearchRecipe = function (req, res) {
-  console.log("FROM FRONT END------------------------------------------------------------\n\n"+req.body);
+  console.log("FROM FRONT END------------------------------------------------------------\n\n"+req.body.list);
   console.log("\n\nFROM FRONT END------------------------------------------------------------\n");
   let searchArray = "";
-  req.body.forEach(element => {
+  req.body.list.forEach(element => {
     searchArray = searchArray + element + "|";
   });
   searchArray = searchArray.substring(0, searchArray.length - 1);
