@@ -74,6 +74,8 @@ const styles = theme => ({
 	},
 	button: {
 		paddingLeft: 15,
+		paddingRight: 15,
+		margin: theme.spacing.unit * 2,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	}
@@ -309,9 +311,6 @@ class Pantry extends Component {
 					<Typography style={styles.pageTitle} variant="headline">Pantry</Typography>
 				</div>
 				<div>
-					<Button id="getRecipesUsingIngredients" variant="contained" className={classes.button} onClick={this.handleClickOpenListofRecipes}>
-						Get Recipes
-					</Button>
 					<Dialog
 						fullScreen
 						open={this.state.openRecipes}
@@ -382,8 +381,11 @@ class Pantry extends Component {
 				</div>
 				<div>
 					<Button variant="contained" className={classes.button} onClick={this.handleOpen}>
-                    Add Ingredients
-          </Button>
+                    	Add Ingredients
+          			</Button>
+          			<Button id="getRecipesUsingIngredients" variant="contained" className={classes.button} onClick={this.handleClickOpenListofRecipes}>
+						Get Recipes
+					</Button>
 				</div>
 				<div>
 				<Dialog
