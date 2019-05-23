@@ -16,6 +16,15 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
 
 
 
@@ -73,7 +82,11 @@ const styles = theme => ({
 	}
 });
 
-//const cards = [1, 2, 3, 4, 5, 6, 7, 8];
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
+let pantryItemsforSearch = [];
 
 class Pantry extends Component {
 	
@@ -84,6 +97,8 @@ class Pantry extends Component {
 			pantryItems: [],
 			open: false,
 			ingredientName: "",
+			openRecipes : false,
+			recipeItems: [],
 		};
 	};
 
@@ -107,6 +122,15 @@ class Pantry extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+	};
+
+	handleClickCloseListofRecipes = () => {
+		this.setState({ openRecipes: false});
+	};
+	
+	handleClickOpenListofRecipes = event => {
+		this.handleSearchRecipes();
+		this.setState({ openRecipes: true});
 	};
 	
 	handleAddedClose = event => {
@@ -136,6 +160,32 @@ class Pantry extends Component {
 		});
 		this.setState({open: false});
 	};
+	
+	handleSearchRecipes = event => {
+		// Use '/api/v1/getIngredient' when is production.
+		// Use '/v1/getIngredient' when on local machine.
+		//example getIngredient?userID=1012
+		console.log(pantryItemsforSearch);
+		axios.post('/v2/recipe/search/pantry',{
+			list: pantryItemsforSearch
+		})
+		.then((response) => {
+			if(response.data.length === 0) {
+				console.log("Pantry could not be retreived.");
+				console.log(response);
+			}
+			else 
+			{
+				console.log(response);
+				this.setState({ pantryItems: response.data });
+				console.log('pantry items retrieved');
+				console.log(this.state.pantryItems);
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+	};
 
 	handlePantryItems = event => {
 		// Use '/api/v1/getIngredient' when is production.
@@ -157,6 +207,10 @@ class Pantry extends Component {
 				this.setState({ pantryItems: response.data });
 				console.log('pantry items retrieved');
 				console.log(this.state.pantryItems);
+				for(let i=0; i< this.state.pantryItems.length; i++) {
+					pantryItemsforSearch.push(this.state.pantryItems[i].ingredientName);
+				}
+				console.log(pantryItemsforSearch);
 			}
 		})
 		.catch((error) => {
@@ -206,7 +260,6 @@ class Pantry extends Component {
 				});
 		}
 	};
-
 	
 	componentWillMount() {
 		this.handlePantryItems();
@@ -221,36 +274,77 @@ class Pantry extends Component {
 					<Typography style={styles.pageTitle} variant="headline">Pantry</Typography>
 				</div>
 				<div>
-				<Button id="searchIngredient" variant="contained" className={classes.button} onClick={this.handleSearchOpen}>
-              Search Ingredients
-        </Button>
+					<Button id="getRecipesUsingIngredients" variant="contained" className={classes.button} onClick={this.handleClickOpenListofRecipes}>
+						Get Recipes
+					</Button>
+					<Dialog
+						fullScreen
+						open={this.state.openRecipes}
+						onClose={this.handleClose}
+						TransitionComponent={Transition}
+					>
+						<AppBar className={classes.appBar}>
+							<Toolbar>
+								<IconButton color="inherit" onClick={this.handleClickCloseListofRecipes} aria-label="Close">
+									<CloseIcon />
+								</IconButton>
+								<Typography variant="h6" color="inherit" className={classes.flex}>
+									List of Recipes Possible
+								</Typography>
+							</Toolbar>
+						</AppBar>
+						<div>
+							<Grid container spacing={40}>
+								{data.map(recipeItems => (
+									<Grid item key={recipeItems.recipeID} sm={6} md={4} lg={3}>
+										<Card className={classes.card}>
+											<CardMedia
+												className={classes.cardMedia}
+												image={recipeItems.recipeImageDir}
+												title="Image title"
+											/>
+											<CardContent className={classes.cardContent}>
+												<Typography gutterBottom variant="h5" component="h2">
+													{recipeItems.recipeName}
+												</Typography>
+											</CardContent>
+											{/* <CardActions>
+											<Button size="small" color="primary" onClick={() => this.handleClickRemoveFromPantry(this.props.user.userID ,pantryItem.ingredientID)}>
+													Remove
+												</Button>
+											</CardActions> */}
+										</Card>
+								</Grid>			
+								))}			
+							</Grid>
+						</div>
+					</Dialog>
 				</div>
 				<div className={classNames(classes.layout, classes.cardGrid)}>
-								{/* End hero unit */}
-								<Grid container spacing={40}>
-									{data.map(pantryItem => (
-										<Grid item key={pantryItem.pantryID} sm={6} md={4} lg={3}>
-											<Card className={classes.card}>
-												<CardMedia
-													className={classes.cardMedia}
-													image="https://static.thenounproject.com/png/489212-200.png" // eslint-disable-line max-len
-													title="Image title"
-												/>
-												<CardContent className={classes.cardContent}>
-													<Typography gutterBottom variant="h5" component="h2">
-														{pantryItem.ingredientName}
-													</Typography>
-												</CardContent>
-												<CardActions>
-												<Button size="small" color="primary" onClick={() => this.handleClickRemoveFromPantry(this.props.user.userID ,pantryItem.ingredientID)}>
-														Remove
-													</Button>
-												</CardActions>
-											</Card>
-										</Grid>
-									))}
-								</Grid>
-							</div>
+					<Grid container spacing={40}>
+						{data.map(pantryItem => (
+							<Grid item key={pantryItem.pantryID} sm={6} md={4} lg={3}>
+								<Card className={classes.card}>
+									<CardMedia
+										className={classes.cardMedia}
+										image="https://static.thenounproject.com/png/489212-200.png" // eslint-disable-line max-len
+										title="Image title"
+									/>
+									<CardContent className={classes.cardContent}>
+										<Typography gutterBottom variant="h5" component="h2">
+											{pantryItem.ingredientName}
+										</Typography>
+									</CardContent>
+									<CardActions>
+									<Button size="small" color="primary" onClick={() => this.handleClickRemoveFromPantry(this.props.user.userID ,pantryItem.ingredientID)}>
+											Remove
+										</Button>
+									</CardActions>
+								</Card>
+						</Grid>			
+						))}			
+					</Grid>
+				</div>
 				<div>
 					<Button variant="contained" className={classes.button} onClick={this.handleOpen}>
                     Add Ingredients
