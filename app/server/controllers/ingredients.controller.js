@@ -73,6 +73,7 @@ exports.addIngredienttoPantry = function(req, res) {
             userID: req.body.userID
           }
         }).then(pantry => {
+          console.log(pantry)
           res.send(pantry);
         });
       } else {

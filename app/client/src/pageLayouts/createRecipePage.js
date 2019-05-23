@@ -94,7 +94,7 @@ class CreateRecipePage extends Component {
       this.handleResponse("It seems you have not provided a valid image URL. Please provide a valid URL ending in jpg and try again", "No image")
     }
     else {
-      axios.post('/v2/recipe/create', {
+      axios.post('/api/v2/recipe/create', {
       
         id: this.props.userID,
         recipeName: this.state.recipeName,
@@ -109,7 +109,7 @@ class CreateRecipePage extends Component {
       )
         .then((response) => {
           console.log(response);
-          this.handleResponse("Your recipe was successfully created! Thank you for adding your personal recipe to Cookable!", "Recipe Creation Complete!");
+          this.handleResponse("Your recipe was successfully created and added to your recipes! Thank you for adding your personal recipe to Cookable!", "Recipe Creation Complete!");
           this.setState({recipeName: '', description: '', cookingTime: '', instructions: [], ingredients: [], cuisine: '', imageURL: ''}); 
         })
 
@@ -122,8 +122,6 @@ class CreateRecipePage extends Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
-    console.log(this.state);
-    console.log(event.target.name);
   };
 
   handleInstructionsAdd = event => {

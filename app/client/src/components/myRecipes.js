@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-
+import Recipe from '../components/recipe.js';
 
 const styles = theme => ({
 	appBar: {
@@ -85,7 +85,7 @@ class MyRecipes extends Component {
 	};
 
 	handleRecipeRetrieval = (recipeID) => {
-		axios.get(('/v2/recipe/' + recipeID))
+		axios.get(('/api/v2/recipe/' + recipeID))
 	  .then((response) => {
 		if(response.data.length === 0) {
 			console.log("Could not retrieve recipe.");
@@ -102,11 +102,55 @@ class MyRecipes extends Component {
 	  });
 	};
 
+	handleClickRemoveFromMyRecipes = (userID ,recipeID) => {
+		const token = localStorage.token;
+		const headers = {
+			'Authorization': 'Bearer ' + token,
+		};
+		if (token) {
+				//this.handleClickRemoveFromMyRecipes(userID, recipeID);
+				// this.setState({
+				//     open: false,
+				// });
+				// Use '/api//v2/user/deleteRecipe' when is production.
+				// Use '/v2/user/deleteRecipe' when on local machine.
+				//example deleteRecipe?userID=1012
+				axios.post('/api/v2/user/deleteRecipe',{
+								userID: userID,
+								recipeID: recipeID,
+						},
+						{
+							headers: headers
+						})
+				.then((response) => {
+						if(response.data.length === 0) {
+								console.log("My Recipe item could not be removed.");
+								console.log(response);
+						}
+						else
+						{
+								console.log(response);
+								let myRecipes = [...this.state.myRecipes];
+								myRecipes.splice(recipeID, 1);
+								this.setState({ myRecipes: myRecipes });
+								console.log('my Recipe item deleted');
+								console.log(this.state.myRecipes);
+								this.handleMyRecipes(userID);
+						}
+				})
+				.catch((error) => {
+						console.log(headers);
+						console.log(error);
+				});
+			}
+		
+	};
+
 	handleMyRecipes = event => {
 		// Use '/api/v2/user/myRecipes' when is production.
 		// Use '/v2/user/myRecipes' when on local machine.
 		//example myRecipes?userID=1012
-		axios.get('/v2/user/myRecipes',{
+		axios.get('/api/v2/user/myRecipes',{
 			params: {
 				userID: this.props.user.userID
 			}
@@ -162,11 +206,11 @@ class MyRecipes extends Component {
 													</Typography>
 												</CardContent>
 												<CardActions>
-													<Button size="small" color="primary">
+													<Button size="small" color="primary" onClick={() => this.handleClickOpen(myRecipes.recipeID)}>
 														View
 													</Button>
-													<Button size="small" color="primary">
-														Edit
+													<Button size="small" color="primary" onClick={() => this.handleClickRemoveFromMyRecipes(this.props.user.userID ,myRecipes.recipeID)}>
+														Remove
 													</Button>
 												</CardActions>
 											</Card>
@@ -174,6 +218,11 @@ class MyRecipes extends Component {
 									))}
 								</Grid>
 							</div>
+					<Recipe
+	          selectedValue={this.state.selectedValue}
+	          open={this.state.open}
+	          onClose={this.handleClose}
+        	/>
 			</div>
 		);
 	}
