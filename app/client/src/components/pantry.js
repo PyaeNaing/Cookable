@@ -83,12 +83,13 @@ class Pantry extends Component {
 		this.state = {
 			pantryItems: [],
 			open: false,
-			ingredientName: ""
+			ingredientName: "",
 		};
 	};
 
 	handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+		this.setState({ [event.target.name]: event.target.value,
+		ingredientName: event.target.value });
 	};
 	
 	handlePageChange = (page) => {
