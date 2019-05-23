@@ -88,8 +88,13 @@ class Pantry extends Component {
 	};
 
 	handleChange = event => {
-		this.setState({ [event.target.name]: event.target.value,
-		ingredientName: event.target.value });
+		this.setState({ 
+			[event.target.name]: event.target.value });
+	};
+
+	handleAddChange = event => {
+		this.setState({
+			ingredientName: event.target.value });
 	};
 	
 	handlePageChange = (page) => {
@@ -216,20 +221,8 @@ class Pantry extends Component {
 					<Typography style={styles.pageTitle} variant="headline">Pantry</Typography>
 				</div>
 				<div>
-				<TextField
-          id="searchIngredientName"
-          label="Ingredients Search"
-          type="search"
-          className={classes.textField}
-          margin="normal"
-					variant="filled"
-					fullWidth
-        />
-				<Button id="searchIngredient" variant="contained" className={classes.button} onClick={this.handleOpen}>
+				<Button id="searchIngredient" variant="contained" className={classes.button} onClick={this.handleSearchOpen}>
               Search Ingredients
-        </Button>
-				<Button variant="contained" size="large" color="primary" className={classes.margin}>
-          Large
         </Button>
 				</div>
 				<div className={classNames(classes.layout, classes.cardGrid)}>
@@ -281,7 +274,7 @@ class Pantry extends Component {
               label="Enter Ingredient Name"
               //type="email"
 							fullWidth
-							onChange = {this.handleChange}
+							onChange = {this.handleAddChange}
             />
           </DialogContent>
           <DialogActions>
