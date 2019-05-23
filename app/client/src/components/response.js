@@ -16,7 +16,7 @@ class Response extends Component {
 		const { response, responseTitle, open, onClose } = this.props;
 
     const renderLoginButton = (
-      <Button onClick={() => this.handlePageChange("loginPage")} color="primary" autofocus>
+      <Button onClick={() => this.handlePageChange("loginPage")} color="primary" autoFocus>
         Login
       </Button>
     );
