@@ -82,7 +82,8 @@ class Pantry extends Component {
 		super(props);
 		this.state = {
 			pantryItems: [],
-			open: false
+			open: false,
+			ingredientName: ""
 		};
 	};
 
@@ -98,7 +99,32 @@ class Pantry extends Component {
     this.setState({ open: false });
 	};
 	
-	handleAddedClose = () => {
+	handleAddedClose = event => {
+		// Use '/api/v2/ingredient/add' when is production.
+		// Use 'v2/v2/ingredient/add when on local machine.
+		//example ingredient/add?userID=1012
+		axios.post('/v2/user/addToPantry',{
+			params: {
+				userID: this.props.user.userID,
+				ingredientName: this.state.ingredientName
+			}
+		})
+		.then((response) => {
+			if(response.data.length === 0) {
+				console.log("Pantry could not be added.");
+				console.log(response);
+			}
+			else 
+			{
+				console.log(response);
+				this.setState({ pantryItems: response.data });
+				console.log('pantry items retrieved');
+				console.log(this.state.pantryItems);
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 		this.setState({open: false});
 	};
 
@@ -184,6 +210,23 @@ class Pantry extends Component {
 				<div>
 					<Typography style={styles.pageTitle} variant="headline">Pantry</Typography>
 				</div>
+				<div>
+				<TextField
+          id="searchIngredientName"
+          label="Ingredients Search"
+          type="search"
+          className={classes.textField}
+          margin="normal"
+					variant="filled"
+					fullWidth
+        />
+				<Button id="searchIngredient" variant="contained" className={classes.button} onClick={this.handleOpen}>
+              Search Ingredients
+        </Button>
+				<Button variant="contained" size="large" color="primary" className={classes.margin}>
+          Large
+        </Button>
+				</div>
 				<div className={classNames(classes.layout, classes.cardGrid)}>
 								{/* End hero unit */}
 								<Grid container spacing={40}>
@@ -213,7 +256,7 @@ class Pantry extends Component {
 				<div>
 					<Button variant="contained" className={classes.button} onClick={this.handleOpen}>
                     Add Ingredients
-                    </Button>
+          </Button>
 				</div>
 				<div>
 				<Dialog
@@ -230,7 +273,7 @@ class Pantry extends Component {
               autoFocus
               margin="dense"
               id="ingredientName"
-              label="Ingredient Name Search"
+              label="Enter Ingredient Name"
               //type="email"
               fullWidth
             />
@@ -239,7 +282,7 @@ class Pantry extends Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleAddedClose} color="primary">
+            <Button onClick={() => this.handleAddedClose()} color="primary">
               Add Ingredient
             </Button>
           </DialogActions>
