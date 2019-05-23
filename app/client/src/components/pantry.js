@@ -16,15 +16,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+import Recipe from '../components/recipe.js';
 
 
 
@@ -98,8 +95,17 @@ class Pantry extends Component {
 			open: false,
 			ingredientName: "",
 			openRecipes : false,
+			openRecipe: false,
 			recipeItems: [],
+			selectedValue: {}
 		};
+	};
+
+	handleClickOpen = (recipeID) => {
+		this.handleRecipeRetrieval(recipeID);
+		this.setState({
+		  openRecipe: true,
+		});
 	};
 
 	handleChange = event => {
@@ -260,6 +266,23 @@ class Pantry extends Component {
 				});
 		}
 	};
+	handleRecipeRetrieval = (recipeID) => {
+		axios.get(('/v2/recipe/' + recipeID))
+	  .then((response) => {
+		if(response.data.length === 0) {
+			console.log("Could not retrieve recipe.");
+		  console.log(response);
+		}
+		else {
+			console.log(response);
+		  this.setState({ selectedValue: response.data });
+		  console.log(this.state.selectedValue);
+		}
+	  })
+	  .catch((error) => {
+		console.log(error);
+	  });
+	};
 	
 	componentWillMount() {
 		this.handlePantryItems();
@@ -308,11 +331,11 @@ class Pantry extends Component {
 													{recipeItems.recipeName}
 												</Typography>
 											</CardContent>
-											{/* <CardActions>
-											<Button size="small" color="primary" onClick={() => this.handleClickRemoveFromPantry(this.props.user.userID ,pantryItem.ingredientID)}>
-													Remove
+											<CardActions>
+											<Button size="small" color="primary" onClick={() => this.handleClickOpen(recipeItems.recipeID)}>
+													View
 												</Button>
-											</CardActions> */}
+											</CardActions>
 										</Card>
 								</Grid>			
 								))}			
@@ -381,6 +404,11 @@ class Pantry extends Component {
           </DialogActions>
         </Dialog>
 				</div>
+				<Recipe
+	          selectedValue={this.state.selectedValue}
+	          open={this.state.openRecipe}
+	          onClose={this.handleClose}
+        	/>
 			</div>
 		);
 	}
