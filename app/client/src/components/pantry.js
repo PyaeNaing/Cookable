@@ -186,7 +186,7 @@ class Pantry extends Component {
 			list: pantryItemsforSearch
 		})
 		.then((response) => {
-			if(response.data.length === 0) {
+			if(response.data.msg === "Nothing found") {
 				console.log("Pantry could not be retreived.");
 				console.log(response);
 			}
