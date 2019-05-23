@@ -81,7 +81,7 @@ class RecommendationsPage extends Component {
 	handleRecommendations = event => {
 		// Use '/api/v1/recommendation' when is production.
 		// Use '/v1/recommendation' when on local machine.
-		axios.get('/v1/recommendation')
+		axios.get('/api/v1/recommendation')
 		.then((response) => {
 			if(response.data.length === 0) {
 				console.log("Recommendations could not be retreived.");
@@ -99,7 +99,7 @@ class RecommendationsPage extends Component {
 	};
 
 	handleRecipeRetrieval = (recipeID) => {
-		axios.get(('/v2/recipe/' + recipeID))
+		axios.get(('/api/v2/recipe/' + recipeID))
 		.then((response) => {
 		  if(response.data.length === 0) {
 				console.log("Could not retrieve recipe.");

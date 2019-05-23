@@ -99,7 +99,7 @@ class Favorites extends Component {
 				// Use '/api//v2/user/favorites' when is production.
 				// Use '/v2/user/favorites' when on local machine.
 				//example favorites?userID=1012
-				axios.post('/v2/user/favorite/remove',{
+				axios.post('/api/v2/user/favorite/remove',{
 								userID: userID,
 								recipeID: recipeID,
 						},
@@ -134,7 +134,7 @@ class Favorites extends Component {
 	};
 	
 	handleRecipeRetrieval = (recipeID) => {
-		axios.get(('/v2/recipe/' + recipeID))
+		axios.get(('/api/v2/recipe/' + recipeID))
 	  .then((response) => {
 		if(response.data.length === 0) {
 			console.log("Could not retrieve recipe.");
@@ -155,7 +155,7 @@ class Favorites extends Component {
 		// Use '/api//v2/user/favorites' when is production.
 		// Use '/v2/user/favorites3' when on local machine.
 		//example favorites?userID=1012
-		axios.get('/v2/user/favorites',{
+		axios.get('/api/v2/user/favorites',{
 			params: {
 				userID: this.props.user.userID
 			}

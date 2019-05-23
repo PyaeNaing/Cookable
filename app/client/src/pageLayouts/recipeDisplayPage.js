@@ -79,7 +79,7 @@ class RecipeDisplayPage extends Component {
 	handleSearch = (searchInput) => {
 		// Use '/api/v1/searchIngredients' when is production.
 		// Use '/v1/searchIngredients' when on local machine.
-		axios.get('/v2/recipe/search', {
+		axios.get('/api/v2/recipe/search', {
 			params: {
 				recipe: searchInput
 			}
@@ -100,7 +100,7 @@ class RecipeDisplayPage extends Component {
 	}
 	
 	handleRecipeRetrieval = (recipeID) => {
-		axios.get(('/v2/recipe/' + recipeID))
+		axios.get(('/api/v2/recipe/' + recipeID))
 		.then((response) => {
 			if(response.data.length === 0) {
 				console.log("Could not retrieve recipe.");

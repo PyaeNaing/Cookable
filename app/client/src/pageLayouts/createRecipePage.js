@@ -94,7 +94,7 @@ class CreateRecipePage extends Component {
       this.handleResponse("It seems you have not provided a valid image URL. Please provide a valid URL ending in jpg and try again", "No image")
     }
     else {
-      axios.post('/v2/recipe/create', {
+      axios.post('/api/v2/recipe/create', {
       
         id: this.props.userID,
         recipeName: this.state.recipeName,

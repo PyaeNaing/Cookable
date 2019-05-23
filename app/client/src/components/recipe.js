@@ -67,7 +67,7 @@ class Recipe extends Component {
     };
 
     if(token) {
-      axios.post('/v2/user/favorite/add', {
+      axios.post('/api/v2/user/favorite/add', {
               userID: userID,
               recipeID: recipeID,
           }, 
@@ -99,7 +99,7 @@ class Recipe extends Component {
       'Authorization': 'Bearer ' + token,
     };
 
-    axios.post('/v2/admin/deleteRecipe', {
+    axios.post('/api/v2/admin/deleteRecipe', {
         userID: userID,
         recipeID: recipeID,
     },

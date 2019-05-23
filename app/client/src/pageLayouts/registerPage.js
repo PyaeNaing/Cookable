@@ -83,7 +83,7 @@ class RegisterPage extends Component {
     else {
       // Use '/api/v2/user/create' when is production.
       // Use '/v2/user/create' when on local machine.
-      axios.post('/v2/user/create', {
+      axios.post('/api/v2/user/create', {
               username: this.state.username,
               email: this.state.email,
               password: this.state.password,

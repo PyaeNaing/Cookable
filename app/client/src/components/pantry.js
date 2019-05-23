@@ -149,7 +149,7 @@ class Pantry extends Component {
 		// Use '/api/v2/ingredient/add' when is production.
 		// Use 'v2/v2/ingredient/add when on local machine.
 		//example ingredient/add?userID=1012
-		axios.post('/v2/user/addToPantry',{
+		axios.post('/api/v2/user/addToPantry',{
 			
 			userID: this.props.user.userID,
 			ingredientName: this.state.ingredientName
@@ -184,7 +184,7 @@ class Pantry extends Component {
 		}
 
 		console.log(pantryItemsforSearch);
-		axios.post('/v2/recipe/search/pantry',{
+		axios.post('/api/v2/recipe/search/pantry',{
 			list: pantryItemsforSearch
 		})
 		.then((response) => {
@@ -209,7 +209,7 @@ class Pantry extends Component {
 		// Use '/api/v1/getIngredient' when is production.
 		// Use '/v1/getIngredient' when on local machine.
 		//example getIngredient?userID=1012
-		axios.get('/v2/user/pantry',{
+		axios.get('/api/v2/user/pantry',{
 			params: {
 				userID: this.props.user.userID
 			}
@@ -249,7 +249,7 @@ class Pantry extends Component {
 				// Use '/api//v2/user/removefromPantry' when is production.
 				// Use '/v2/user/removefromPantry' when on local machine.
 				//example removefromPantry?userID=1012
-				axios.post('/v2/user/removefromPantry',{
+				axios.post('/api/v2/user/removefromPantry',{
 								userID: userID,
 								ingredientID: ingredientID,
 						},
@@ -279,7 +279,7 @@ class Pantry extends Component {
 		}
 	};
 	handleRecipeRetrieval = (recipeID) => {
-		axios.get(('/v2/recipe/' + recipeID))
+		axios.get(('/api/v2/recipe/' + recipeID))
 	  .then((response) => {
 		if(response.data.length === 0) {
 			console.log("Could not retrieve recipe.");
