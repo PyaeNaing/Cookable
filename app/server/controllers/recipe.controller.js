@@ -212,8 +212,6 @@ exports.viewRecipe = function (req, res) {
 
 //Pantry search, in general calls instances of multiple sequalize and regex to get a list of ingredients that includes a user's ingredients.
 exports.pantrySearchRecipe = function (req, res) {
-  console.log("FROM FRONT END------------------------------------------------------------\n\n"+req.body.list);
-  console.log("\n\nFROM FRONT END------------------------------------------------------------\n");
   let searchArray = "";
   req.body.list.forEach(element => {
     searchArray = searchArray + element + "|";
@@ -244,6 +242,11 @@ exports.pantrySearchRecipe = function (req, res) {
         }
       }
 
+      if(results.length === 0)
+      {
+        res.json({msg: "Nothing found"});
+      }
+
       const recipeImages = Recipe.findAll({
         where: {
           recipeID: { [Op.or]: results }
@@ -261,7 +264,6 @@ exports.pantrySearchRecipe = function (req, res) {
         let alreadyIn = false;
 
         for (let x = 0; x < prom[0].length; x++) {
-
           for (let y = 0; y < prom[1].length; y++) {
             if (prom[0][x].dataValues.recipeID === prom[1][y].dataValues.recipeID) {
               rez.push(Object.assign(prom[0][x].dataValues, prom[1][y].dataValues));
@@ -271,7 +273,6 @@ exports.pantrySearchRecipe = function (req, res) {
           if (!alreadyIn) { rez.push(Object.assign(prom[0][x].dataValues, { "recipeImageDir": defaultImageUrl })); }
           alreadyIn = false;
         }
-
         res.send(rez);
 
       }).catch(err => res.status(500).send("Error: " + err))
