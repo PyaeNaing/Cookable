@@ -83,7 +83,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-let pantryItemsforSearch = [];
+// let pantryItemsforSearch = [];
 
 class Pantry extends Component {
 	
@@ -175,6 +175,12 @@ class Pantry extends Component {
 		// Use '/api/v1/getIngredient' when is production.
 		// Use '/v1/getIngredient' when on local machine.
 		//example getIngredient?userID=1012
+		const pantryItemsforSearch = [];
+
+		for(let i=0; i< this.state.pantryItems.length; i++) {
+			pantryItemsforSearch.push(this.state.pantryItems[i].ingredientName);
+		}
+
 		console.log(pantryItemsforSearch);
 		axios.post('/v2/recipe/search/pantry',{
 			list: pantryItemsforSearch
@@ -187,9 +193,9 @@ class Pantry extends Component {
 			else 
 			{
 				console.log(response);
-				this.setState({ pantryItems: response.data });
+				this.setState({ recipeItems: response.data });
 				console.log('pantry items retrieved');
-				console.log(this.state.pantryItems);
+				console.log(this.state.recipeItems);
 			}
 		})
 		.catch((error) => {
@@ -217,10 +223,10 @@ class Pantry extends Component {
 				this.setState({ pantryItems: response.data });
 				console.log('pantry items retrieved');
 				console.log(this.state.pantryItems);
-				for(let i=0; i< this.state.pantryItems.length; i++) {
-					pantryItemsforSearch.push(this.state.pantryItems[i].ingredientName);
-				}
-				console.log(pantryItemsforSearch);
+				// for(let i=0; i< this.state.pantryItems.length; i++) {
+				// 	pantryItemsforSearch.push(this.state.pantryItems[i].ingredientName);
+				// }
+				// console.log(pantryItemsforSearch);
 			}
 		})
 		.catch((error) => {
@@ -295,6 +301,8 @@ class Pantry extends Component {
 	render() {
 		const { classes } = this.props;
 		const data = this.state.pantryItems;
+		const recipeData = this.state.recipeItems;
+
 		return (
 			<div>
 				<div>
@@ -322,7 +330,7 @@ class Pantry extends Component {
 						</AppBar>
 						<div>
 							<Grid container spacing={40}>
-								{data.map(recipeItems => (
+								{recipeData.map(recipeItems => (
 									<Grid item key={recipeItems.recipeID} sm={6} md={4} lg={3}>
 										<Card className={classes.card}>
 											<CardMedia
