@@ -87,6 +87,10 @@ class Pantry extends Component {
 		};
 	};
 
+	handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+	};
+	
 	handlePageChange = (page) => {
 		this.props.handlePageChange(page);
 	};
@@ -104,20 +108,19 @@ class Pantry extends Component {
 		// Use 'v2/v2/ingredient/add when on local machine.
 		//example ingredient/add?userID=1012
 		axios.post('/v2/user/addToPantry',{
-			params: {
-				userID: this.props.user.userID,
-				ingredientName: this.state.ingredientName
-			}
+			
+			userID: this.props.user.userID,
+			ingredientName: this.state.ingredientName
 		})
 		.then((response) => {
-			if(response.data.length === 0) {
+			if(response.data === false) {
 				console.log("Pantry could not be added.");
 				console.log(response);
 			}
 			else 
 			{
 				console.log(response);
-				this.setState({ pantryItems: response.data });
+				this.handlePantryItems(this.props.user.userID);
 				console.log('pantry items retrieved');
 				console.log(this.state.pantryItems);
 			}
@@ -132,7 +135,7 @@ class Pantry extends Component {
 		// Use '/api/v1/getIngredient' when is production.
 		// Use '/v1/getIngredient' when on local machine.
 		//example getIngredient?userID=1012
-		axios.get('/v1/getIngredient',{
+		axios.get('/v2/user/pantry',{
 			params: {
 				userID: this.props.user.userID
 			}
@@ -196,7 +199,8 @@ class Pantry extends Component {
 						console.log(error);
 				});
 		}
-	}
+	};
+
 	
 	componentWillMount() {
 		this.handlePantryItems();
@@ -275,7 +279,8 @@ class Pantry extends Component {
               id="ingredientName"
               label="Enter Ingredient Name"
               //type="email"
-              fullWidth
+							fullWidth
+							onChange = {this.handleChange}
             />
           </DialogContent>
           <DialogActions>
