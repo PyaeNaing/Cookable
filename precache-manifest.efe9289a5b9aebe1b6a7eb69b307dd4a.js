@@ -8,15 +8,15 @@ self.__precacheManifest = [
     "url": "/Cookable/static/js/runtime~main.cd88d820.js"
   },
   {
-    "revision": "a85502868c15f155de60",
-    "url": "/Cookable/static/js/main.f3eefc11.chunk.js"
+    "revision": "a407e42a041398c0c271",
+    "url": "/Cookable/static/js/main.5c3b5bf6.chunk.js"
   },
   {
     "revision": "27eaa6086093393555aa",
     "url": "/Cookable/static/js/2.10b391f0.chunk.js"
   },
   {
-    "revision": "a85502868c15f155de60",
+    "revision": "a407e42a041398c0c271",
     "url": "/Cookable/static/css/main.9c4b0144.chunk.css"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/Cookable/static/css/2.d54851e2.chunk.css"
   },
   {
-    "revision": "02a0365739132cb55899901b70421f60",
+    "revision": "f1864e85ccc8c6355cc9fd283c6b0912",
     "url": "/Cookable/index.html"
   }
 ];
